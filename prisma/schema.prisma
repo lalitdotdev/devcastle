@@ -60,25 +60,15 @@ model User {
 }
 
 model Community {
-
-  id String @id @default(cuid())
-
-  name String @unique
+  id        String   @id @default(cuid())
+  name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  // slug String @unique
-
-  creatorId String?
-  Creator User? @relation("CreatedBy", fields: [creatorId], references: [id] , onDelete: NoAction , onUpdate: NoAction)
-
+  posts     Post[]
+  creatorId   String?
+  Creator     User?          @relation("CreatedBy", fields: [creatorId], references: [id])
   subscribers Subscription[]
-
-  description String
-  image String
-  posts Post[]
-
   @@index([name])
-
 }
 
 model Subscription {

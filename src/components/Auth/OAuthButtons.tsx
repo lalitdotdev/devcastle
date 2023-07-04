@@ -1,16 +1,13 @@
-"use client";
-
-import { FC, useState } from "react";
-import { Button } from "./ui/Button";
+import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
+import { Icons } from "../Icons";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { signIn } from "next-auth/react";
 
-import { Icons } from "./Icons";
-import { useToast } from "@/hooks/use-toast";
+interface OAuthButtonProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
+const OAuthButtons: React.FC<OAuthButtonProps> = ({ className, ...props }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { toast } = useToast();
@@ -36,19 +33,22 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
   };
 
   return (
-    <div className={cn("flex justify-center", className)} {...props}>
+    <div className={cn("flex flex-col justify-center ", className)} {...props}>
       <Button
         onClick={loginWithGoogle}
         isLoading={isLoading}
         type="button"
         size="sm"
-        className="w-full"
+        className="w-full mb-2"
       >
         {isLoading ? null : <Icons.google className="h-4 w-4 mr-2" />}
         Google
       </Button>
+
+      <Button variant="outline" type="button" size="sm" className="w-full">
+        Some other providers
+      </Button>
     </div>
   );
 };
-
-export default UserAuthForm;
+export default OAuthButtons;

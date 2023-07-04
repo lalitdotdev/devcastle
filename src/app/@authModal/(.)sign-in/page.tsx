@@ -1,7 +1,7 @@
 "use client";
 
-import CloseModal from "@/components/CloseModal";
-import SignIn from "@/components/SignIn";
+import CloseModal from "@/components/Auth/CloseModal";
+import SignIn from "@/components/Auth/SignIn";
 
 const page = ({}) => {
   return (

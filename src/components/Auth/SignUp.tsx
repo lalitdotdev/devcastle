@@ -1,7 +1,8 @@
 import { FC } from "react";
-import { Icons } from "./Icons";
+
 import Link from "next/link";
 import UserAuthForm from "./UserAuthForm";
+import { Icons } from "../Icons";
 
 const SignUp: FC = ({}) => {
   return (
