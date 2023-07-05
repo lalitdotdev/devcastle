@@ -13,7 +13,11 @@ import { useCustomToast } from "@/hooks/use-custom-toast";
 
 const Page = () => {
   const [communityName, setCommunityName] = useState<string>("");
+  const [communityDescription, setCommunityDescription] = useState<string>("");
+
   const [charsRemaining, setCharsRemaining] = useState(21);
+  const [aboutCharsRemaining, setAboutCharsRemaining] = useState(50);
+
   const router = useRouter();
   const { loginToast } = useCustomToast();
 
@@ -26,9 +30,11 @@ const Page = () => {
     mutationFn: async () => {
       const payload: CreateCommunityPayload = {
         name: communityName,
+        description: communityDescription,
       };
       const { data } = await axios.post("/api/community", payload);
-      return data as String;
+
+      return data;
     },
 
     onError: (err) => {
@@ -52,7 +58,7 @@ const Page = () => {
       });
     },
     onSuccess: (data) => {
-      router.push(`/cb/${data}`);
+      router.push(`/cb/${data.name}`);
     },
   });
 
@@ -60,6 +66,13 @@ const Page = () => {
     if (event.target.value.length > 21) return;
     setCommunityName(event.target.value);
     setCharsRemaining(21 - event.target.value.length);
+  };
+  const handleDescriptionChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.value.length > 50) return;
+    setCommunityDescription(event.target.value);
+    setAboutCharsRemaining(50 - event.target.value.length);
   };
 
   return (
@@ -71,7 +84,7 @@ const Page = () => {
         <hr className="bg-zinc-100 h-[2px]" />
         <div>
           <p className="text-lg font-medium">Name</p>
-          <p className="text-xs pb-2">
+          <p className="text-xs pb-2 text-gray-500">
             Community names including capitalization cannot be changed.
           </p>
           <div className="relative">
@@ -91,6 +104,31 @@ const Page = () => {
               }`}
             >
               {charsRemaining} characters remaining
+            </p>
+          )}
+          <div>
+            <p className="text-lg font-medium pt-2 mt-2">
+              What is this community all about ?
+            </p>
+            <p className="text-xs pb-2 text-gray-500">
+              Create a compelling short community description that grabs
+              attention, sparks curiosity, and entices others to join your
+              vibrant online space.
+            </p>
+
+            <Input
+              value={communityDescription}
+              onChange={handleDescriptionChange}
+              className="pl-2 align-center"
+            />
+          </div>
+          {communityDescription && (
+            <p
+              className={`text-xs mt-2 ${
+                aboutCharsRemaining === 0 ? "text-red-500" : "text-gray-700"
+              }`}
+            >
+              {aboutCharsRemaining} characters remaining
             </p>
           )}
         </div>

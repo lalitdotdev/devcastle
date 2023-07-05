@@ -2,6 +2,7 @@ import { z } from "zod"; // zod is a library for data validation and parsing tha
 
 export const CommunityValidator = z.object({
   name: z.string().min(3).max(255),
+  description: z.string().min(3).max(255),
 });
 
 export const CommunitySubscriptionValidator = z.object({

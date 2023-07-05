@@ -13,7 +13,8 @@ export async function POST(req: Request) {
 
     const body = await req.json(); // getting the body content of the request as JSON object
 
-    const { name } = CommunityValidator.parse(body);
+    const { name, description } = CommunityValidator.parse(body);
+
     const communityExists = await db.community.findFirst({
       where: {
         name,
@@ -30,6 +31,7 @@ export async function POST(req: Request) {
     const community = await db.community.create({
       data: {
         name,
+        description,
         creatorId: session.user.id,
       },
     });
@@ -42,7 +44,12 @@ export async function POST(req: Request) {
       },
     });
 
-    return new Response(community.name);
+    const responseData = {
+      name: community.name,
+      description: community.description,
+    };
+    const responseBody = JSON.stringify(responseData);
+    return new Response(responseBody);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 422 });
