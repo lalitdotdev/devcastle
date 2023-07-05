@@ -29,19 +29,19 @@ const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
           <span className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-500 outline outline-2 outline-white" />
         </div>
         <Input
-          onClick={() => router.push(pathname + "/submit")}
+          onClick={() => router.push(pathname + "/publish")}
           readOnly
           placeholder="Create post"
         />
         <Button
-          onClick={() => router.push(pathname + "/submit")}
+          onClick={() => router.push(pathname + "/publish")}
           variant="ghost"
           className="rounded-full"
         >
           <ImageIcon className="text-zinc-600" />
         </Button>
         <Button
-          onClick={() => router.push(pathname + "/submit")}
+          onClick={() => router.push(pathname + "/publish")}
           variant="ghost"
           className="rounded-full"
         >

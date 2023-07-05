@@ -7,6 +7,8 @@ import { ReactNode } from "react";
 import { format } from "date-fns";
 import { notFound } from "next/navigation";
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/Button";
 const Layout = async ({
   children,
   params: { slug },
@@ -68,7 +70,7 @@ const Layout = async ({
 
           <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last">
             <div className="px-6 py-4">
-              <p className="font-semibold py-3">About cb/{community?.name}</p>
+              <p className="font-semibold py-3">About c/{community?.name}</p>
               <hr className="bg-zinc-100 h-[2px]" />
               <p className="text-sm py-2 ">{communityDescription}</p>
             </div>
@@ -100,6 +102,18 @@ const Layout = async ({
                   communityName={community.name}
                 />
               ) : null}
+
+              {/* create Button for creating post */}
+
+              <Link
+                className={buttonVariants({
+                  variant: "outline",
+                  className: "w-full mb-6",
+                })}
+                href={`cb/${slug}/publish`}
+              >
+                Create Post
+              </Link>
             </dl>
           </div>
         </div>
