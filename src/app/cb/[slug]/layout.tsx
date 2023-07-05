@@ -97,7 +97,7 @@ const Layout = async ({
                 <SubscribeLeaveToggle
                   isSubscribed={isSubscribed}
                   communityId={community.id}
-                  // communityName={community.name}
+                  communityName={community.name}
                 />
               ) : null}
             </dl>
