@@ -105,15 +105,18 @@ const Layout = async ({
 
               {/* create Button for creating post */}
 
-              <Link
-                className={buttonVariants({
-                  variant: "outline",
-                  className: "w-full mb-6",
-                })}
-                href={`cb/${slug}/publish`}
-              >
-                Create Post
-              </Link>
+              {/* only allow for logged in user to post in the community */}
+              {session?.user && (
+                <Link
+                  className={buttonVariants({
+                    variant: "outline",
+                    className: "w-full mb-6",
+                  })}
+                  href={`cb/${slug}/publish`}
+                >
+                  Create Post
+                </Link>
+              )}
             </dl>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { FC } from "react";
 import UserAvatar from "./UserAvatar";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
-import { ImageIcon, Link2 } from "lucide-react";
+import { Feather, ImageIcon, Link2 } from "lucide-react";
 
 interface MiniCreatePostProps {
   session: Session | null;
@@ -46,6 +46,13 @@ const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
           className="rounded-full"
         >
           <Link2 className="text-zinc-600" />
+        </Button>
+        <Button
+          onClick={() => router.push(pathname + "/publish")}
+          variant="ghost"
+          className="rounded-full"
+        >
+          <Feather className="text-zinc-600" />
         </Button>
       </div>
     </li>
