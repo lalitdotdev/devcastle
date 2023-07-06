@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import type EditorJS from "@editorjs/editorjs";
 import { uploadFiles } from "@/lib/uploadthing";
+import { toast } from "@/hooks/use-toast";
 const Editor: FC<EditorProps> = ({ communityId }) => {
   // type safety for form using generic type argument PostCreateRequest (see src/lib/validators/post.ts)
   const {
@@ -97,6 +98,24 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
       setIsMounted(true);
     }
   }, []);
+
+  // error handling for react-hook-form
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      // mapping over them
+
+      for (const [_key, value] of Object.entries(errors)) {
+        // return toast message for each error
+
+        toast({
+          title: "Something went wrong",
+          description: (value as { message: string }).message,
+          variant: "destructive",
+        });
+      }
+    }
+  }, [errors]);
 
   useEffect(() => {
     const init = async () => {
