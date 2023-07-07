@@ -6,19 +6,23 @@ interface EditorProps {
 }
 import TextareaAutosize from "react-textarea-autosize";
 import { useForm } from "react-hook-form";
-import { PostCreateRequest, PostValidator } from "@/lib/validators/post";
+import { PostCreationRequest, PostValidator } from "@/lib/validators/post";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import type EditorJS from "@editorjs/editorjs";
 import { uploadFiles } from "@/lib/uploadthing";
 import { toast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { usePathname, useRouter } from "next/navigation";
+
 const Editor: FC<EditorProps> = ({ communityId }) => {
-  // type safety for form using generic type argument PostCreateRequest (see src/lib/validators/post.ts)
+  // type safety for form using generic type argument PostCreationRequest (see src/lib/validators/post.ts)
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PostCreateRequest>({
+  } = useForm<PostCreationRequest>({
     resolver: zodResolver(PostValidator),
     defaultValues: {
       communityId,
@@ -32,6 +36,9 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
 
   const [isMounted, setIsMounted] = useState<boolean>();
   const _titleRef = useRef<HTMLTextAreaElement>(null);
+
+  const pathname = usePathname();
+  const router = useRouter();
 
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default;
@@ -103,11 +110,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
-      // mapping over them
-
       for (const [_key, value] of Object.entries(errors)) {
-        // return toast message for each error
-
         toast({
           title: "Something went wrong",
           description: (value as { message: string }).message,
@@ -137,6 +140,73 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
     }
   }, [isMounted, initializeEditor]);
 
+  //* -------------------------> TANSTACK QUERY;  WE ARE SUBMITTING DATA SO WE WILL USE USE MUTATION HOOK TO DO THIS --------------------------> */
+
+  const { mutate: createPost } = useMutation({
+    mutationFn: async ({
+      title,
+      content,
+      communityId,
+    }: PostCreationRequest) => {
+      const payload: PostCreationRequest = {
+        communityId,
+        title,
+        content,
+      };
+
+      // HTTP POST request to a  API endpoint (/api/community/post/create). The payload object is sent as the request body. The response from the API call is stored in the data variable, and it is returned from the mutationFn function
+
+      const { data } = await axios.post(`/api/community/post/create`, payload);
+      return data;
+
+      // sending error to the onError function to test the error handling
+      // throw new Error("Something went wrong");
+    },
+
+    // handling error
+
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description: "Your post was not published. Please try again.",
+        variant: "destructive",
+      });
+    },
+
+    // handling success with push to the community page
+
+    onSuccess: () => {
+      // cb/myCommunity/publish to cb/myCommunity
+
+      const newPathname = pathname.split("/").slice(0, -1).join("/");
+
+      router.push(newPathname);
+      router.refresh();
+
+      return toast({
+        title: "Your post has been published",
+        description: "You can view it in the community page.",
+      });
+    },
+  });
+
+  // handling the form submission
+  async function onSubmit(data: PostCreationRequest) {
+    // saving the data from the editor content to the data object
+
+    const blocks = await ref.current?.save();
+
+    const payload: PostCreationRequest = {
+      title: data.title,
+      content: blocks,
+      communityId,
+    };
+
+    createPost(payload);
+  }
+
+  if (!isMounted) return null;
+
   const { ref: titleRef, ...rest } = register("title"); // register the title field with react-hook-form and get the ref to the input element (see https://react-hook-form.com/api/useform/register) and spread the rest of the props to the input element.
 
   return (
@@ -144,7 +214,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
       <form
         id="community-post-form"
         className="w-fit"
-        onSubmit={handleSubmit(() => {})}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div className="prose prose-stone dark:prose-invert">
           <TextareaAutosize
