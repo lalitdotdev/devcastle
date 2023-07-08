@@ -81,11 +81,21 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
         if (index === posts.length - 1) {
           return (
             <li key={post.id} ref={ref}>
-              <Post post={post} communityName={post.community.name} />
+              <Post
+                post={post}
+                communityName={post.community.name}
+                commentsCount={post.comments.length}
+              />
             </li>
           );
         } else {
-          return <Post post={post} communityName={post.community.name} />;
+          return (
+            <Post
+              post={post}
+              communityName={post.community.name}
+              commentsCount={post.comments.length}
+            />
+          );
         }
       })}
     </ul>
