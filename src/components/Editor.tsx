@@ -52,6 +52,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
     const Code = (await import("@editorjs/code")).default;
     const Quote = (await import("@editorjs/quote")).default;
     const Marker = (await import("@editorjs/marker")).default;
+    const CheckList = (await import("@editorjs/checklist")).default;
 
     if (!ref.current) {
       const editor = new EditorJS({
@@ -95,6 +96,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
           code: Code,
           quote: Quote,
           marker: Marker,
+          checklist: CheckList,
         },
       });
     }
