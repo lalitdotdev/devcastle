@@ -1,8 +1,9 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { FC } from "react";
-import style from "styled-jsx/style";
+
 import CustomImageRenderer from "./renderers/CustomImageRenderer";
+import CustomCodeRenderer from "./renderers/CustomCodeRenderer";
 
 const Output = dynamic(
   async () => (await import("editorjs-react-renderer")).default,
@@ -15,9 +16,22 @@ interface EditorOutputContentProps {
   content: any;
 }
 
+const style = {
+  paragraph: {
+    fontSize: "0.875rem",
+    lineHeight: "1.25rem",
+    color: "#374151",
+    fontWeight: 400,
+    fontFamily: "Inter, sans-serif",
+    letterSpacing: "-0.01em",
+    marginBottom: "1.5rem",
+    marginTop: "1.5rem",
+  },
+};
+
 const renderers = {
   image: CustomImageRenderer,
-  // code: CustomCodeRenderer,
+  code: CustomCodeRenderer,
 };
 const EditorOutputContent: FC<EditorOutputContentProps> = ({ content }) => {
   return (
@@ -30,7 +44,5 @@ const EditorOutputContent: FC<EditorOutputContentProps> = ({ content }) => {
     />
   );
 };
-
-// const CustomCodeRenderer = ({ data }: any) => {};
 
 export default EditorOutputContent;
