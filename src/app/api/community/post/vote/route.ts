@@ -89,6 +89,24 @@ export async function PATCH(req: Request) {
         return acc;
       }, 0);
 
+      //& if the votes amount is greater than or equal to the cache after votes, we're going to cache the post in redis so that we can fetch it super quickly on the front end
+
+      if (votesAmt >= CACHE_AFTER_VOTES) {
+        const cachePayload: CachedPost = {
+          id: post.id,
+          title: post.title,
+          content: JSON.stringify(post.content),
+          authorUsername: post.author.username ?? "",
+          communityId: post.communityId,
+          currentVote: voteType,
+          createdAt: post.createdAt,
+        };
+
+        //& we're going to cache the post in redis
+
+        await redis.hset(`post:${post.id}`, cachePayload);
+      }
+
       return new Response("OK!");
     }
   } catch (error) {}
