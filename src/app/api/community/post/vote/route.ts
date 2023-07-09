@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { PostVoteValidator } from "@/lib/validators/vote";
 import { CachedPost } from "@/types/redis";
+import { z } from "zod";
 
 const CACHE_AFTER_VOTES = 1;
 // This API route is going to encapsulate One Piece One Central piece of the very very cool caching data logic that we're going to make use of in this application where we cache the most popular posts depending on UPVOTE and then we're able to fetch that data super quickly on the front end whenever somebody visits that post
@@ -13,7 +14,7 @@ export async function PATCH(req: Request) {
   // We're going to be using the zod library to validate the data that's coming in from the front end
 
   try {
-    const body = req.json();
+    const body = await req.json();
     const { postId, voteType } = PostVoteValidator.parse(body);
 
     const session = await getAuthSession();
@@ -106,8 +107,51 @@ export async function PATCH(req: Request) {
 
         await redis.hset(`post:${post.id}`, cachePayload);
       }
-
-      return new Response("OK!");
+      return new Response("OK");
     }
-  } catch (error) {}
+
+    // if no existing vote, we're going to create it
+
+    await db.vote.create({
+      data: {
+        type: voteType,
+        userId: session.user.id,
+        postId,
+      },
+    });
+
+    // recount the votes
+
+    const votesAmt = post.votes.reduce((acc, vote) => {
+      if (vote.type === "UPVOTE") return acc + 1;
+
+      if (vote.type === "DOWNVOTE") return acc - 1;
+
+      return acc;
+    }, 0);
+
+    //& if the votes amount is greater than or equal to the cache after votes, we're going to cache the post in redis so that we can fetch it super quickly on the front end
+
+    if (votesAmt >= CACHE_AFTER_VOTES) {
+      const cachePayload: CachedPost = {
+        id: post.id,
+        title: post.title,
+        content: JSON.stringify(post.content),
+        authorUsername: post.author.username ?? "",
+        communityId: post.communityId,
+        currentVote: voteType,
+        createdAt: post.createdAt,
+      };
+      await redis.hset(`post:${post.id}`, cachePayload);
+    }
+
+    return new Response("OK!");
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response("Invalid PATCH request data passed", { status: 422 });
+    }
+    return new Response("Could not register your vote, please try again", {
+      status: 500,
+    });
+  }
 }
