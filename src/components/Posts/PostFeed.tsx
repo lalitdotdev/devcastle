@@ -82,18 +82,23 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
           return (
             <li key={post.id} ref={ref}>
               <Post
-                post={post}
                 communityName={post.community.name}
+                post={post}
                 commentsCount={post.comments.length}
+                votesAmt={votesAmt}
+                currentVote={currentVote}
               />
             </li>
           );
         } else {
           return (
             <Post
-              post={post}
+              key={post.id}
               communityName={post.community.name}
+              post={post}
               commentsCount={post.comments.length}
+              votesAmt={votesAmt}
+              currentVote={currentVote}
             />
           );
         }
