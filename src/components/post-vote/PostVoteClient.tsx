@@ -9,7 +9,8 @@ import { FC, useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { useMutation } from "@tanstack/react-query";
 import { PostVoteRequest } from "@/lib/validators/vote";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { toast } from "@/hooks/use-toast";
 
 interface PostVoteClientProps {
   postId: string;
@@ -43,9 +44,44 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
 
       // updating by patch request as we don't want to send the whole post object to the server just to update the votes field in the db request body
 
-      await axios.patch(`/api/community/post/vote`, payload);
+      await axios.patch("/api/community/post/vote", payload);
+    },
+
+    // error handling
+    onError: (err: any, voteType) => {
+      if (voteType === "UPVOTE") setVotesAmt((prev) => prev - 1);
+      else setVotesAmt((prev) => prev + 1);
+
+      // reset the current vote to previous vote
+      setCurrentVote(prevVote);
+
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          return loginToast();
+        }
+      }
+
+      return toast({
+        title: "Something went wrong!",
+        description: "Your vote was not registered , Please try again later.",
+        variant: "destructive",
+      });
+    },
+    onMutate: (type: VoteType) => {
+      if (currentVote === type) {
+        setCurrentVote(undefined);
+        if (type === "UPVOTE") setVotesAmt((prev) => prev - 1);
+        else if (type === "DOWNVOTE") setVotesAmt((prev) => prev + 1);
+      } else {
+        setCurrentVote(type);
+        if (type === "UPVOTE")
+          setVotesAmt((prev) => prev + (currentVote ? 2 : 1));
+        else if (type === "DOWNVOTE")
+          setVotesAmt((prev) => prev - (currentVote ? 2 : 1));
+      }
     },
   });
+
   return (
     <div className="flex flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0">
       {/* upvote */}
