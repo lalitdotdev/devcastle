@@ -1,7 +1,7 @@
 "use client";
 
 import { ExtendedPost } from "@/types/db.d";
-import { FC, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
@@ -14,9 +14,9 @@ interface PostFeedProps {
   communityName?: string;
 }
 
-//TODO: Adding a functionality of infinite scrolling to the post feed component using the useIntersection hook from @mantine/hooks package
-
-//~ ------------------------------------****************************------------------------------------>
+//&------------------------------------------------------------------
+//Adding a functionality of infinite scrolling to the post feed component using the useIntersection hook from @mantine/hooks package
+//&-------------------------------------------------------------------
 
 const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
   const lastPostRef = useRef<HTMLElement>(null);
@@ -59,6 +59,14 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
     }
   );
 
+  // fetching posts if the last post intersects with the viewport of the user and the next page of posts is not already being fetched from the server side
+
+  useEffect(() => {
+    if (entry?.isIntersecting && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [entry, fetchNextPage]);
+
   const posts = data?.pages.flatMap((page) => page) ?? initialPosts;
 
   return (
@@ -80,6 +88,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
 
         if (index === posts.length - 1) {
           return (
+            // attaching ref to the last post
             <li key={post.id} ref={ref}>
               <Post
                 communityName={post.community.name}
