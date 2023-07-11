@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import Image from "next/image";
+
 import { FC } from "react";
 
 import CustomImageRenderer from "./renderers/CustomImageRenderer";
@@ -16,6 +16,11 @@ interface EditorOutputContentProps {
   content: any;
 }
 
+const renderers = {
+  image: CustomImageRenderer,
+  code: CustomCodeRenderer,
+};
+
 const style = {
   paragraph: {
     fontSize: "0.875rem",
@@ -29,10 +34,6 @@ const style = {
   },
 };
 
-const renderers = {
-  image: CustomImageRenderer,
-  code: CustomCodeRenderer,
-};
 const EditorOutputContent: FC<EditorOutputContentProps> = ({ content }) => {
   return (
     // @ts-ignore
