@@ -64,6 +64,6 @@ export async function POST(req: Request) {
     if (error instanceof z.ZodError) {
       return new Response("Invalid request data passed", { status: 422 });
     }
-    return new Response("Could not unsubscribe ", { status: 500 });
+    return new Response("Could not unsubscribe at this time ", { status: 500 });
   }
 }
