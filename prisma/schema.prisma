@@ -57,6 +57,7 @@ model User {
   Subscription Subscription[]
   Vote Vote[]
   CommentVote CommentVote[]
+    // GitHubRepo GitHubRepo[] // New relationship for GitHub repositories
 }
 
 model Community {
@@ -154,3 +155,14 @@ model CommentVote {
 
 
 }
+
+// model GitHubRepo {
+//   id        String   @id @default(cuid())
+//   name      String
+//   fullName  String
+//   url       String
+//   createdAt DateTime
+//   updatedAt DateTime @updatedAt
+//   owner     User     @relation(fields: [ownerId], references: [id])
+//   ownerId   String
+// }
