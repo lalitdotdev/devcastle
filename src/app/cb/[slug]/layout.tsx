@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/Button";
+import { Milestone } from "lucide-react";
 const Layout = async ({
   children,
   params: { slug },
@@ -70,9 +71,16 @@ const Layout = async ({
 
           <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last">
             <div className="px-6 py-4">
-              <p className="font-semibold py-3">About c/{community?.name}</p>
+              <p className="font-semibold py-3 text-lg">
+                About <span className="px-1 text-blue-400">•</span>c/
+                {community?.name}
+              </p>
+              <div className="flex b-0">
+                {" "}
+                <Milestone />
+                <p className="text-sm ml-4">{communityDescription}</p>
+              </div>
               <hr className="bg-zinc-100 h-[2px]" />
-              <p className="text-sm py-2 ">{communityDescription}</p>
             </div>
             <dl className="divide-y divide-gray-100 px-6 py-4 text-sm leading-6 bg-white">
               <div className="flex justify-between gap-x-4 py-3">
