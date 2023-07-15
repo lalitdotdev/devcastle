@@ -1,15 +1,16 @@
-import dynamic from "next/dynamic";
+'use client';
+import dynamic from 'next/dynamic';
 
-import { FC } from "react";
+import { FC } from 'react';
 
-import CustomImageRenderer from "./renderers/CustomImageRenderer";
-import CustomCodeRenderer from "./renderers/CustomCodeRenderer";
+import CustomImageRenderer from './renderers/CustomImageRenderer';
+import CustomCodeRenderer from './renderers/CustomCodeRenderer';
 
 const Output = dynamic(
-  async () => (await import("editorjs-react-renderer")).default,
+  async () => (await import('editorjs-react-renderer')).default,
   {
     ssr: false,
-  }
+  },
 );
 
 interface EditorOutputContentProps {
@@ -23,14 +24,14 @@ const renderers = {
 
 const style = {
   paragraph: {
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem",
-    color: "#374151",
+    fontSize: '0.875rem',
+    lineHeight: '1.25rem',
+    color: '#374151',
     fontWeight: 400,
-    fontFamily: "Inter, sans-serif",
-    letterSpacing: "-0.01em",
-    marginBottom: "1.5rem",
-    marginTop: "1.5rem",
+    fontFamily: 'Inter, sans-serif',
+    letterSpacing: '-0.01em',
+    marginBottom: '1.5rem',
+    marginTop: '1.5rem',
   },
 };
 
