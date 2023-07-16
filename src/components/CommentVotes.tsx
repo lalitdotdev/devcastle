@@ -48,6 +48,26 @@ const CommentVote: FC<CommentVoteProps> = ({
       await axios.patch('/api/community/post/comment/vote', payload);
     },
 
+    // error handling
+    onError: (err: any, voteType) => {
+      if (voteType === 'UPVOTE') setVotesAmt(prev => prev - 1);
+      else setVotesAmt(prev => prev + 1);
+
+      // reset the current vote to previous vote
+      setCurrentVote(prevVote);
+
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          return loginToast();
+        }
+      }
+
+      return toast({
+        title: 'Something went wrong!',
+        description: 'Your vote was not registered , Please try again later.',
+        variant: 'destructive',
+      });
+    },
     onMutate: type => {
       if (currentVote?.type === type) {
         setCurrentVote(undefined);
