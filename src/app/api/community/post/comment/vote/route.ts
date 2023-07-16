@@ -62,5 +62,13 @@ export async function PATCH(req: Request) {
     });
 
     return new Response('OK');
-  } catch (error) {}
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(error.message, { status: 400 });
+    }
+
+    return new Response('Could not vote at this time. Please try later', {
+      status: 500,
+    });
+  }
 }
