@@ -9,3 +9,4 @@ declare module "@editorjs/quote";
 declare module "@editorjs/marker";
 declare module "@editorjs/delimiter";
 declare module "@editorjs/checklist";
+declare module "@editorjs/link-autocomplete";

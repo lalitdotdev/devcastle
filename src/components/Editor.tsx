@@ -100,10 +100,13 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
     const ImageTool = (await import("@editorjs/image")).default;
     const LinkTool = (await import("@editorjs/link")).default;
     const InlineCode = (await import("@editorjs/inline-code")).default;
-    const Code = (await import("@editorjs/code")).default;
+    // const Code = (await import("@editorjs/code")).default;
     const Quote = (await import("@editorjs/quote")).default;
     const Marker = (await import("@editorjs/marker")).default;
     const CheckList = (await import("@editorjs/checklist")).default;
+    const CodeBox = (await import("@bomdi/codebox")).default;
+    const LinkAutocomplete = (await import("@editorjs/link-autocomplete"))
+      .default;
 
     if (!ref.current) {
       const editor = new EditorJS({
@@ -111,7 +114,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
         onReady() {
           ref.current = editor;
         },
-        placeholder: "Type something awesome! ..",
+        placeholder: "Type something awesome! .. ",
         inlineToolbar: true,
         data: { blocks: [] },
         tools: {
@@ -120,6 +123,13 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
             class: LinkTool,
             config: {
               endpoint: "/api/link",
+            },
+          },
+          link: {
+            class: LinkAutocomplete,
+            config: {
+              endpoint: "https://techcrunch.com/",
+              queryParam: "search",
             },
           },
 
@@ -144,7 +154,16 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
           table: Table,
           embed: Embed,
           inlineCode: InlineCode,
-          code: Code,
+          codeBox: {
+            class: CodeBox,
+            config: {
+              themeURL:
+                "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/dracula.min.css", // Optional
+              themeName: "atom-one-dark", // Optional
+              useDefaultTheme: "light", // Optional. This also determines the background color of the language select drop-down
+            },
+          },
+          code: CodeBox,
           quote: Quote,
           marker: Marker,
           checklist: CheckList,
@@ -214,7 +233,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
   const { ref: titleRef, ...rest } = register("title"); // register the title field with react-hook-form and get the ref to the input element (see https://react-hook-form.com/api/useform/register) and spread the rest of the props to the input element.
 
   return (
-    <div className="w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200">
+    <div className="w-full p-4 bg-[#1B1F23] rounded-lg border border-zinc-500">
       <form
         id="community-post-form"
         className="w-fit"
@@ -222,7 +241,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
       >
         <div className="prose prose-stone dark:prose-invert">
           <TextareaAutosize
-            ref={(e) => {
+            ref={e => {
               titleRef(e);
 
               // @ts-ignore
@@ -230,12 +249,12 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
             }}
             {...rest}
             placeholder="Title"
-            className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
+            className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none text-gray-400"
           />
 
           {/* shell to mount the editor */}
 
-          <div id="editor" className="min-h-[500px]" />
+          <div id="editor" className="min-h-[500px] text-zinc-300" />
         </div>
       </form>
     </div>
