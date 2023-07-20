@@ -1,9 +1,9 @@
-import CustomFeed from '@/components/Feed/CustomFeed';
-import GeneralFeed from '@/components/Feed/GeneralFeed';
-import { buttonVariants } from '@/components/ui/Button';
-import { getAuthSession } from '@/lib/auth';
-import { HomeIcon } from 'lucide-react';
-import Link from 'next/link';
+import CustomFeed from "@/components/Feed/CustomFeed";
+import GeneralFeed from "@/components/Feed/GeneralFeed";
+import { buttonVariants } from "@/components/ui/Button";
+import { getAuthSession } from "@/lib/auth";
+import { HomeIcon } from "lucide-react";
+import Link from "next/link";
 
 const page = async () => {
   // TODO: {/* General feed ---> Logged Out
@@ -12,7 +12,7 @@ const page = async () => {
   const session = await getAuthSession();
 
   return (
-    <>
+    <div className="mx-auto max-w-6xl">
       <h1 className="font-bold text-3xl md:text-4xl text-[#6366F1]">
         Your feed
       </h1>
@@ -23,10 +23,10 @@ const page = async () => {
 
         {session ? <CustomFeed /> : <GeneralFeed />}
 
-        <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last">
-          <div className="bg-emerald-100 px-6 py-4">
+        <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last hidden md:block">
+          <div className="px-6 py-4 text-gray-300 bg-[#262a35]">
             <p className="font-semibold py-3 flex items-center gap-1.5">
-              <HomeIcon className="h-4 w-4" />
+              <HomeIcon className="h-5 w-5 text-indigo-500" />
               Home
             </p>
           </div>
@@ -40,7 +40,7 @@ const page = async () => {
 
             <Link
               className={buttonVariants({
-                className: 'w-full mt-4  mb-6',
+                className: "w-full mt-4  mb-6",
               })}
               href="/cb/create"
             >
@@ -49,7 +49,7 @@ const page = async () => {
           </dl>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

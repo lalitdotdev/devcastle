@@ -41,7 +41,7 @@ const page = async ({ params }: PageProps) => {
 
   return (
     <>
-      <h1 className="font-bold text-3xl md:text-4xl h-14">
+      <h1 className="font-bold text-3xl md:text-4xl h-14 text-gray-400">
         c/{community.name}
       </h1>
       <MiniCreatePost session={session} />

@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import axios, { AxiosError } from 'axios';
-import { CreateCommunityPayload } from '@/lib/validators/community';
-import { toast } from '@/hooks/use-toast';
-import { useCustomToast } from '@/hooks/use-custom-toast';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { CreateCommunityPayload } from "@/lib/validators/community";
+import { toast } from "@/hooks/use-toast";
+import { useCustomToast } from "@/hooks/use-custom-toast";
 
 const Page = () => {
-  const [communityName, setCommunityName] = useState<string>('');
-  const [communityDescription, setCommunityDescription] = useState<string>('');
+  const [communityName, setCommunityName] = useState<string>("");
+  const [communityDescription, setCommunityDescription] = useState<string>("");
 
   const [charsRemaining, setCharsRemaining] = useState(21);
   const [aboutCharsRemaining, setAboutCharsRemaining] = useState(60);
@@ -32,7 +32,7 @@ const Page = () => {
         name: communityName,
         description: communityDescription,
       };
-      const { data } = await axios.post('/api/community', payload);
+      const { data } = await axios.post("/api/community", payload);
 
       return data;
     },
@@ -41,9 +41,9 @@ const Page = () => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
-            title: 'Community already exists.',
-            description: 'Please choose a different community name.',
-            variant: 'destructive',
+            title: "Community already exists.",
+            description: "Please choose a different community name.",
+            variant: "destructive",
           });
         }
 
@@ -52,9 +52,9 @@ const Page = () => {
         }
       }
       toast({
-        title: 'An error occurred.',
-        description: 'Could not create community.',
-        variant: 'destructive',
+        title: "An error occurred.",
+        description: "Could not create community.",
+        variant: "destructive",
       });
     },
     onSuccess: data => {
@@ -77,18 +77,20 @@ const Page = () => {
 
   return (
     <div className="container flex items-center h-full max-w-3xl mx-auto">
-      <div className="relative bg-white w-full h-fit p-4 rounded-lg space-y-6">
+      <div className="relative bg-[#171b1f] w-full h-fit p-4 rounded-lg space-y-6 text-gray-400 border border-gray-500">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-semibold">Create a Community</h1>
+          <h1 className="text-xl font-semibold text-indigo-600">
+            Create a Community
+          </h1>
         </div>
-        <hr className="bg-zinc-100 h-[2px]" />
+        <hr className="bg-indigo-600 h-[2px]" />
         <div>
-          <p className="text-lg font-medium">Name</p>
-          <p className="text-xs pb-2 text-gray-600">
-            Community names including capitalization cannot be changed.
+          <p className="text-lg font-medium text-indigo-600">Name</p>
+          <p className="text-xs pb-2 text-gray-500">
+            Unlock the gateway to a pulsating online realm.
           </p>
           <div className="relative">
-            <p className="absolute text-sm left-0 w-8 inset-y-0 grid place-items-center text-zinc-400 bg-zinc-100 ">
+            <p className="absolute text-sm left-0 w-8 inset-y-0 grid place-items-center text-zinc-400  ">
               cb/
             </p>
             <Input
@@ -100,17 +102,17 @@ const Page = () => {
           {communityName && (
             <p
               className={`text-xs mt-2 ${
-                charsRemaining === 0 ? 'text-red-600' : 'text-gray-700'
+                charsRemaining === 0 ? "text-red-600" : "text-gray-700"
               }`}
             >
               {charsRemaining} characters remaining
             </p>
           )}
           <div>
-            <p className="text-lg font-medium pt-2 mt-2">
+            <p className="text-lg font-md pt-2 mt-2 text-indigo-600">
               What is this community all about ?
             </p>
-            <p className="text-xs pb-2 text-gray-600">
+            <p className="text-xs pb-2 text-gray-500">
               Create a compelling short community description that grabs
               attention, sparks curiosity, and entices others to join your
               vibrant online space.
@@ -125,7 +127,7 @@ const Page = () => {
           {communityDescription && (
             <p
               className={`text-xs mt-2 ${
-                aboutCharsRemaining === 0 ? 'text-red-600' : 'text-gray-700'
+                aboutCharsRemaining === 0 ? "text-red-600" : "text-gray-700"
               }`}
             >
               {aboutCharsRemaining} characters remaining
@@ -135,15 +137,16 @@ const Page = () => {
         <div className="flex justify-end gap-4">
           <Button
             disabled={isLoading}
-            variant="subtle"
             onClick={() => router.back()}
+            className="text-gray-400"
           >
-            Cancel
+            Dismiss
           </Button>
           <Button
             isLoading={isLoading}
             disabled={communityName.length === 0}
             onClick={() => createCommunity()}
+            className="border border-indigo-600 text-indigo-600"
           >
             Create Community
           </Button>

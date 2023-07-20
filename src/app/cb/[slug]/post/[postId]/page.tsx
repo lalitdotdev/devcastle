@@ -1,15 +1,15 @@
-import { Post, User, Vote } from '@prisma/client';
-import { CachedPost } from '../../../../../types/redis';
-import { redis } from '@/lib/redis';
+import CommentsSection from '@/components/CommentsSection';
+import EditorOutputContent from '@/components/EditorOutputContent';
+import PostVoteServer from '@/components/post-vote/PostVoteServer';
+import { buttonVariants } from '@/components/ui/Button';
 import { db } from '@/lib/db';
+import { redis } from '@/lib/redis';
+import { formatTimeToNow } from '@/lib/utils';
+import { Post, User, Vote } from '@prisma/client';
+import { ArrowBigDown, ArrowBigUp, Loader2 } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { ArrowBigDown, ArrowBigUp, Loader2 } from 'lucide-react';
-import { buttonVariants } from '@/components/ui/Button';
-import PostVoteServer from '@/components/post-vote/PostVoteServer';
-import EditorOutputContent from '@/components/EditorOutputContent';
-import { formatTimeToNow } from '@/lib/utils';
-import CommentsSection from '@/components/CommentsSection';
+import { CachedPost } from '../../../../../types/redis';
 
 interface PageProps {
   params: {
@@ -43,7 +43,7 @@ const page = async ({ params }: PageProps) => {
   }
   return (
     <div>
-      <div className="h-full flex flex-col sm:flex-row items-center sm:items-start justify-between">
+      <div className="h-full flex flex-col sm:flex-row items-center sm:items-start justify-between ">
         {/* return postVoteShell while getData is being executed  */}
 
         <Suspense fallback={<PostVoteShell />}>
@@ -64,12 +64,15 @@ const page = async ({ params }: PageProps) => {
         </Suspense>
 
         {/* rendering actual post content */}
-        <div className="sm:w-0 w-full flex-1 bg-white p-4 rounded-sm">
+        <div className="sm:w-0 w-full flex-1  p-4 rounded-sm bg-[#21242d]">
           <p className="max-h-40 mt-1 truncate text-xs text-gray-500">
-            Posted by u/{post?.author.username ?? cachedPost.authorUsername}{' '}
+            Posted by{' '}
+            <span className="text-blue-500">
+              u/{post?.author.username ?? cachedPost.authorUsername}{' '}
+            </span>
             {formatTimeToNow(new Date(post?.createdAt ?? cachedPost.createdAt))}
           </p>
-          <h1 className="text-xl font-semibold py-2 leading-6 text-gray-900">
+          <h1 className="text-xl font-semibold py-2 leading-6 text-zinc-300">
             {post?.title ?? cachedPost.title}
           </h1>
 
@@ -77,7 +80,7 @@ const page = async ({ params }: PageProps) => {
 
           <Suspense
             fallback={
-              <Loader2 className="h-5 w-5 animate-spin text-zinc-500" />
+              <Loader2 className="h-5 w-5 animate-spin text-blue-500 align-center" />
             }
           >
             {/* @ts-expect-error server component */}
@@ -91,7 +94,7 @@ const page = async ({ params }: PageProps) => {
 
 function PostVoteShell() {
   return (
-    <div className="flex items-center flex-col pr-6 w-20">
+    <div className="flex items-center flex-col pr-6 w-20 ">
       {/* upvote */}
       <div className={buttonVariants({ variant: 'ghost' })}>
         <ArrowBigUp className="h-5 w-5 text-zinc-700" />
