@@ -64,8 +64,19 @@ export const authOptions: NextAuthOptions = {
       };
     },
 
-    redirect() {
-      return "/feed";
+    redirect({ url, baseUrl }) {
+      // If the user is signing in, redirect to "/feed"
+      if (url === "/api/auth/signin") {
+        return "/feed";
+      }
+
+      // If the user is signing out, redirect to the homepage "/"
+      if (url === "/api/auth/signout") {
+        return "/";
+      }
+
+      // For all other cases, redirect to the homepage "/"
+      return "/";
     },
   },
 };
