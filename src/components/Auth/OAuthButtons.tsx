@@ -4,6 +4,7 @@ import { Icons } from "../Icons";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { signIn } from "next-auth/react";
+import { Github } from "lucide-react";
 
 interface OAuthButtonProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -33,20 +34,29 @@ const OAuthButtons: React.FC<OAuthButtonProps> = ({ className, ...props }) => {
   };
 
   return (
-    <div className={cn("flex flex-col justify-center ", className)} {...props}>
+    <div
+      className={cn("flex flex-col justify-center items-center", className)}
+      {...props}
+    >
       <Button
         onClick={loginWithGoogle}
         isLoading={isLoading}
         type="button"
         size="sm"
-        className="w-full mb-2"
+        className="w-[80%] mb-2 border border-blue-500"
       >
         {isLoading ? null : <Icons.google className="h-4 w-4 mr-2" />}
-        Google
+        Sign in with Google
       </Button>
 
-      <Button variant="outline" type="button" size="sm" className="w-full">
-        Some other providers
+      <Button
+        type="button"
+        size="sm"
+        className="w-[80%] mt-1 border border-blue-500"
+        // onClick={() => signIn("github")}
+      >
+        <Github className="h-5 w-5 mr-2 " />
+        Sign in with Github
       </Button>
     </div>
   );
