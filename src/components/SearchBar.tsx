@@ -1,10 +1,11 @@
 "use client";
 
-import { Community, Prisma } from "@prisma/client";
+import { Prisma, Community } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import debounce from "lodash.debounce";
 import { usePathname, useRouter } from "next/navigation";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 
 import {
   Command,
@@ -14,6 +15,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/Command";
+
 import { Rotate3d } from "lucide-react";
 
 interface SearchBarProps {}
@@ -24,10 +26,20 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
   const commandRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
+  const request = debounce(async () => {
+    refetch();
+  }, 300);
+
+  const debounceRequest = useCallback(() => {
+    request();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const {
     isFetching,
     data: queryResults,
-
+    refetch,
     isFetched,
   } = useQuery({
     queryFn: async () => {
@@ -54,6 +66,7 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
         isLoading={isFetching}
         onValueChange={text => {
           setInput(text);
+          debounceRequest();
         }}
         value={input}
         className="outline-none border-none focus:border-none focus:outline-none ring-0"
