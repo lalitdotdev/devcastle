@@ -1,12 +1,13 @@
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
+import SideNav from "@/components/SideNav";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 
 export const metadata = {
-  title: "Campusbuddy",
+  title: "Curiosity",
   description:
     "CampusBuddy is a dynamic and vibrant online platform that serves as a hub for students to connect collaborate, and thrive within their campus community and across campuses ",
 };
@@ -27,10 +28,10 @@ export default function RootLayout({
       lang="en"
       className={cn(
         "bg-white text-slate-900 antialiased light",
-        inter.className
+        inter.className,
       )}
     >
-      <body className="min-h-screen pt-12 bg-slate-50 antialiased">
+      <body className="min-h-screen pt-12 bg-[#1B1F23] antialiased">
         <Providers>
           {/* @ts-expect-error server-component */}
           <Navbar />
