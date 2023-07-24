@@ -57,7 +57,7 @@ const Post: FC<PostProps> = ({
                   {communityName ? (
                     <>
                       <a href={`/cb/${communityName}`}>
-                        <span className="underline text-indigo-400 font-semibold underline-offset-2">
+                        <span className="underline text-indigo-400 text-sm font-semibold underline-offset-2">
                           cb/{communityName}{" "}
                         </span>
                       </a>
@@ -67,7 +67,7 @@ const Post: FC<PostProps> = ({
                     Posted by{" "}
                     <a href={`/user/${post.author.username}`} className="flex">
                       <span className="px-1 text-indigo-600">•</span>
-                      <h4 className="text-sm font-semibold text-indigo-500">
+                      <h4 className=" text-indigo-500">
                         u/{post.author.username}
                       </h4>
                     </a>
