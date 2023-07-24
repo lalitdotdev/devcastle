@@ -78,6 +78,34 @@ const PostComment: FC<PostCommentProps> = ({
     },
   });
 
+  // Delete comment on clicking on delete button
+
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: async (commentId: string) => {
+      await axios.delete(`/api/community/post/comment/delete/${commentId}`);
+    },
+    onError: err => {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          return loginToast();
+        }
+      }
+
+      return toast({
+        title: "Something went wrong ",
+        description: "Comment was not deleted successfully, please try again.",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      router.refresh();
+      return toast({
+        title: "Comment deleted successfully",
+        description: "Comment was deleted successfully.",
+      });
+    },
+  });
+
   return (
     <div ref={commentRef} className="flex flex-col p-2 ml-2">
       <div className="flex items-center ">
@@ -121,6 +149,18 @@ const PostComment: FC<PostCommentProps> = ({
           <MessageSquare size={15} className="mr-2" />
           Reply
         </Button>
+
+        {/* Show delete button only for creator Account */}
+        {session?.user?.id === comment.authorId ? (
+          // Delete button
+          <Button
+            className="text-gray-500 cursor-pointer flex items-center justify-center gap-1 text-sm bg-transparent hover:text-red-500"
+            onClick={() => deleteComment(comment.id)}
+          >
+            <Trash2 size={14} />
+            Delete
+          </Button>
+        ) : null}
 
         {isReplying ? (
           <div className="grid w-full gap-1.5">
