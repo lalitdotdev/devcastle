@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { FC, startTransition } from "react";
-import { Button } from "./ui/Button";
-import { SubscribeCommunityPayload } from "../lib/validators/community";
-import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { FC, startTransition } from 'react';
+import { Button } from './ui/Button';
+import { SubscribeCommunityPayload } from '../lib/validators/community';
+import { useMutation } from '@tanstack/react-query';
+import axios, { AxiosError } from 'axios';
 
-import { useCustomToast } from "@/hooks/use-custom-toast";
-import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+import { useCustomToast } from '@/hooks/use-custom-toast';
+import { toast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 interface SubscribeLeaveToggleProps {
   isSubscribed: boolean;
@@ -33,11 +33,11 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
         communityId,
       };
 
-      const { data } = await axios.post("/api/community/subscribe", payload);
+      const { data } = await axios.post('/api/community/subscribe', payload);
       return data as string;
     },
 
-    onError: (err) => {
+    onError: err => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
           return loginToast();
@@ -45,9 +45,9 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
       }
 
       return toast({
-        title: "There was a problem , ",
-        description: "Could not subscribe to community, please try again.",
-        variant: "destructive",
+        title: 'There was a problem , ',
+        description: 'Could not subscribe to community, please try again.',
+        variant: 'destructive',
       });
     },
 
@@ -58,7 +58,7 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
         router.refresh();
       });
       return toast({
-        title: "Subscribed",
+        title: 'Subscribed',
         description: `You are now subscribed to cb/${communityName}`,
       });
     },
@@ -70,11 +70,11 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
         communityId,
       };
 
-      const { data } = await axios.post("/api/community/unsubscribe", payload);
+      const { data } = await axios.post('/api/community/unsubscribe', payload);
       return data as string;
     },
 
-    onError: (err) => {
+    onError: err => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
           return loginToast();
@@ -82,9 +82,9 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
       }
 
       return toast({
-        title: "There was a problem , ",
-        description: "Could not unsubscribe community, please try again.",
-        variant: "destructive",
+        title: 'There was a problem , ',
+        description: 'Could not unsubscribe community, please try again.',
+        variant: 'destructive',
       });
     },
 
@@ -95,7 +95,7 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
         router.refresh();
       });
       return toast({
-        title: "Unsubscribed",
+        title: 'Unsubscribed',
         description: `You are now unsubscribed from cb/${communityName}`,
       });
     },
@@ -104,7 +104,7 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
   return isSubscribed ? (
     <Button
       isLoading={isUnsubLoading}
-      className="w-full  text-white px-4 py-2 rounded-md mb-4 mt-1"
+      className="w-full  text-gray-400 bg-[#79bdd8]px-4 py-2 rounded-md mb-4 mt-1"
       onClick={() => unsubscribe()}
     >
       Leave community

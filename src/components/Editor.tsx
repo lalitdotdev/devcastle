@@ -100,7 +100,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
     const ImageTool = (await import("@editorjs/image")).default;
     const LinkTool = (await import("@editorjs/link")).default;
     const InlineCode = (await import("@editorjs/inline-code")).default;
-    // const Code = (await import("@editorjs/code")).default;
+    const Code = (await import("@editorjs/code")).default;
     const Quote = (await import("@editorjs/quote")).default;
     const Marker = (await import("@editorjs/marker")).default;
     const CheckList = (await import("@editorjs/checklist")).default;
@@ -163,7 +163,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
               useDefaultTheme: "light", // Optional. This also determines the background color of the language select drop-down
             },
           },
-          code: CodeBox,
+          code: Code,
           quote: Quote,
           marker: Marker,
           checklist: CheckList,

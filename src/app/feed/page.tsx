@@ -1,5 +1,6 @@
 import CustomFeed from "@/components/Feed/CustomFeed";
 import GeneralFeed from "@/components/Feed/GeneralFeed";
+
 import { buttonVariants } from "@/components/ui/Button";
 import { getAuthSession } from "@/lib/auth";
 import { HomeIcon } from "lucide-react";
@@ -12,7 +13,7 @@ const page = async () => {
   const session = await getAuthSession();
 
   return (
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto container max-w-6xl">
       <h1 className="font-bold text-3xl md:text-4xl text-[#6366F1]">
         Your feed
       </h1>
@@ -26,7 +27,7 @@ const page = async () => {
         <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last hidden md:block">
           <div className="px-6 py-4 text-gray-300 bg-[#262a35]">
             <p className="font-semibold py-3 flex items-center gap-1.5">
-              <HomeIcon className="h-5 w-5 text-indigo-500" />
+              <HomeIcon className="h-5 w-5" />
               Home
             </p>
           </div>

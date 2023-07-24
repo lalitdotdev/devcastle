@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { FC, useState } from 'react';
-import { Label } from './ui/Label';
-import { Textarea } from './ui/Textarea';
-import { Button } from './ui/Button';
-import { useMutation } from '@tanstack/react-query';
-import { CommentRequest } from '@/lib/validators/comment';
-import axios, { AxiosError } from 'axios';
+import { FC, useState } from "react";
+import { Label } from "./ui/Label";
+import { Textarea } from "./ui/Textarea";
+import { Button } from "./ui/Button";
+import { useMutation } from "@tanstack/react-query";
+import { CommentRequest } from "@/lib/validators/comment";
+import axios, { AxiosError } from "axios";
 
-import { useCustomToast } from '@/hooks/use-custom-toast';
-import { toast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useCustomToast } from "@/hooks/use-custom-toast";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface CreateCommentProps {
   postId: string;
@@ -22,7 +22,7 @@ const CreateComment: FC<CreateCommentProps> = ({ postId, replyToId }) => {
   // logic for posting a comment goes here ...
   // we will use the useMutation hook from react-query to make a POST request to api/community/post/comment and then invalidate the query for the comments of the post we just commented on.
 
-  const [input, setInput] = useState<string>('');
+  const [input, setInput] = useState<string>("");
   const { loginToast } = useCustomToast();
   const router = useRouter();
   const { data: session } = useSession();
@@ -37,7 +37,7 @@ const CreateComment: FC<CreateCommentProps> = ({ postId, replyToId }) => {
         replyToId,
       };
       const { data } = await axios.patch(
-        '/api/community/post/comment',
+        "/api/community/post/comment",
         payload,
       );
       return data;
@@ -52,29 +52,29 @@ const CreateComment: FC<CreateCommentProps> = ({ postId, replyToId }) => {
       }
 
       return toast({
-        title: 'There was a problem , ',
-        description: 'Could not create comment to post, please try again.',
-        variant: 'destructive',
+        title: "There was a problem , ",
+        description: "Could not create comment to post, please try again.",
+        variant: "destructive",
       });
     },
     onSuccess: () => {
       router.refresh();
-      setInput('');
+      setInput("");
     },
   });
 
   return (
     <div className="grid w-full gap-1.5">
-      <Label htmlFor="comment">
-        Comment as{' '}
-        <span className="text-blue-500">{session?.user.username}</span>
+      <Label htmlFor="comment ">
+        Comment as{" "}
+        <span className="text-blue-700">{session?.user.username}</span>
       </Label>
       <div className="mt-2">
         <Textarea
           id="comment"
           value={input}
           onChange={e => setInput(e.target.value)}
-          placeholder="What are your thoughts?"
+          placeholder="Comment your thoughts?"
           rows={1}
         />
 
@@ -83,7 +83,7 @@ const CreateComment: FC<CreateCommentProps> = ({ postId, replyToId }) => {
             onClick={() => comment({ postId, text: input, replyToId })}
             isLoading={isLoading}
             disabled={input.length === 0}
-            className="border rounded-full"
+            className="border bg-transparent border-indigo-600"
           >
             Comment
           </Button>

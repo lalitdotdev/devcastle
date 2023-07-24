@@ -6,7 +6,7 @@ import { FC } from "react";
 import UserAvatar from "./UserAvatar";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
-import { Feather, ImageIcon, Link2 } from "lucide-react";
+import { Award, Feather, ImageIcon, Link2 } from "lucide-react";
 
 interface MiniCreatePostProps {
   session: Session | null;
@@ -17,43 +17,44 @@ const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
   const pathname = usePathname();
 
   return (
-    <li className="list-none overflow-hidden rounded-md bg-white shadow">
-      <div className="h-full px-6 py-4 sm:flex sm:justify-between gap-6">
-        <div className="relative  ">
+    <li className="w-full list-none overflow-hidden rounded-md bg-transparent shadow border-2 border-indigo-600">
+      <div className="h-full px-6 py-4 flex sm:justify-between gap-6">
+        <div className="relative flex items-start ">
           <UserAvatar
             user={{
               name: session?.user.name || null,
               image: session?.user.image || null,
             }}
           />
-          <span className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-500 outline outline-2 outline-white" />
+          <span className="absolute bottom-1 right-0 rounded-full h-2 w-2 md:w-3 md:h-3 bg-green-500 outline outline-2 outline-white" />
         </div>
         <Input
           onClick={() => router.push(pathname + "/publish")}
           readOnly
           placeholder="Create post"
+          className="md:w-[50%]"
         />
-        <Button
-          onClick={() => router.push(pathname + "/publish")}
-          variant="ghost"
-          className="rounded-full"
-        >
-          <ImageIcon className="text-zinc-600" />
-        </Button>
-        <Button
-          onClick={() => router.push(pathname + "/publish")}
-          variant="ghost"
-          className="rounded-full"
-        >
-          <Link2 className="text-zinc-600" />
-        </Button>
-        <Button
-          onClick={() => router.push(pathname + "/publish")}
-          variant="ghost"
-          className="rounded-full"
-        >
-          <Feather className="text-zinc-600" />
-        </Button>
+        <div className="hidden items-center md:flex justify-between w-[40%]">
+          <span
+            onClick={() => router.push(pathname + "/publish")}
+            className="rounded-full md:ml-12 "
+          >
+            <Award className="text-gray-500 hover:text-indigo-600 cursor-pointer" />
+          </span>
+
+          <span
+            onClick={() => router.push(pathname + "/publish")}
+            className="rounded-full  "
+          >
+            <Link2 className="text-gray-500 hover:text-indigo-600 cursor-pointer" />
+          </span>
+          <span
+            onClick={() => router.push(pathname + "/publish")}
+            className="rounded-full md:mr-12 "
+          >
+            <Feather className="text-gray-500 hover:text-indigo-600 cursor-pointer" />
+          </span>
+        </div>
       </div>
     </li>
   );
