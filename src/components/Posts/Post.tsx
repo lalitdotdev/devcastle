@@ -58,7 +58,7 @@ const Post: FC<PostProps> = ({
                     <>
                       <a href={`/cb/${communityName}`}>
                         <span className="underline text-indigo-400 text-sm font-semibold underline-offset-2">
-                          cb/{communityName}{" "}
+                          c/{communityName}{" "}
                         </span>
                       </a>
                     </>

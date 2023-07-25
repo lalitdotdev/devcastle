@@ -15,7 +15,7 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      "flex w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
+      "flex w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground h-8 justify-center ",
       className,
     )}
     {...props}
@@ -43,16 +43,16 @@ const CommandInput = React.forwardRef<
     isLoading: boolean;
   }
 >(({ className, isLoading, ...props }, ref) => (
-  <div className="flex items-center  px-3" cmdk-input-wrapper="">
+  <div className="flex items-center px-3" cmdk-input-wrapper="">
     {isLoading ? (
       <Loader2 className="mr-2 h-4 w-4 shrink-0  animate-spin text-indigo-600" />
     ) : (
-      <Search className="mr-2 h-4 w-4 shrink-0 opacity-50 text-gray-100" />
+      <Search className="mr-2 h-3 w-3 shrink-0 opacity-50 text-gray-100" />
     )}
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 text-gray-300",
+        "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 text-gray-300 ",
         className,
       )}
       {...props}
