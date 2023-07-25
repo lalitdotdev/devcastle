@@ -1,15 +1,16 @@
 import { db } from "@/lib/db";
-import { UserCredentialsValidator } from "@/lib/validators/userCredentials";
-
+import { UserRegisterationValidator } from "@/lib/validators/userCredentials";
+import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, email, password } = UserCredentialsValidator.parse(body);
+    const { username, email, password } =
+      UserRegisterationValidator.parse(body);
 
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       return new NextResponse("Missing Fields", { status: 400 });
     }
 
@@ -20,20 +21,20 @@ export async function POST(req: Request) {
     });
 
     if (credentialExists) {
-      return new Response("Email already exists", { status: 400 });
+      return new NextResponse("User already exists", { status: 409 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await db.user.create({
+    const user = await db.user.create({
       data: {
-        name,
+        username,
         email,
         hashedPassword,
       },
     });
 
-    return new Response("OK! User created in DB");
+    return new Response(JSON.stringify(user), { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response("Invalid POST request data passed", { status: 422 });
