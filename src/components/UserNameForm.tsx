@@ -27,6 +27,7 @@ import { UsernameValidator } from "@/lib/validators/username";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
+import { UploadCloud } from "lucide-react";
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
   user: Pick<User, "id" | "username" | "image">;
@@ -89,7 +90,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
         <Tabs defaultValue="account" className="w-[600px] ">
           <TabsList className="grid w-full grid-cols-2 bg-transparent">
             <TabsTrigger value="account" className="text-black">
-              Account
+              Personal Information
             </TabsTrigger>
             <TabsTrigger value="password" className="text-black">
               Password
@@ -98,28 +99,31 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
           <TabsContent value="account">
             <Card>
               <CardHeader>
-                <CardTitle>Account</CardTitle>
+                <CardTitle> Personal Information</CardTitle>
                 <CardDescription>
                   Make changes to your username here. Click save when you are
                   done.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label className="sr-only" htmlFor="image">
-                    Profile Avatar
-                  </Label>
+                <div className="space-y-2">
+                  <Label htmlFor="image">Upload Avatar</Label>
+
                   <div className="text-center">
-                    {/* <div className="sm:m-0 shadow-lg rounded-full overflow-hidden h-[86px] w-[86px] md:h-[100px] md:w-[100px]"> */}
-                    {/* <Image src={user} width={500} height={500} alt="" /> */}
                     <div className="text-center mb-4">
-                      <div className="sm:m-0 shadow-lg rounded-full border-4 border-indigo-600 overflow-hidden h-[86px] w-[86px] md:h-[100px] md:w-[100px]">
-                        <Image
-                          src={user?.image}
-                          width={500}
-                          height={500}
-                          alt=""
-                        />
+                      <div className="sm:m-0 relative shadow-lg rounded-full border-4 border-indigo-600 overflow-hidden h-[86px] w-[86px] md:h-[100px] md:w-[100px] flex justify-center items-center">
+                        {/* check if user has image then show image else show upload button */}
+
+                        {user.image ? (
+                          <Image
+                            src={user.image}
+                            width={500}
+                            height={500}
+                            alt=""
+                          />
+                        ) : (
+                          <UploadCloud className="h-8 w-8 text-indigo-700" />
+                        )}
                       </div>
                     </div>
                   </div>
