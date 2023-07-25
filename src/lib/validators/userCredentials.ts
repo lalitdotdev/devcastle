@@ -24,13 +24,6 @@ export const UserRegisterationValidator = z.object({
 });
 
 export const UserLoginValidator = z.object({
-  email: z.string().email() || z.string().min(2).max(30),
-  password: z
-    .string()
-    .min(8)
-    .max(50)
-    .refine(value => passwordPattern.test(value), {
-      message:
-        "Password must be at least 8 characters long and contain at least one letter, one number, and one special character (@$!%*#?&).",
-    }),
+  email: z.string().email(),
+  password: z.string(),
 });
