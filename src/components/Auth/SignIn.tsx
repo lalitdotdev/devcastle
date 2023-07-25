@@ -23,7 +23,7 @@ import {
 import { Input } from "../ui/Input";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 export type RegisterationFormData = z.infer<typeof UserRegisterationValidator>;
 export type LoginFormData = z.infer<typeof UserLoginValidator>;
 
@@ -49,28 +49,55 @@ const UserForm = () => {
 
   // now sending payload to backend api using react query usemutation hook and axios post request to backend api endpoint /api/auth/register and /api/auth/login respectively for register and login user respectively and then redirecting to home page on successfull login or register and showing error toast on error in login or register user respectively and also showing loading state while request is in progress using react query usemutation hook
 
-  // const { mutate: registerUser, isLoading } = useMutation({
-  //   // check if password and confirm password are same or not and if not then show error toast
+  const { mutate: registerUser, isLoading } = useMutation({
+    // check if password and confirm password are same or not and if not then show error toast
 
-  //   mutationFn: async ({ email, password }: FormData) => {
-  //     const payload: FormData = { email, password };
-  //     // const { data } = await axios.post("/api/auth/register", payload);
-  //     // return data;
-  //     console.log(payload);
-  //   },
-  // });
+    mutationFn: async ({
+      username,
+      email,
+      password,
+    }: RegisterationFormData) => {
+      const payload: RegisterationFormData = { username, email, password };
+      const { data } = await axios.post("/api/register", payload);
+      return data;
+    },
+    onError: err => {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 409) {
+          return toast({
+            title: `User with email ${err.response?.data.email} already exists.`,
+            description:
+              "Please use different email to register else login with existing email.",
+            variant: "destructive",
+          });
+        }
+      }
+      toast({
+        title: "An error occurred.",
+        description: "Oops! Could not register user .",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "User registered successfully.",
+        description: "You can now login.",
+      });
+      setFormType("login");
+    },
+  });
 
+  // function registerUser(data: RegisterationFormData) {
+  //   toast({
+  //     title: "You submitted the following values:",
+  //     description: (
+  //       <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+  //         <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+  //       </pre>
+  //     ),
+  //   });
+  // }
   function loginUser(data: LoginFormData) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
-  function registerUser(data: RegisterationFormData) {
     toast({
       title: "You submitted the following values:",
       description: (
@@ -191,6 +218,7 @@ const UserForm = () => {
               />
               <Button
                 type="submit"
+                isLoading={isLoading}
                 className="border-2 border-indigo-600 text-sm font-semibold uppercase tracking-tight text-indigo-600 hover:bg-indigo-600 hover:text-gray-900 rounded-none mx-auto "
               >
                 Register
