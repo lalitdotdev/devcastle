@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       },
     });
 
-    return new Response(JSON.stringify(user), { status: 200 });
+    return new Response(JSON.stringify(user));
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response("Invalid POST request data passed", { status: 422 });

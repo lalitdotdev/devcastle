@@ -1,10 +1,10 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import bcrypt from "bcrypt";
 import { NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { db } from "./db";
-import bcrypt from "bcrypt";
 // https://next-auth.js.org/configuration/providers
 
 import { nanoid } from "nanoid";
@@ -58,7 +58,7 @@ export const authOptions: NextAuthOptions = {
 
         // if no user was found
         if (!user || !user?.hashedPassword) {
-          throw new Error("No user found");
+          throw new Error("User not Found with those credentials ");
         }
 
         // check to see if password matches
@@ -112,22 +112,6 @@ export const authOptions: NextAuthOptions = {
         picture: dbUser.image,
         username: dbUser.username,
       };
-    },
-
-    redirect({ url, baseUrl }) {
-      // If the user is signing in, redirect to "/feed"
-
-      if (url === "/api/auth/signin") {
-        return "/feed";
-      }
-
-      // If the user is signing out, redirect to the homepage "/"
-      if (url === "/api/auth/signout") {
-        return "/";
-      }
-
-      // For all other cases, redirect to the homepage "/"
-      return "/";
     },
   },
 };
