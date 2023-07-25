@@ -85,7 +85,7 @@ const Page = () => {
         </div>
         <hr className="bg-indigo-600 h-[2px]" />
         <div>
-          <p className="text-lg font-medium text-indigo-600">Name</p>
+          <p className="text-lg font-md text-indigo-600">Name</p>
           <p className="text-xs pb-2 text-gray-500">
             Unlock the gateway to a pulsating online realm.
           </p>
