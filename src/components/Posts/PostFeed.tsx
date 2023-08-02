@@ -56,7 +56,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
       },
       // passing the initialPosts as the initial data to the useInfiniteQuery hook
       initialData: { pages: [initialPosts], pageParams: [1] },
-    }
+    },
   );
 
   // fetching posts if the last post intersects with the viewport of the user and the next page of posts is not already being fetched from the server side
@@ -67,10 +67,10 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
     }
   }, [entry, fetchNextPage]);
 
-  const posts = data?.pages.flatMap((page) => page) ?? initialPosts;
+  const posts = data?.pages.flatMap(page => page) ?? initialPosts;
 
   return (
-    <ul className="flex flex-col col-span-2 space-y-6">
+    <ul className="flex flex-col col-span-2 space-y-8">
       {posts.map((post, index) => {
         // votes logic here
 
@@ -83,7 +83,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
         // determine whether user has already voted on the post or not
 
         const currentVote = post?.votes.find(
-          (vote) => vote.userId === session?.user.id
+          vote => vote.userId === session?.user.id,
         );
 
         if (index === posts.length - 1) {

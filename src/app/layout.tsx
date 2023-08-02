@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
-import SideNav from "@/components/SideNav";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";

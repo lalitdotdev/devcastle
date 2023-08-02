@@ -1,10 +1,10 @@
 import { getAuthSession } from "@/lib/auth";
 import Link from "next/link";
-import UserAccountNav from "./UserAccountNav";
-import { buttonVariants } from "./ui/Button";
 
 import Image from "next/image";
 import SearchBar from "./SearchBar";
+
+import RightNavContent from "./RightNavContent";
 
 const Navbar = async () => {
   const session = await getAuthSession();
@@ -25,20 +25,11 @@ const Navbar = async () => {
 
         {/* Search-Bar */}
 
-        <SearchBar />
-
-        {session?.user ? (
-          <UserAccountNav user={session.user} />
-        ) : (
-          <Link
-            href="/sign-in"
-            className={buttonVariants({
-              className:
-                " border border-indigo-600 text-indigo-600 whitespace-nowrap",
-            })}
-          >
-            Sign In
-          </Link>
+        {session?.user && (
+          <>
+            <SearchBar />
+            <RightNavContent />
+          </>
         )}
       </div>
     </nav>

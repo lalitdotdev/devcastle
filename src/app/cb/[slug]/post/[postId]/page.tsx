@@ -1,15 +1,15 @@
-import CommentsSection from '@/components/CommentsSection';
-import EditorOutputContent from '@/components/EditorOutputContent';
-import PostVoteServer from '@/components/post-vote/PostVoteServer';
-import { buttonVariants } from '@/components/ui/Button';
-import { db } from '@/lib/db';
-import { redis } from '@/lib/redis';
-import { formatTimeToNow } from '@/lib/utils';
-import { Post, User, Vote } from '@prisma/client';
-import { ArrowBigDown, ArrowBigUp, Loader2 } from 'lucide-react';
-import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
-import { CachedPost } from '../../../../../types/redis';
+import CommentsSection from "@/components/CommentsSection";
+import EditorOutputContent from "@/components/EditorOutputContent";
+import PostVoteServer from "@/components/post-vote/PostVoteServer";
+import { buttonVariants } from "@/components/ui/Button";
+import { db } from "@/lib/db";
+import { redis } from "@/lib/redis";
+import { formatTimeToNow } from "@/lib/utils";
+import { Post, User, Vote } from "@prisma/client";
+import { ArrowBigDown, ArrowBigUp, Loader2 } from "lucide-react";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { CachedPost } from "../../../../../types/redis";
 
 interface PageProps {
   params: {
@@ -19,8 +19,8 @@ interface PageProps {
 
 // for each post page, we want to force the following: dynamic, no-cache (fetchCache) to ensure that the page is always rendered on the client side and that the page is always dynamic (not static) and that the page is never cached (no-cache) because we want to hard reload post info each time the page is loaded (not cached)
 
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 const page = async ({ params }: PageProps) => {
   // get post info from redis cache (cached post info is stored in redis cache as a hash) and then render the page with the post info from redis cache
@@ -45,7 +45,6 @@ const page = async ({ params }: PageProps) => {
     <div>
       <div className="h-full flex flex-col sm:flex-row items-center sm:items-start justify-between ">
         {/* return postVoteShell while getData is being executed  */}
-
         <Suspense fallback={<PostVoteShell />}>
           {/* @ts-expect-error server component*/}
           <PostVoteServer
@@ -62,13 +61,12 @@ const page = async ({ params }: PageProps) => {
             }}
           />
         </Suspense>
-
         {/* rendering actual post content */}
         <div className="sm:w-0 w-full flex-1  p-4 rounded-sm bg-[#21242d]">
           <p className="max-h-40 mt-1 truncate text-xs text-gray-500">
-            Posted by{' '}
+            Posted by{" "}
             <span className="text-blue-500">
-              u/{post?.author.username ?? cachedPost.authorUsername}{' '}
+              u/{post?.author.username ?? cachedPost.authorUsername}{" "}
             </span>
             {formatTimeToNow(new Date(post?.createdAt ?? cachedPost.createdAt))}
           </p>
@@ -96,7 +94,7 @@ function PostVoteShell() {
   return (
     <div className="flex items-center flex-col pr-6 w-20 ">
       {/* upvote */}
-      <div className={buttonVariants({ variant: 'ghost' })}>
+      <div className={buttonVariants({ variant: "ghost" })}>
         <ArrowBigUp className="h-5 w-5 text-zinc-700" />
       </div>
 
@@ -106,7 +104,7 @@ function PostVoteShell() {
       </div>
 
       {/* downvote */}
-      <div className={buttonVariants({ variant: 'ghost' })}>
+      <div className={buttonVariants({ variant: "ghost" })}>
         <ArrowBigDown className="h-5 w-5 text-zinc-700" />
       </div>
     </div>

@@ -42,7 +42,7 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-
+  about        String? 
   emailVerified DateTime?
 
   createdCommunities Community[] @relation("CreatedBy")
@@ -54,6 +54,13 @@ model User {
   accounts Account[]
   sessions Session[]
   Post Post[]
+  articles Article[]
+
+  isProfileInfoSet Boolean? @default(false)
+  createdAt DateTime @default(now())
+
+
+
   Comment Comment[]
   Subscription Subscription[]
   Vote Vote[]
@@ -110,6 +117,19 @@ model Post {
   
 }
 
+model Article {
+  id        String    @id @default(cuid())
+  title     String
+  content   Json?
+  published Boolean   @default(false)
+
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+
 
 
 model Comment {
@@ -135,7 +155,6 @@ model Comment {
       commentId String?
     
 }
-
 
 model Vote {
   user User @relation(fields: [userId], references: [id])

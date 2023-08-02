@@ -5,6 +5,7 @@ import UserAuthForm from "@/components/Auth/UserAuthForm";
 import { getAuthSession } from "@/lib/auth";
 import Image from "next/image";
 import SignIn from "@/components/Auth/SignIn";
+import { redirect } from "next/navigation";
 // const SignIn = dynamic(
 //   async () => (await import("@/components/Auth/SignIn")).default,
 //   {
@@ -14,13 +15,17 @@ import SignIn from "@/components/Auth/SignIn";
 export default async function Home() {
   const session = await getAuthSession();
 
+  if (session?.user) {
+    redirect("/feed");
+  }
+
   return (
     <main className="grid">
       <div className="lg:overflow-hidden md:pt-12 md:pb-32 max-w-5xl mx-auto">
         <div className="mx-auto md:my-6 p-10 md:p-2">
           <div className="text-center">
             <h1 className="text-2xl md:text-4xl text-indigo-600 my-4">
-              Welcome in Geek Utopia's Warm Embrace!
+              Welcome in Geek Utopia Warm Embrace!
             </h1>
             <p className="text-gray-400 md:text-xl">
               Ignite your inner geek, showcase your flawless prowess, and

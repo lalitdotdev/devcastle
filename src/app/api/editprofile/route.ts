@@ -1,18 +1,18 @@
-import { getAuthSession } from '@/lib/auth';
-import { db } from '@/lib/db';
-import { UsernameValidator } from '@/lib/validators/username';
-import { z } from 'zod';
+import { getAuthSession } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { UserProfileValidator } from "@/lib/validators/username";
+import { z } from "zod";
 
 export async function PATCH(req: Request) {
   try {
     const session = await getAuthSession();
 
     if (!session?.user) {
-      return new Response('Unauthorized', { status: 401 });
+      return new Response("Unauthorized", { status: 401 });
     }
 
     const body = await req.json();
-    const { name } = UsernameValidator.parse(body);
+    const { name } = UserProfileValidator.parse(body);
 
     // check if username is taken
     const username = await db.user.findFirst({
@@ -22,7 +22,7 @@ export async function PATCH(req: Request) {
     });
 
     if (username) {
-      return new Response('Username is taken', { status: 409 });
+      return new Response("Username is taken", { status: 409 });
     }
 
     // update username
@@ -35,7 +35,7 @@ export async function PATCH(req: Request) {
       },
     });
 
-    return new Response('OK');
+    return new Response("OK");
   } catch (error) {
     error;
 
@@ -44,7 +44,7 @@ export async function PATCH(req: Request) {
     }
 
     return new Response(
-      'Could not update username at this time. Please try later',
+      "Could not update username at this time. Please try later",
       { status: 500 },
     );
   }

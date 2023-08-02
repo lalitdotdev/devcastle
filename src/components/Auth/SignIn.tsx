@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "../ui/Form";
 import { Input } from "../ui/Input";
-import { cn } from "@/lib/utils";
+import { Eye, EyeOff } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 export type RegisterationFormData = z.infer<typeof UserRegisterationValidator>;
@@ -48,8 +48,8 @@ const UserForm = () => {
   });
 
   // now sending payload to backend api using react query usemutation hook and axios post request to backend api endpoint /api/auth/register and /api/auth/login respectively for register and login user respectively and then redirecting to home page on successfull login or register and showing error toast on error in login or register user respectively and also showing loading state while request is in progress using react query usemutation hook
-
-  const { mutate: registerUser, isLoading } = useMutation({
+  const [show_input, setShowInput] = useState(false);
+  const { mutate: registerUser, isLoading: isRegisterLoading } = useMutation({
     // check if password and confirm password are same or not and if not then show error toast
 
     mutationFn: async ({
@@ -150,7 +150,9 @@ const UserForm = () => {
                         {...field}
                         type="password"
                       />
+                      {/* add span here to hide or show password */}
                     </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -166,6 +168,8 @@ const UserForm = () => {
         )}
 
         {/* Sign Up */}
+
+        {/* add functionality of show or hide password */}
 
         {formType === "register" && (
           <Form {...form}>
@@ -206,11 +210,24 @@ const UserForm = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Your password"
-                        {...field}
-                        type="password"
-                      />
+                      <div className="flex justify-end items-center relative ">
+                        <Input
+                          placeholder="Your password"
+                          {...field}
+                          type={show_input ? "text" : "password"}
+                        />
+
+                        <div
+                          className="text-indigo-600 hover:text-indigo-500 cursor-pointer absolute px-3 "
+                          onClick={() => setShowInput(!show_input)}
+                        >
+                          {show_input ? (
+                            <EyeOff className="h-5 w-5 text-gray-400" />
+                          ) : (
+                            <Eye className="h-5 w-5 text-indigo-500" />
+                          )}
+                        </div>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -218,7 +235,7 @@ const UserForm = () => {
               />
               <Button
                 type="submit"
-                isLoading={isLoading}
+                isLoading={isRegisterLoading}
                 className="border-2 border-indigo-600 text-sm font-semibold uppercase tracking-tight text-indigo-600 hover:bg-indigo-600 hover:text-gray-900 rounded-none mx-auto "
               >
                 Register

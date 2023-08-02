@@ -9,7 +9,7 @@ import { notFound } from "next/navigation";
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/Button";
-import { Milestone } from "lucide-react";
+import { Bot, Info, Lightbulb, Milestone, Sticker } from "lucide-react";
 import ToFeedButton from "@/components/ToFeedButton";
 const Layout = async ({
   children,
@@ -73,22 +73,24 @@ const Layout = async ({
 
           {/* info sidebar */}
 
-          <div className="overflow-hidden hidden md:block h-fit rounded-lg border border-gray-600 order-first md:order-last">
-            <div className="px-6 py-4">
-              <p className="font-semibold py-3 text-lg text-zinc-400">
-                About <span className="px-1 text-indigo-600">•</span>c/
-                {community?.name}
-              </p>
-              <div className="flex b-0">
-                {" "}
-                <Milestone className="h-5 w-5 text-indigo-500" />
+          <div className="overflow-hidden h-fit rounded-sm border-2 border-gray-600 order-first md:order-last tracking-tight">
+            <div className="md:p-4 p-3 md:border-b-2 text-center border-gray-600 md:rounded-lg  ">
+              <div className="flex p-1 gap-2 ">
+                <Bot className="text-gray-600 h-6 w-6" />
+                <div className="font-md text-center text-lg text-zinc-400 flex">
+                  <p className="px-1 text-indigo-600">{community?.name}</p>
+                  realm
+                </div>
+              </div>
+
+              <div className="flex b-0 p-2">
+                <Info className="h-5 w-5 text-gray-600" />
                 <p className="text-sm ml-4 text-gray-400">
                   {communityDescription}
                 </p>
               </div>
-              <hr className="bg-zinc-100 h-[2px]" />
             </div>
-            <dl className="divide-y divide-gray-100 px-6 py-4 text-sm leading-6 ">
+            <dl className="hidden md:block divide-y divide-gray-100 px-6 py-4 text-sm leading-6 ">
               <div className="flex justify-between gap-x-4 py-3">
                 <dt className="text-gray-500">Created</dt>
                 <dd className="text-gray-400">
@@ -122,7 +124,7 @@ const Layout = async ({
                 <Link
                   className={buttonVariants({
                     variant: "subtle",
-                    className: "w-full mb-6 border border-indigo-600",
+                    className: "w-full mb-4 border  border-indigo-600",
                   })}
                   href={`cb/${slug}/publish`}
                 >

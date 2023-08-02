@@ -53,7 +53,7 @@ const OAuthButtons: React.FC<OAuthButtonProps> = ({ className, ...props }) => {
         type="button"
         size="sm"
         className="w-[80%] mt-1 border border-blue-500"
-        // onClick={() => signIn("github")}
+        onClick={() => signIn("github")}
       >
         <Github className="h-5 w-5 mr-2 " />
         Sign in with Github

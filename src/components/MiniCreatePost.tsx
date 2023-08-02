@@ -16,7 +16,7 @@ const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
   const pathname = usePathname();
 
   return (
-    <li className="w-full list-none overflow-hidden rounded-md bg-transparent shadow border-2 border-indigo-600">
+    <li className="w-full list-none overflow-hidden rounded-md bg-transparent shadow border-2 border-indigo-500">
       <div className="h-full px-6 py-4 flex sm:justify-between gap-6">
         <div className="relative flex items-start ">
           <UserAvatar
@@ -33,7 +33,7 @@ const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
           placeholder="Create post"
           className="md:w-[50%]"
         />
-        <div className="hidden items-center md:flex justify-between w-[40%]">
+        <div className="items-center flex justify-between w-[40%]">
           <span
             onClick={() => router.push(pathname + "/publish")}
             className="rounded-full md:ml-12 "
@@ -45,7 +45,7 @@ const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
             onClick={() => router.push(pathname + "/publish")}
             className="rounded-full  "
           >
-            <Link2 className="text-gray-500 hover:text-indigo-600 cursor-pointer" />
+            <Link2 className="hidden text-gray-500 md:flex hover:text-indigo-600 cursor-pointer" />
           </span>
           <span
             onClick={() => router.push(pathname + "/publish")}

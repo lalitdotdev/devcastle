@@ -23,17 +23,24 @@ import * as z from "zod";
 
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { UsernameValidator } from "@/lib/validators/username";
+import { UserProfileValidator } from "@/lib/validators/username";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import { UploadCloud } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
-  user: Pick<User, "id" | "username" | "image">;
+  user: Pick<User, "id" | "username" | "image" | "about">;
 }
 
-type FormData = z.infer<typeof UsernameValidator>;
+type FormData = z.infer<typeof UserProfileValidator>;
 
 export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   const router = useRouter();
@@ -42,17 +49,18 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
     register,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(UsernameValidator),
+    resolver: zodResolver(UserProfileValidator),
     defaultValues: {
       name: user?.username || "",
+      about: user?.about || "",
     },
   });
 
-  const { mutate: updateUsername, isLoading } = useMutation({
-    mutationFn: async ({ name }: FormData) => {
-      const payload: FormData = { name };
+  const { mutate: updateUserProfile, isLoading } = useMutation({
+    mutationFn: async ({ name, about }: FormData) => {
+      const payload: FormData = { name, about };
 
-      const { data } = await axios.patch(`/api/username/`, payload);
+      const { data } = await axios.patch(`/api/editprofile/`, payload);
       return data;
     },
     onError: err => {
@@ -74,7 +82,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
     },
     onSuccess: () => {
       toast({
-        description: "Your username has been updated.",
+        description: "Your profile has been updated.",
       });
       router.refresh();
     },
@@ -83,26 +91,31 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   return (
     <form
       className={cn(className)}
-      onSubmit={handleSubmit(e => updateUsername(e))}
+      onSubmit={handleSubmit(e => updateUserProfile(e))}
       {...props}
     >
-      <Tabs defaultValue="tab1" className="w-full">
-        <Tabs defaultValue="account" className="w-[600px] ">
-          <TabsList className="grid w-full grid-cols-2 bg-transparent">
-            <TabsTrigger value="account" className="text-black">
-              Personal Information
-            </TabsTrigger>
-            <TabsTrigger value="password" className="text-black">
-              Password
-            </TabsTrigger>
-          </TabsList>
+      <Tabs defaultValue="tab1" className="md:w-[80%] items-center">
+        <Tabs defaultValue="account" className="w-full">
+          <div className="border-b border-gray-500">
+            <TabsList className="grid grid-cols-5  md:w-[45%]">
+              <TabsTrigger value="account">Account</TabsTrigger>
+              <TabsTrigger value="articles">Articles</TabsTrigger>
+              <TabsTrigger value="bookmarks">BookMarks</TabsTrigger>
+              <TabsTrigger value="gigs">Gigs</TabsTrigger>
+
+              <TabsTrigger value="imports">Imports</TabsTrigger>
+            </TabsList>
+          </div>
           <TabsContent value="account">
-            <Card>
+            <Card className="border-none">
               <CardHeader>
-                <CardTitle> Personal Information</CardTitle>
-                <CardDescription>
-                  Make changes to your username here. Click save when you are
-                  done.
+                <CardTitle className="text-lg font-medium leading-6">
+                  Personal Information
+                </CardTitle>
+                <CardDescription className="flex flex-wrap max-w-[80%]">
+                  We value your information as it enables us to curate
+                  personalized content, connect you with like-minded
+                  individuals, and introduce you to relevant events.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
@@ -129,22 +142,62 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
                   </div>
                   {/* </div> */}
                 </div>
-                <div className="relative grid gap-1 border border-gray-500 w-[300px] md:w-[400px]  hover:border-blue-600 rounded-md ">
-                  <div className="absolute top-0 left-0 h-10 grid place-items-center ">
-                    <span className="text-sm text-zinc-400 ml-2">u/</span>
+                <div className="relative grid gap-2">
+                  <div className="absolute top-0 left-0 h-10 grid border-r border-gray-600 ">
+                    <p className="text-sm text-zinc-400 p-2 ">curiosity/</p>
                   </div>
-                  <Label className="sr-only" htmlFor="name">
-                    Name
-                  </Label>
-                  <Input
-                    id="name"
-                    className="w-[300px] md:w-[400px] pl-6"
-                    size={32}
-                    {...register("name")}
-                  />
+
+                  <div className="gap-4">
+                    <Label className="sr-only" htmlFor="name">
+                      Name
+                    </Label>
+                    <Input
+                      id="name"
+                      className="pl-24  border-2 rounded-none"
+                      size={32}
+                      {...register("name")}
+                    />
+                  </div>
+
+                  <div className="text-gray-500">
+                    <Label htmlFor="about">About yourself</Label>
+                    <Input
+                      id="about"
+                      className="pl-6 mt-2 border-2 rounded-none p-8"
+                      size={32}
+                      {...register("about")}
+                    />
+                  </div>
+                  <div className="text-gray-500">
+                    <Label htmlFor="tags">Tags</Label>
+                    <Input
+                      id="tags"
+                      className="pl-6 mt-2 border-2 rounded-none "
+                      size={32}
+                      {...register("tags")}
+                    />
+                  </div>
+                  <div className="text-gray-500 mt-2 gap-4">
+                    <Label htmlFor="socials">Social Profiles</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select social Profiles" />
+                      </SelectTrigger>
+                      <SelectContent className="text-gray-200 bg-[#1B1F23] border hover:border-indigo-600">
+                        <SelectItem value="linkedln">Linkedln</SelectItem>
+                        <SelectItem value="github">Github</SelectItem>
+                        <SelectItem value="twitter">Twitter</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   {errors?.name && (
                     <p className="px-1 text-xs text-red-600">
                       {errors.name.message}
+                    </p>
+                  )}
+                  {errors?.about && (
+                    <p className="px-1 text-xs text-red-600">
+                      {errors.about.message}
                     </p>
                   )}
                 </div>
@@ -154,12 +207,12 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
                   isLoading={isLoading}
                   className="bg-transparent border hover:border-blue-500 text-gray"
                 >
-                  Save Changes
+                  Update Changes
                 </Button>
               </CardFooter>
             </Card>
           </TabsContent>
-          <TabsContent value="password">
+          {/* <TabsContent value="password">
             <Card>
               <CardHeader>
                 <CardTitle>Password</CardTitle>
@@ -187,7 +240,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
                 </Button>
               </CardFooter>
             </Card>
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </Tabs>
     </form>

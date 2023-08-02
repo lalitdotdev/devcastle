@@ -6,8 +6,8 @@ import { MessagesSquare } from "lucide-react";
 import Link from "next/link";
 import { FC, useRef } from "react";
 import EditorOutputContent from "../EditorOutputContent";
-import PostVoteClient from "../post-vote/PostVoteClient";
 import UserAvatar from "../UserAvatar";
+import PostVoteClient from "../post-vote/PostVoteClient";
 
 type PartialVote = Pick<Vote, "type">;
 interface PostProps {
@@ -31,11 +31,12 @@ const Post: FC<PostProps> = ({
   currentVote,
 }) => {
   const pRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className=" rounded-lg shadow p-2 bg-[#212329]  ">
-      <div className="md:px-6 py-2 flex justify-between p-2 md:p-4">
+    <div className="p-2 rounded-xl tracking-tight bg-[#212329] ">
+      <div className=" flex justify-between  md:p-6 ">
         {/* TODO: PostReactions */}
-        <div className="hidden md:block">
+        <div className="hidden md:block ">
           <PostVoteClient
             postId={post.id}
             initialVote={currentVote?.type}
@@ -43,17 +44,18 @@ const Post: FC<PostProps> = ({
           />
         </div>
 
-        <div className="w-0 flex-1">
-          <div className="justify-between items-center">
-            <div className="flex items-center gap-3">
+        <div className="w-0 flex-1 relative z-20 ">
+          <div className="justify-between items-center relative z-10 ">
+            <div className="flex items-center gap-3 ">
               <a href={`/user/${post.author.username}`}>
-                <div className="sm:m-0 shadow-lg rounded-full overflow-hidden">
+                <div className="sm:m-0 shadow-lg rounded-full overflow-hidden ">
                   <UserAvatar user={post.author} />
+                  {/* Long vertical line below the avatar */}
                 </div>
               </a>
 
-              <div className="leading-tight">
-                <div className="flex items-center">
+              <div className="leading-tight z-10">
+                <div className="flex items-center ">
                   {communityName ? (
                     <>
                       <a href={`/cb/${communityName}`}>
@@ -84,27 +86,26 @@ const Post: FC<PostProps> = ({
             </a>{" "} */}
           </div>
           <a href={`/cb/${communityName}/post/${post.id}`}>
-            <h1 className="md:text-lg font-semibold py-2 leading-6 text-gray-400">
+            <h1 className="md:text-lg md:font-semibold py-2 ml-8 leading-6 text-gray-400">
               {post.title}
             </h1>
           </a>
-
+          <div className="absolute h-14 top-10 w-px z-0 bg-zinc-700 bottom-0 left-5 transform -translate-x-1/2 bg-gradient-to-t from-gray-700 to-transparent"></div>
           {/* attach ref to check whether post is exhausting max-h or not and show blurry effect on preview indicating post is long   */}
-
           <div
-            className="relative text-sm  w-full overflow-clip rounded-md max-h-20 md:h-24 md:block text-gray-400 "
+            className="relative z-20 text-sm overflow-clip rounded-sm max-h-24 md:h-24 md:block h-16 text-gray-400 "
             ref={pRef}
           >
             <EditorOutputContent content={post.content} />
             {pRef.current?.clientHeight === 160 || 96 || 72 || 80 ? (
               // blur bottom if content is too long
-              <div className="absolute bottom-0 left-0 md:h-20 h-18 w-full bg-gradient-to-t from-gray-700 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 md:h-20 h-18 w-full bg-gradient-to-t from-gray-900 to-transparent"></div>
             ) : null}
           </div>
         </div>
       </div>
-      <div className="flex items-center z-20 text-sm md:p-4 ml-4 mb-2  ">
-        <div className="md:hidden ml-2">
+      <div className="flex items-center z-20 text-sm pt-3 md:p-4  md:ml-5">
+        <div className="md:hidden">
           <PostVoteClient
             postId={post.id}
             initialVote={currentVote?.type}
@@ -114,9 +115,9 @@ const Post: FC<PostProps> = ({
 
         <Link
           href={`/cb/${communityName}/post/${post.id}`}
-          className="flex items-center gap-2  justify-center text-gray-400 "
+          className="flex items-center gap-2 justify-center text-gray-400 ml-4 "
         >
-          <MessagesSquare className="h-5 w-5" /> {commentsCount} comments
+          <MessagesSquare className="h-5 w-5" /> {commentsCount}
         </Link>
       </div>
     </div>

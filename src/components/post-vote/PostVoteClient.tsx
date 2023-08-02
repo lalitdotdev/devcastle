@@ -83,7 +83,7 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
   });
 
   return (
-    <div className="flex md:flex-col gap-0 pr-6 md:w-20 md:pb-4 sm:pb-0 items-center">
+    <div className="flex md:flex-col gap-0 pr-0 md:w-12 md:pb-4 sm:pb-0 items-center top-0">
       {/* upvote */}
       <Button
         onClick={() => vote("UPVOTE")}
@@ -94,7 +94,7 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
         <ArrowBigUp
           className={cn("h-5 w-5 text-gray-400", {
             // cn helper => conditionally apply the classNames
-            "text-emerald-500 fill-emerald-500": currentVote === "UPVOTE",
+            "text-emerald-500 outline-emerald-500": currentVote === "UPVOTE",
           })}
         />
       </Button>
@@ -114,7 +114,7 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
       >
         <ArrowBigDown
           className={cn("h-5 w-5 text-gray-400", {
-            "text-red-500 fill-red-500": currentVote === "DOWNVOTE",
+            "text-red-500 outline-red-500": currentVote === "DOWNVOTE",
           })}
         />
       </Button>
