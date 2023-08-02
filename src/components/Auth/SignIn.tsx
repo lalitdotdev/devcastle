@@ -11,8 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
 import { signIn } from "next-auth/react";
 import { Button } from "../ui/Button";
 import {
@@ -27,6 +25,7 @@ import { Input } from "../ui/Input";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
+import { Eye, EyeOff } from "lucide-react";
 export type RegisterationFormData = z.infer<typeof UserRegisterationValidator>;
 export type LoginFormData = z.infer<typeof UserLoginValidator>;
 
@@ -52,7 +51,7 @@ const UserForm = () => {
 
   // now sending payload to backend api using react query usemutation hook and axios post request to backend api endpoint /api/auth/register and /api/auth/login respectively for register and login user respectively and then redirecting to home page on successfull login or register and showing error toast on error in login or register user respectively and also showing loading state while request is in progress using react query usemutation hook
   const [show_input, setShowInput] = useState(false);
-  const { mutate: registerUser, isLoading: isRegisterLoading: isRegisterLoading } = useMutation({
+  const { mutate: registerUser, isLoading: isRegisterLoading } = useMutation({
     // check if password and confirm password are same or not and if not then show error toast
 
     mutationFn: async ({
