@@ -11,6 +11,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { signIn } from "next-auth/react";
 import { Button } from "../ui/Button";
 import {
   Form,
@@ -21,7 +24,7 @@ import {
   FormMessage,
 } from "../ui/Form";
 import { Input } from "../ui/Input";
-import { Eye, EyeOff } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 export type RegisterationFormData = z.infer<typeof UserRegisterationValidator>;
@@ -49,7 +52,7 @@ const UserForm = () => {
 
   // now sending payload to backend api using react query usemutation hook and axios post request to backend api endpoint /api/auth/register and /api/auth/login respectively for register and login user respectively and then redirecting to home page on successfull login or register and showing error toast on error in login or register user respectively and also showing loading state while request is in progress using react query usemutation hook
   const [show_input, setShowInput] = useState(false);
-  const { mutate: registerUser, isLoading: isRegisterLoading } = useMutation({
+  const { mutate: registerUser, isLoading: isRegisterLoading: isRegisterLoading } = useMutation({
     // check if password and confirm password are same or not and if not then show error toast
 
     mutationFn: async ({
@@ -65,7 +68,7 @@ const UserForm = () => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
-            title: `User with email ${err.response?.data.email} already exists.`,
+            title: `User with this email  already exists.`,
             description:
               "Please use different email to register else login with existing email.",
             variant: "destructive",
@@ -87,26 +90,38 @@ const UserForm = () => {
     },
   });
 
-  // function registerUser(data: RegisterationFormData) {
-  //   toast({
-  //     title: "You submitted the following values:",
-  //     description: (
-  //       <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-  //         <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-  //       </pre>
-  //     ),
-  //   });
-  // }
-  function loginUser(data: LoginFormData) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
+  const { mutate: loginUser, isLoading: isLoginLoading } = useMutation({
+    mutationFn: async (data: LoginFormData) => {
+      await signIn("credentials", {
+        ...data,
+        redirect: true,
+        // redirect to feed page after login successfull and redirect to login page if login fails
+        callbackUrl: "http://localhost:3000/feed",
+      }).then(callback => {
+        if (callback?.error) {
+          toast({
+            title: `Invalid credentials.`,
+            description: "Please enter valid credentials.",
+            variant: "destructive",
+          });
+        }
+
+        if (callback?.ok && !callback?.error) {
+          toast({
+            title: "User logged in successfully.",
+            description: "You can now use campusbuddy.!",
+          });
+        }
+      });
+    },
+    onError: () => {
+      toast({
+        title: "An error occurred.",
+        description: "Oops! Could not login user .",
+        variant: "destructive",
+      });
+    },
+  });
 
   return (
     <div className="container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]bg-[#262a35] text-gray-400">
@@ -159,6 +174,7 @@ const UserForm = () => {
               />
               <Button
                 type="submit"
+                isLoading={isLoginLoading}
                 className="border-2 border-indigo-600 text-sm font-semibold uppercase tracking-tight text-indigo-600 hover:bg-indigo-600 hover:text-gray-900 rounded-none mx-auto "
               >
                 Login
