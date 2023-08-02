@@ -25,14 +25,14 @@ export default async function Home() {
         <div className="mx-auto md:my-6 p-10 md:p-2">
           <div className="text-center">
             <h1 className="text-2xl md:text-4xl text-indigo-600 my-4">
-              Welcome in Geek Utopia Warm Embrace!
+              Welcome in Geek Utopia Warm Embrace
             </h1>
             <p className="text-gray-400 md:text-xl">
-              Ignite your inner geek, showcase your flawless prowess, and
+              {`Ignite your inner geek, showcase your flawless prowess, and
               immerse in a captivating realm of clever exchanges and deep
               contemplation with software sorcerers. Embark on a grand journey
               of enlightenment and companionship, fueled by an insatiable quest
-              for wisdom!
+              for wisdom and knowledge.`}
             </p>
           </div>
         </div>
@@ -69,10 +69,10 @@ export default async function Home() {
                 ) : (
                   <div className="flex flex-1 flex-col justify-center lg:flex-none items-center ">
                     <h1 className="text-center pt-2 md:pt-4 pb-8 -tracking-tight text-2xl text-indigo-400">
-                      Welcome back, {session.user.name}!
+                      {`Welcome back, {session.user.name}!`}
                     </h1>
                     <p className="text-gray-400 md:text-xl">
-                      You are logged in.
+                      {`You are logged in.`}
                     </p>
                   </div>
                 )}
