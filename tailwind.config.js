@@ -16,6 +16,11 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        "rec-pattern": "url('/assets/images/recCommsArt.svg')",
+        "footer-texture": "url('/img/footer-texture.png')",
+      },
+
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
