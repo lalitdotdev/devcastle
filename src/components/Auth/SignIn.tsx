@@ -11,6 +11,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { Eye, EyeOff } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { Button } from "../ui/Button";
 import {
@@ -22,10 +25,6 @@ import {
   FormMessage,
 } from "../ui/Form";
 import { Input } from "../ui/Input";
-import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
-import { Eye, EyeOff } from "lucide-react";
 export type RegisterationFormData = z.infer<typeof UserRegisterationValidator>;
 export type LoginFormData = z.infer<typeof UserLoginValidator>;
 
@@ -67,7 +66,7 @@ const UserForm = () => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
-            title: `User with this email  already exists.`,
+            title: `User with this email already exists.`,
             description:
               "Please use different email to register else login with existing email.",
             variant: "destructive",
@@ -89,14 +88,19 @@ const UserForm = () => {
     },
   });
 
-  const { mutate: loginUser, isLoading: isLoginLoading } = useMutation({
+  const { mutate: loginUser, isLoading: isLoginLoading } = useMutation<
+    void,
+    unknown,
+    LoginFormData
+  >({
     mutationFn: async (data: LoginFormData) => {
-      await signIn("credentials", {
-        ...data,
-        redirect: true,
-        // redirect to feed page after login successfull and redirect to login page if login fails
-        callbackUrl: "http://localhost:3000/feed",
-      }).then(callback => {
+      try {
+        const callback = await signIn("credentials", {
+          ...data,
+          redirect: true,
+          callbackUrl: "http://localhost:3000/feed",
+        });
+
         if (callback?.error) {
           toast({
             title: `Invalid credentials.`,
@@ -108,15 +112,23 @@ const UserForm = () => {
         if (callback?.ok && !callback?.error) {
           toast({
             title: "User logged in successfully.",
-            description: "You can now use campusbuddy.!",
+            description: "You can now use campusbuddy!",
           });
         }
-      });
+      } catch (error) {
+        // Handle error from signIn or other async operations
+        toast({
+          title: "An error occurred.",
+          description: "Oops! Could not login user.",
+          variant: "destructive",
+        });
+      }
     },
     onError: () => {
+      // If there's an error during the mutationFn (e.g., from signIn), this will handle it
       toast({
         title: "An error occurred.",
-        description: "Oops! Could not login user .",
+        description: "Oops! Could not login user.",
         variant: "destructive",
       });
     },
@@ -136,7 +148,7 @@ const UserForm = () => {
         {formType === "login" && (
           <Form {...loginForm}>
             <form
-              onSubmit={loginForm.handleSubmit(loginUser)}
+              onSubmit={loginForm.handleSubmit(loginUser as any)}
               className="space-y-2"
             >
               <FormField
@@ -189,7 +201,7 @@ const UserForm = () => {
         {formType === "register" && (
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(registerUser)}
+              onSubmit={form.handleSubmit(registerUser as any)}
               className="space-y-2"
             >
               <FormField
