@@ -66,13 +66,9 @@ const Post: FC<PostProps> = ({
                       </a>
                     </>
                   ) : null}
-                  <div className="text-gray-500 text-sm flex items-center p-1">
+                  <div className="text-zinc-500 text-sm flex items-center p-1  ">
                     <a href={`/user/${post.author.username}`} className="flex">
-                      {/* <span className="px-1 text-gray-400">•</span> */}
-                      <h4 className=" text-zincitems-center">
-                        {/* <User2 className="h-3 w-3" /> */}
-                        by u/{post.author.username}
-                      </h4>
+                      by u/{post.author.username}
                     </a>
                     <span className="text-sm text-gray-500 dark:text-gray-400  hover:cursor-default ml-2 ">
                       {formatTimeToNow(new Date(post.createdAt))}
@@ -81,19 +77,18 @@ const Post: FC<PostProps> = ({
                 </div>
               </div>
             </div>
-            {/* <a href={`/user/${post.author.username}`}>
-              Posted by u/{post.author.username}
-            </a>{" "} */}
           </div>
           <a href={`/cb/${communityName}/post/${post.id}`}>
-            <h1 className="md:text-lg md:font-semibold py-2 ml-4 leading-6 text-gray-400">
+            <h1 className="md:text-lg md:font-semibold py-2 ml-8 leading-6 text-gray-400 ">
               {post.title}
             </h1>
           </a>
 
+          <div className="absolute h-[108px] top-10 w-px  bg-zinc-700 bottom-0 left-5 transform -translate-x-1/2 bg-gradient-to-t from-transparent to-zinc-300"></div>
+
           {/* attach ref to check whether post is exhausting max-h or not and show blurry effect on preview indicating post is long   */}
           <div
-            className="relative text-sm overflow-clip rounded-sm max-h-16 md:block text-gray-300 p-3 "
+            className="relative overflow-clip rounded-sm max-h-20 md:block text-gray-200 p-2"
             ref={pRef}
           >
             <EditorOutputContent content={post.content} />

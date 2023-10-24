@@ -9,7 +9,19 @@ import { notFound } from "next/navigation";
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/Button";
-import { Bot, Info, Lightbulb, Milestone, Sticker } from "lucide-react";
+import {
+  Activity,
+  Bot,
+  Flame,
+  Globe2,
+  Goal,
+  GripHorizontal,
+  Info,
+  Lightbulb,
+  Milestone,
+  Sticker,
+  Zap,
+} from "lucide-react";
 import ToFeedButton from "@/components/ToFeedButton";
 const Layout = async ({
   children,
@@ -62,7 +74,7 @@ const Layout = async ({
   // Extract the community description from the fetched community object
   const communityDescription = community?.description;
   return (
-    <div className="sm:container max-w-9xl mx-auto h-full md:pt-12">
+    <div className="sm:container max-w-7xl mx-auto h-full pt-12">
       <div>
         {/* TODO: BTN TO TAKE BACK TO FEED */}
 
@@ -76,15 +88,20 @@ const Layout = async ({
           <div className="overflow-hidden h-fit rounded-sm border-2 border-gray-600 order-first md:order-last tracking-tight">
             <div className="md:p-4 p-3 md:border-b-2 text-center border-gray-600 md:rounded-lg  ">
               <div className="flex p-1 gap-2 ">
-                <Bot className="text-gray-600 h-6 w-6" />
+                <Activity className="text-gray-600 h-6 w-6  " />
                 <div className="font-md text-center text-lg text-zinc-400 flex">
-                  <p className="px-1 text-indigo-600">{community?.name}</p>
-                  realm
+                  <p className=" text-indigo-500 font-semibold">
+                    {community?.name}
+                  </p>
+                  <span className="ml-2 text-zinc-200 font-semibold">
+                    {" "}
+                    realm
+                  </span>
                 </div>
               </div>
 
-              <div className="flex b-0 p-2">
-                <Info className="h-5 w-5 text-gray-600" />
+              <div className="flex p-1 gap-2">
+                <Goal className="h-5 w-5 text-gray-600 mr-2" />
                 <p className="text-sm  text-gray-400">{communityDescription}</p>
               </div>
             </div>
