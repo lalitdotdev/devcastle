@@ -37,8 +37,8 @@ const OAuthButtons: React.FC<OAuthButtonProps> = ({ className, ...props }) => {
   };
 
   const loginWithGithub = async () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       await signIn("github", {
         callbackUrl: "http://localhost:3000/feed",
       });
