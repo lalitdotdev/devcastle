@@ -24,7 +24,6 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -36,6 +35,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -49,7 +50,7 @@ model User {
 
   username String? @unique
 
-  image    String?
+  image    String? // Profile picture
   hashedPassword String?
   accounts Account[]
   sessions Session[]
@@ -67,7 +68,8 @@ model User {
   CommentVote CommentVote[]
   followers User[] @relation(name: "Followers") // Users that follow me
   follows User[] @relation(name: "Followers") // Users that I follow
-    // GitHubRepo GitHubRepo[] // New relationship for GitHub repositories
+    // GitHubRepo GitHubRepo[] // New relationship for 
+ 
 }
 
 model Community {
@@ -82,6 +84,7 @@ model Community {
   Creator     User?          @relation("CreatedBy", fields: [creatorId], references: [id])
   subscribers Subscription[]
   @@index([name])
+  @@index([creatorId])
 }
 
 model Subscription {
@@ -90,6 +93,8 @@ model Subscription {
   community Community @relation(fields: [communityId], references: [id])
   communityId String
   @@id ([userId,communityId])
+  @@index([communityId])
+  @@index([userId])
 }
 
 model Post {
@@ -114,6 +119,8 @@ model Post {
 
     comments Comment[]
     votes Vote[]
+    @@index([communityId])
+    @@index([authorId])
   
 }
 
@@ -127,6 +134,8 @@ model Article {
   authorId String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  @@index([authorId])
+
 }
 
 
@@ -148,11 +157,15 @@ model Comment {
       postId String
 
       replyToId String?
-      replyTo Comment? @relation("ReplyTo", fields: [replyToId], references: [id] , onDelete: NoAction , onUpdate: NoAction)
+      replyTo Comment? @relation("ReplyTo", fields: [replyToId], references: [id] , onDelete: NoAction , onUpdate: NoAction  )
       replies Comment[] @relation("ReplyTo")
 
       votes CommentVote[]
       commentId String?
+      @@index([authorId])
+      @@index([postId])
+      @@index([replyToId])
+
     
 }
 
@@ -163,6 +176,8 @@ model Vote {
   postId String
   type VoteType
   @@id ([userId,postId])
+  @@index([postId])
+  @@index([userId])
 }
 
 enum VoteType {
@@ -176,6 +191,8 @@ model CommentVote {
   commentId String
   type VoteType
   @@id ([userId,commentId])
+  @@index([commentId])
+  @@index([userId])
 }
 
 // model Category {

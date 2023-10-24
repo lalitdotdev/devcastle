@@ -76,7 +76,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
 
       return toast({
         title: "Something went wrong.",
-        description: "Your username was not updated. Please try again.",
+        description: "Your profile was not updated. Please try again.",
         variant: "destructive",
       });
     },
@@ -168,7 +168,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
                       {...register("about")}
                     />
                   </div>
-                  <div className="text-gray-500">
+                  {/* <div className="text-gray-500">
                     <Label htmlFor="tags">Tags</Label>
                     <Input
                       id="tags"
@@ -176,7 +176,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
                       size={32}
                       {...register("tags")}
                     />
-                  </div>
+                  </div> */}
                   <div className="text-gray-500 mt-2 gap-4">
                     <Label htmlFor="socials">Social Profiles</Label>
                     <Select>

@@ -12,7 +12,7 @@ export async function PATCH(req: Request) {
     }
 
     const body = await req.json();
-    const { name } = UserProfileValidator.parse(body);
+    const { name, about } = UserProfileValidator.parse(body);
 
     // check if username is taken
     const username = await db.user.findFirst({
@@ -32,6 +32,7 @@ export async function PATCH(req: Request) {
       },
       data: {
         username: name,
+        about: about,
       },
     });
 
@@ -44,7 +45,7 @@ export async function PATCH(req: Request) {
     }
 
     return new Response(
-      "Could not update username at this time. Please try later",
+      "Could not update profile at this time. Please try later",
       { status: 500 },
     );
   }

@@ -1,18 +1,20 @@
-import { getAuthSession } from "@/lib/auth";
 import Link from "next/link";
 
 import Image from "next/image";
 import SearchBar from "./SearchBar";
 
+import UserAccountNav from "./UserAccountNav";
+import { buttonVariants } from "./ui/Button";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import RightNavContent from "./RightNavContent";
 
 const Navbar = async () => {
-  const session = await getAuthSession();
-  // console.log(session);
+  const session = await getServerSession(authOptions);
 
   return (
-    <nav className="flex fixed top-0 inset-x-0 h-[4rem] z-[10] py-2 align-center justify-center bg-[#1B1F23]">
-      <div className="container max-w-8xl mx-auto flex items-center justify-between gap-2">
+    <nav className="flex fixed  top-0 inset-x-0 h-[4rem] z-[10] py-2 align-center justify-center bg-[#1B1F23]">
+      <div className="container min-w-max mx-auto flex items-center justify-between gap-2">
         {/* logo */}
 
         <Link href="/" className="flex gap-2 items-center">
@@ -24,12 +26,19 @@ const Navbar = async () => {
         </Link>
 
         {/* Search-Bar */}
+        <SearchBar />
 
-        {session?.user && (
-          <>
-            <SearchBar />
-            <RightNavContent />
-          </>
+        <RightNavContent />
+        {/* actions */}
+        {session?.user ? (
+          <UserAccountNav
+            user={session.user}
+            username={session?.user?.username}
+          />
+        ) : (
+          <Link href="/sign-in" className={buttonVariants()}>
+            Sign In
+          </Link>
         )}
       </div>
     </nav>

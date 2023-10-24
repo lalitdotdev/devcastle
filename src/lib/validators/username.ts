@@ -6,5 +6,5 @@ export const UserProfileValidator = z.object({
     .min(3)
     .max(32)
     .regex(/^[a-zA-Z0-9_]+$/),
-  about: z.string().max(256),
+  about: z.string().max(500),
 });

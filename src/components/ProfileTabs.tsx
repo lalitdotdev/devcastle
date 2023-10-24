@@ -8,7 +8,7 @@ const ProfileTabs = ({}) => {
     <div>
       <Tabs defaultValue="tab1" className="w-full ">
         <Tabs defaultValue="articles" className="w-full ">
-          <div className="border-b border-gray-400 font-semibold">
+          <div className="border-b border-gray-400 ">
             <TabsList className="grid w-[50%] grid-cols-4 ">
               <div onClick={() => router.push("/articles")}>
                 <TabsTrigger value="articles">Articles</TabsTrigger>

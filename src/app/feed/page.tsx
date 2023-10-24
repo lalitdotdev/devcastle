@@ -1,7 +1,5 @@
 import CustomFeed from "@/components/Feed/CustomFeed";
 import GeneralFeed from "@/components/Feed/GeneralFeed";
-import Recommendations from "@/components/Recommendations";
-import { buttonVariants } from "@/components/ui/Button";
 
 import { getAuthSession } from "@/lib/auth";
 import { cn } from "@/lib/utils";

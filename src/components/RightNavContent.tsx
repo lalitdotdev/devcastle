@@ -1,7 +1,8 @@
-import { getAuthSession } from "@/lib/auth";
-import { FC } from "react";
+"use client";
 
-import { Bell, Brain, Feather, Globe2, MenuSquare, Plus } from "lucide-react";
+import { Backpack, Bell, Brain, Feather, Plus } from "lucide-react";
+
+import Link from "next/link";
 
 import {
   DropdownMenu,
@@ -11,22 +12,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
-import Link from "next/link";
-import UserAccountNav from "./UserAccountNav";
-import { buttonVariants } from "./ui/Button";
 
-interface RightNavContentProps {}
-
-const RightNavContent = async () => {
-  const session = await getAuthSession();
+const RightNavContent = () => {
   return (
-    <div className="hidden md:flex md:flex-shrink-0 md:items-center gap-4 ">
-      <div className="text-gray-400 mr-4 hidden md:flex">
+    <div className="hidden md:flex md:flex-shrink-0 md:items-center gap-4  ">
+      <div className="text-gray-400 mr-4 hidden md:flex  ">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Bell className="h-6 w-6 " />
+            <Bell className="h-6 w-6 cursor-pointer" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 hidden md:flex">
+          <DropdownMenuContent
+            className="w-56 hidden md:flex bg-[#1B1F23] text-gray-400 border-gray-600"
+            align="end"
+          >
             <DropdownMenuLabel>Notifications</DropdownMenuLabel>
             <DropdownMenuSeparator />
           </DropdownMenuContent>
@@ -57,6 +55,12 @@ const RightNavContent = async () => {
                 <span>New Post</span>
               </Link>
             </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer flex-start ">
+              <Link href="/feed" className="flex items-center justify-center">
+                <Backpack className="mr-2 h-4 w-4" />
+                <span>Explore Gigs</span>
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
               <Link href="/write" className="flex items-center justify-center">
                 <Feather className="mr-2 h-4 w-4" />
@@ -75,19 +79,6 @@ const RightNavContent = async () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      {session?.user ? (
-        <UserAccountNav user={session.user} />
-      ) : (
-        <Link
-          href="/sign-in"
-          className={buttonVariants({
-            className:
-              " border border-indigo-600 text-indigo-600 whitespace-nowrap",
-          })}
-        >
-          Sign In
-        </Link>
-      )}
     </div>
   );
 };

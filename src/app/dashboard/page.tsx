@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 
-import { getAuthSession } from "@/lib/auth";
+import { authOptions, getAuthSession } from "@/lib/auth";
 import { UserNameForm } from "@/components/UserNameForm";
+import { db } from "@/lib/db";
 
 export const metadata = {
   title: "Dashboard",
@@ -11,10 +12,20 @@ export const metadata = {
 export default async function SettingsPage() {
   const session = await getAuthSession();
 
-  // if (!session?.user) {
-  //   // redirect(authOptions?.pages?.signIn || "/");
-  //   redirect("/");
-  // }
+  if (!session?.user) {
+    redirect(authOptions?.pages?.signIn || "/login");
+  }
+
+  // getting about from db and passing it to UserNameForm
+
+  const about = await db.user.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    select: {
+      about: true,
+    },
+  });
 
   return (
     <div className="max-w-6xl mx-auto ">
@@ -22,10 +33,10 @@ export default async function SettingsPage() {
         <div className="grid ">
           <UserNameForm
             user={{
-              id: session?.user.id,
+              id: session.user.id,
               username: session?.user.username || "",
               image: session?.user.image || "",
-              about: session?.user.about || "",
+              about: about?.about || "",
             }}
           />
         </div>

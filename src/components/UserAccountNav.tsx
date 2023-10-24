@@ -10,7 +10,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
 
@@ -18,9 +17,10 @@ import {
 
 interface UserAccountNavProps {
   user: Pick<User, "name" | "image" | "email">;
+  username: string | null | undefined;
 }
 
-const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
+const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -36,16 +36,20 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
         className="bg-[#1B1F23] text-gray-400 w-48 border border-gray-700"
         align="end"
       >
-        <div className="flex items-center justify-start gap-2 p-2 text-gray-400">
-          <div className="flex flex-col space-y-1 leading-none">
-            {user.name && <p className="font-medium">{user.name}</p>}
-            {user.email && (
-              <p className="w-[200px] truncate text-sm text-muted-foreground">
-                {user.email}
-              </p>
-            )}
+        {/* Link to /username */}
+
+        <Link href={`/u/${username}`}>
+          <div className="flex items-center justify-start gap-2 p-2 text-gray-400">
+            <div className="flex flex-col space-y-1 leading-none">
+              {user.name && <p className="font-medium">{user.name}</p>}
+              {user.email && (
+                <p className="w-[200px] truncate text-sm text-muted-foreground">
+                  {user.email}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        </Link>
 
         <DropdownMenuItem asChild>
           <Link href="/feed">Feed</Link>

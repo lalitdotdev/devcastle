@@ -39,7 +39,9 @@ const OAuthButtons: React.FC<OAuthButtonProps> = ({ className, ...props }) => {
   const loginWithGithub = async () => {
     setIsLoading(true);
     try {
-      await signIn("github");
+      await signIn("github", {
+        callbackUrl: "http://localhost:3000/feed",
+      });
       // after sometime after redirecting refresh the page
     } catch (err) {
       //toast error message here
