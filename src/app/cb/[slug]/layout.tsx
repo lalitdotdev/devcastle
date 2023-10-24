@@ -85,9 +85,7 @@ const Layout = async ({
 
               <div className="flex b-0 p-2">
                 <Info className="h-5 w-5 text-gray-600" />
-                <p className="text-sm ml-4 text-gray-400">
-                  {communityDescription}
-                </p>
+                <p className="text-sm  text-gray-400">{communityDescription}</p>
               </div>
             </div>
             <dl className="hidden md:block divide-y divide-gray-100 px-6 py-4 text-sm leading-6 ">

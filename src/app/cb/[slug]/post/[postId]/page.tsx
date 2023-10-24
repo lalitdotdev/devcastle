@@ -11,7 +11,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CachedPost } from "../../../../../types/redis";
 
-interface PageProps {
+interface CommunityPostPageProps {
   params: {
     postId: string;
   };
@@ -22,7 +22,7 @@ interface PageProps {
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
-const page = async ({ params }: PageProps) => {
+const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
   // get post info from redis cache (cached post info is stored in redis cache as a hash) and then render the page with the post info from redis cache
   const cachedPost = (await redis.hgetall(
     `post:${params.postId}`,
@@ -114,4 +114,4 @@ function PostVoteShell() {
   );
 }
 
-export default page;
+export default CommunityPostPage;
