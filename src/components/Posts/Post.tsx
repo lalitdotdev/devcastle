@@ -67,7 +67,7 @@ const Post: FC<PostProps> = ({
                     </>
                   ) : null}
                   <div className="text-zinc-500 text-sm flex items-center p-1  ">
-                    <a href={`/user/${post.author.username}`} className="flex">
+                    <a href={`/u/${post.author.username}`} className="flex">
                       by u/{post.author.username}
                     </a>
                     <span className="text-sm text-gray-500 dark:text-gray-400  hover:cursor-default ml-2 ">
@@ -82,21 +82,21 @@ const Post: FC<PostProps> = ({
             <h1 className="md:text-lg md:font-semibold py-2 ml-8 leading-6 text-gray-400 ">
               {post.title}
             </h1>
+
+            <div className="absolute h-[108px] top-10 w-px  bg-zinc-700 bottom-0 left-5 transform -translate-x-1/2 bg-gradient-to-t from-transparent to-zinc-300"></div>
+
+            {/* attach ref to check whether post is exhausting max-h or not and show blurry effect on preview indicating post is long   */}
+            <div
+              className="relative overflow-clip rounded-sm max-h-20 md:block text-gray-200 p-2"
+              ref={pRef}
+            >
+              <EditorOutputContent content={post.content} />
+              {pRef.current?.clientHeight === 160 || 96 ? (
+                // blur bottom if content is too long
+                <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-[#212329]  to-transparent "></div>
+              ) : null}
+            </div>
           </a>
-
-          <div className="absolute h-[108px] top-10 w-px  bg-zinc-700 bottom-0 left-5 transform -translate-x-1/2 bg-gradient-to-t from-transparent to-zinc-300"></div>
-
-          {/* attach ref to check whether post is exhausting max-h or not and show blurry effect on preview indicating post is long   */}
-          <div
-            className="relative overflow-clip rounded-sm max-h-20 md:block text-gray-200 p-2"
-            ref={pRef}
-          >
-            <EditorOutputContent content={post.content} />
-            {pRef.current?.clientHeight === 160 || 96 ? (
-              // blur bottom if content is too long
-              <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-[#212329]  to-transparent "></div>
-            ) : null}
-          </div>
         </div>
       </div>
       <div className="flex items-center z-20 text-sm pt-3 md:p-4  md:ml-5">
