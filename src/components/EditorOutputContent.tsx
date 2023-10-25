@@ -26,7 +26,7 @@ const style = {
   paragraph: {
     fontSize: "0.885rem",
     lineHeight: "1.25rem",
-    color: "#333",
+    color: "#79bdd8",
     fontWeight: 400,
     fontFamily: "Arial, sans-serif",
     letterSpacing: "-0.01em",
