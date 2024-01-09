@@ -36,7 +36,14 @@ CampusBuddy offers a variety of features to enhance the student experience on ca
 
 - [x] User authentication and registration
 - [x] Community creation and management
-- [ ] Blog section for sharing articles(Building)
+- [x] Community search functionality
+- [x] Post creation
+- [x] Rich text-editor for post creation in community.
+- [x] Post likes and dislikes
+- [X] User dashboard UI
+- [x] User Profile updation
+- [X] Comment system
+- [ ] Dedicated Blog section for sharing articles(Building)
 - [ ] Alumni Connect: Connect with alumni and exchange experiences (TODO)
 - [ ] Internships: Find and apply for internships and fellowships (TODO)
 - [ ] Audio Conferencing: Host audio conferences within the community a separate platform coderspaces powered by Campusbuddy.
