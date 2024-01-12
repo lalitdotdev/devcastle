@@ -40,14 +40,12 @@ const page = async () => {
           </div>
           <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm ">
             <div className="justify-between gap-x-4 py-3">
-              <div className="items-center bg-[#1a1e26] rounded-md p-4 shadow-md ">
-                <div>
-                  <p className="text-zinc-400  text-left">
-                    Dive into creativity with <span className="font-semibold text-zinc-400">ArtNPhilosophy</span> or
-                    explore opportunities in <span className="font-semibold text-zinc-500">RemoteGigs</span>. <br />✨
-                    Start by searching from the bar and join the conversation!
-                  </p>
-                </div>
+              <div className="bg-[#1a1e26] rounded-md p-4 shadow-md">
+                <p className="text-zinc-300 whitespace-normal">
+                  Dive into creativity with <span className="font-semibold text-zinc-400">ArtNPhilosophy</span> or
+                  explore opportunities in <span className="font-semibold text-zinc-400">RemoteGigs</span>. <br />✨
+                  Start by searching from the bar and join the conversation!
+                </p>
               </div>
             </div>
 
