@@ -41,11 +41,11 @@ const page = async () => {
                 <span className="mr-2">
                   <AlertTriangle />
                 </span>
-                <p className="font-bold">Discover vibrant communities on CampusBuddy</p>
+                <p className="font-bold">
+                  Search and discover vibrant communities on CampusBuddy. You can start by searching like ArtNPhilosophy
+                  or remote-gigs from search bar and join them to interact.
+                </p>
               </div>
-              {/* <p className="text-emerald-300 ml-4 p-2">
-                Discover, Connect, Thrive: Search {`'Remote-Gigs,' Join 'ArtNPhilosophy,'`} or Create Your Community!{' '}
-              </p> */}
             </div>
 
             <div className="border border-indigo-600 text-gray-400 rounded-md mb-2">
