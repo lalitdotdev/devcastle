@@ -29,18 +29,18 @@ const page = async () => {
         {session ? <CustomFeed /> : <GeneralFeed />}
 
         <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last ">
-          <div className="px-6 py-4 text-gray-300 bg-[#262a35]">
+          <div className="px-6 py-4 flex justify-between text-gray-300 bg-[#262a35]">
             <p className="font-semibold py-3 flex items-center gap-1.5">
-              <HomeIcon className="h-5 w-5" />
+              <HomeIcon size={30} />
               Home Feed
             </p>
+            <span className="mr-4 text-[#ffc107]">
+              <AlertTriangle size={30} />
+            </span>
           </div>
           <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm ">
             <div className="justify-between gap-x-4 py-3">
               <div className="items-center bg-[#1a1e26] rounded-md p-4 shadow-md ">
-                <span className="mr-4 text-[#ffc107]">
-                  <AlertTriangle size={30} />
-                </span>
                 <div>
                   <p className="text-zinc-300  text-left">
                     Dive into creativity with <span className="font-bold text-indigo-500">ArtNPhilosophy</span> or 💼
