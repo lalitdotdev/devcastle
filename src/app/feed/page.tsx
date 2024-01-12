@@ -42,10 +42,10 @@ const page = async () => {
             <div className="justify-between gap-x-4 py-3">
               <div className="items-center bg-[#1a1e26] rounded-md p-4 shadow-md ">
                 <div>
-                  <p className="text-zinc-300  text-left">
-                    Dive into creativity with <span className="font-bold text-indigo-500">ArtNPhilosophy</span> or 💼
-                    explore opportunities in <span className="font-bold text-indigo-500">RemoteGigs</span>.
-                    <br />✨ Start by searching from the bar and join the conversation!
+                  <p className="text-zinc-400  text-left">
+                    Dive into creativity with <span className="font-semibold text-zinc-400">ArtNPhilosophy</span> or
+                    explore opportunities in <span className="font-semibold text-zinc-500">RemoteGigs</span>. <br />✨
+                    Start by searching from the bar and join the conversation!
                   </p>
                 </div>
               </div>
