@@ -1,10 +1,9 @@
 import CustomFeed from '@/components/Feed/CustomFeed';
 import GeneralFeed from '@/components/Feed/GeneralFeed';
-import { Separator } from '@/components/ui/separator';
 
 import { getAuthSession } from '@/lib/auth';
 import { cn } from '@/lib/utils';
-import { AlertTriangle, HomeIcon, Plus } from 'lucide-react';
+import { AlertTriangle, HomeIcon } from 'lucide-react';
 import Link from 'next/link';
 
 const page = async () => {
