@@ -1,9 +1,10 @@
 import CustomFeed from '@/components/Feed/CustomFeed';
 import GeneralFeed from '@/components/Feed/GeneralFeed';
+import { Separator } from '@/components/ui/separator';
 
 import { getAuthSession } from '@/lib/auth';
 import { cn } from '@/lib/utils';
-import { AlertTriangle, HomeIcon } from 'lucide-react';
+import { AlertTriangle, HomeIcon, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 const page = async () => {
@@ -35,24 +36,27 @@ const page = async () => {
               Home Feed
             </p>
           </div>
-          <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm">
+          <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm ">
             <div className="justify-between gap-x-4 py-3">
-              <div className="flex items-center text-zinc-300 bg-[#1a1e26] rounded-md p-4">
+              <div className="items-center bg-[#1a1e26] rounded-md p-4 shadow-md ">
                 <span className="mr-4 text-[#ffc107]">
-                  <AlertTriangle />
+                  <AlertTriangle size={30} />
                 </span>
-                <p className="font-bold text-zinc-500">🚀 Explore vibrant communities on CampusBuddy!</p>
-                <p className="text-zinc-300">
-                  🎨 Dive into creativity with <span className="font-bold">ArtNPhilosophy</span> or 💼 explore
-                  opportunities in <span className="font-bold">RemoteGigs</span>.
-                  <br />✨ Start by searching from the bar and join the conversation!
-                </p>
+                <div>
+                  <p className="text-zinc-300  text-left">
+                    Dive into creativity with <span className="font-bold text-indigo-500">ArtNPhilosophy</span> or 💼
+                    explore opportunities in <span className="font-bold text-indigo-500">RemoteGigs</span>.
+                    <Separator />✨ Start by searching from the bar and join the conversation!
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="border border-indigo-600 text-gray-400 rounded-md mb-2">
+            <div className=" text-zinc-300 rounded-md mb-2 border ">
               <Link className={cn('flex flex-col justify-center items-center p-2')} href="/cb/create">
-                Create Community
+                <div className="flex gap-2  p-1">
+                  <span className="mt-1 font-semibold">Create Community</span>
+                </div>
               </Link>
             </div>
           </dl>
