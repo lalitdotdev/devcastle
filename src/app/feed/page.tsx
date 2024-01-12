@@ -1,10 +1,10 @@
-import CustomFeed from "@/components/Feed/CustomFeed";
-import GeneralFeed from "@/components/Feed/GeneralFeed";
+import CustomFeed from '@/components/Feed/CustomFeed';
+import GeneralFeed from '@/components/Feed/GeneralFeed';
 
-import { getAuthSession } from "@/lib/auth";
-import { cn } from "@/lib/utils";
-import { HomeIcon } from "lucide-react";
-import Link from "next/link";
+import { getAuthSession } from '@/lib/auth';
+import { cn } from '@/lib/utils';
+import { AlertTriangle, HomeIcon } from 'lucide-react';
+import Link from 'next/link';
 
 const page = async () => {
   // TODO: {/* General feed ---> Logged Out
@@ -19,9 +19,8 @@ const page = async () => {
 
   return (
     <div className="mx-auto max-w-5xl pt-8">
-      <h1 className="font-bold text-3xl md:text-4xl text-[#6366F1] ">
-        Your feed
-      </h1>
+      <h1 className="font-bold text-3xl md:text-4xl text-[#6366F1] ">Your feed</h1>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
         {/* Display either custom feed or general feed */}
 
@@ -37,18 +36,20 @@ const page = async () => {
             </p>
           </div>
           <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm">
-            <div className="flex justify-between gap-x-4 py-3">
-              <p className="text-zinc-500">
-                Your personalized CampusBuddy feedPage. Come here to check in
-                with your favorite communities.
-              </p>
+            <div className="justify-between gap-x-4 py-3">
+              <div className="flex items-center text-zinc-200">
+                <span className="mr-2">
+                  <AlertTriangle />
+                </span>
+                <p className="font-bold">Discover vibrant communities on CampusBuddy</p>
+              </div>
+              {/* <p className="text-emerald-300 ml-4 p-2">
+                Discover, Connect, Thrive: Search {`'Remote-Gigs,' Join 'ArtNPhilosophy,'`} or Create Your Community!{' '}
+              </p> */}
             </div>
 
             <div className="border border-indigo-600 text-gray-400 rounded-md mb-2">
-              <Link
-                className={cn("flex flex-col justify-center items-center p-2")}
-                href="/cb/create"
-              >
+              <Link className={cn('flex flex-col justify-center items-center p-2')} href="/cb/create">
                 Create Community
               </Link>
             </div>
