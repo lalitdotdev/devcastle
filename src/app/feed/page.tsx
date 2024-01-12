@@ -37,13 +37,15 @@ const page = async () => {
           </div>
           <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm">
             <div className="justify-between gap-x-4 py-3">
-              <div className="flex items-center text-zinc-200">
-                <span className="mr-2">
+              <div className="flex items-center text-zinc-300 bg-[#1a1e26] rounded-md p-4">
+                <span className="mr-4 text-[#ffc107]">
                   <AlertTriangle />
                 </span>
-                <p className="font-bold">
-                  Search and discover vibrant communities on CampusBuddy. You can start by searching like ArtNPhilosophy
-                  or remote-gigs from search bar and join them to interact.
+                <p className="font-bold text-zinc-500">🚀 Explore vibrant communities on CampusBuddy!</p>
+                <p className="text-zinc-300">
+                  🎨 Dive into creativity with <span className="font-bold">ArtNPhilosophy</span> or 💼 explore
+                  opportunities in <span className="font-bold">RemoteGigs</span>.
+                  <br />✨ Start by searching from the bar and join the conversation!
                 </p>
               </div>
             </div>
