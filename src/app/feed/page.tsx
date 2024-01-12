@@ -46,7 +46,7 @@ const page = async () => {
                   <p className="text-zinc-300  text-left">
                     Dive into creativity with <span className="font-bold text-indigo-500">ArtNPhilosophy</span> or 💼
                     explore opportunities in <span className="font-bold text-indigo-500">RemoteGigs</span>.
-                    <Separator />✨ Start by searching from the bar and join the conversation!
+                    <br />✨ Start by searching from the bar and join the conversation!
                   </p>
                 </div>
               </div>
