@@ -2,10 +2,12 @@
 
 ![campusbuddyv2](https://socialify.git.ci/mrExplorist/campusbuddyv2/image?description=1&descriptionEditable=An%20%20ultimate%20platform%20designed%20to%20empower%20students%20%F0%9F%9A%80%20with%20a%20rich%20array%20of%20features%2C%20fostering%20connectivity%20and%20%20collaboration.%20Actively%20Building%20%F0%9F%8F%97&font=Raleway&forks=1&issues=1&name=1&owner=1&pattern=Floating%20Cogs&pulls=1&stargazers=1&theme=Light)
 
+## Actively Building 🏗️
 
-## Actively Building 🏗️  
 CampusBuddy is a dynamic and vibrant online platform that serves as a hub for students to connect, collaborate, and thrive within their campus community and across campuses . 🎓✨
- ## A small step in filling the gap faced by students and developers.
+
+## A small step in filling the gap faced by students and developers.
+
 With a strong emphasis on community building, CampusBuddy provides a space where students can engage in meaningful discussions within joined communities, share valuable resources, and find support from like-minded individuals. 🤝🌟
 
 CampusBuddy also offers a robust blogging platform, enabling students to share their experiences, insights, and expertise with the wider community. This creates an environment of knowledge sharing and inspires others to learn and grow. 📚📝
@@ -40,9 +42,9 @@ CampusBuddy offers a variety of features to enhance the student experience on ca
 - [x] Post creation
 - [x] Rich text-editor for post creation in community.
 - [x] Post likes and dislikes
-- [X] User dashboard UI
+- [x] User dashboard UI
 - [x] User Profile updation
-- [X] Comment system
+- [x] Comment system
 - [ ] Dedicated Blog section for sharing articles(Building)
 - [ ] Alumni Connect: Connect with alumni and exchange experiences (TODO)
 - [ ] Internships: Find and apply for internships and fellowships (TODO)
@@ -89,13 +91,7 @@ To run CampusBuddy locally, follow these steps:
 
 ## Contributing
 
-We welcome contributions to CampusBuddy! To contribute, follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature: `git checkout -b feature-name`
-3. Make changes and commit: `git commit -m 'Add new feature'`
-4. Push to your branch: `git push origin feature-name`
-5. Submit a pull request.
+We welcome contributions to CampusBuddy! To contribute, fork the repository, create a feature branch, and submit a pull request. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate. See the [CONTRIBUTING](CONTRIBUTING.md) file for more information.
 
 ## Contact
 

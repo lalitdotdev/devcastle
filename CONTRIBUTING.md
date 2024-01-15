@@ -13,11 +13,14 @@ cd campusBuddy
 
 ### 2. Install Dependencies
 
-Ensure you have Node.js and yarn installed, then install project dependencies:
+Ensure you have Node.js and yarn installed consider using yarn as to avoid lockfile conflicts:
+
+````bash
+, then install project dependencies:
 
 ```bash
 yarn
-```
+````
 
 ### 3. Environment Variables
 
@@ -83,7 +86,7 @@ npx prisma db push
 Start the development server:
 
 ```bash
-npm run dev
+yarn run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) in your browser.
