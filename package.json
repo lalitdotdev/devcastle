@@ -68,7 +68,7 @@
     "react-hook-form": "^7.45.2",
     "react-textarea-autosize": "^8.4.1",
     "server-only": "^0.0.1",
-    "sharp": "^0.32.1",
+    "sharp": "^0.33.2",
     "tailwind-merge": "^1.13.2",
     "tailwind-scrollbar": "^3.0.4",
     "tailwind-scrollbar-hide": "^1.1.7",
