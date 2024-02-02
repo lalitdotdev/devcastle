@@ -3,6 +3,8 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+
 }
 
 datasource db {
@@ -27,6 +29,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -39,11 +42,18 @@ model Session {
   @@index([userId])
 }
 
+
+
+enum UserRole {
+    ADMIN
+    USER
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  about        String? 
+  about        String?
   emailVerified DateTime?
 
   createdCommunities Community[] @relation("CreatedBy")
@@ -52,6 +62,8 @@ model User {
 
   image    String? // Profile picture
   hashedPassword String?
+
+    role UserRole @default(USER)
   accounts Account[]
   sessions Session[]
   Post Post[]
@@ -60,16 +72,14 @@ model User {
   isProfileInfoSet Boolean? @default(false)
   createdAt DateTime @default(now())
 
-
-
   Comment Comment[]
   Subscription Subscription[]
   Vote Vote[]
   CommentVote CommentVote[]
   followers User[] @relation(name: "Followers") // Users that follow me
   follows User[] @relation(name: "Followers") // Users that I follow
-    // GitHubRepo GitHubRepo[] // New relationship for 
- 
+    // GitHubRepo GitHubRepo[] // New relationship for
+
 }
 
 model Community {
@@ -98,15 +108,15 @@ model Subscription {
 }
 
 model Post {
-  
+
     id String @id @default(cuid())
-  
+
     title String
     content Json?
     // slug String @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-  
+
     published Boolean @default(false)
     community Community @relation(fields: [communityId], references: [id])
     communityId String
@@ -121,7 +131,7 @@ model Post {
     votes Vote[]
     @@index([communityId])
     @@index([authorId])
-  
+
 }
 
 model Article {
@@ -142,17 +152,17 @@ model Article {
 
 
 model Comment {
-    
+
       id String @id @default(cuid())
 
       text String
-        
+
       createdAt DateTime @default(now())
       updatedAt DateTime @updatedAt
-    
+
       author User @relation(fields: [authorId], references: [id])
       authorId String
-    
+
       post Post @relation(fields: [postId], references: [id] , onDelete: Cascade)
       postId String
 
@@ -166,7 +176,7 @@ model Comment {
       @@index([postId])
       @@index([replyToId])
 
-    
+
 }
 
 model Vote {
@@ -219,3 +229,26 @@ model CommentVote {
 //   owner     User     @relation(fields: [ownerId], references: [id])
 //   ownerId   String
 // }
+
+
+
+model Job {
+  id               Int      @id @default(autoincrement())
+  slug             String   @unique
+  title            String
+  type             String
+  locationType     String
+  location         String?
+  description      String? @db.Text
+  salary           Int
+  companyName      String
+  applicationEmail String?
+  applicationUrl   String?
+  companyLogoUrl   String?
+  approved         Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("jobs")
+}
+
