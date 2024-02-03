@@ -27,7 +27,18 @@ function getTitle({ q, type, location, remote }: JobFilterValues) {
 
   return `${titlePrefix}${titleSuffix}`;
 }
-
+export function generateMetadata({
+  searchParams: { q, type, location, remote },
+}: PageProps): Metadata {
+  return {
+    title: `${getTitle({
+      q,
+      type,
+      location,
+      remote: Boolean(remote),
+    })} | Campusbuddy Jobs`,
+  };
+}
 export default async function Jobboardpage({
   searchParams: { q, type, location, remote, page },
 }: PageProps) {
