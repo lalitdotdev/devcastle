@@ -59,9 +59,13 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
           <Link href="/dashboard">Dashboard</Link>
         </DropdownMenuItem>
 
+        <DropdownMenuItem asChild>
+          <Link href="/cbjobboard">Job Opportunities</Link>
+        </DropdownMenuItem>
+
         <DropdownMenuItem
           className="cursor-pointer"
-          onSelect={event => {
+          onSelect={(event) => {
             event.preventDefault();
             signOut({
               callbackUrl: `${window.location.origin}/`,
