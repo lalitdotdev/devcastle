@@ -14,6 +14,20 @@ interface PageProps {
   };
 }
 
+function getTitle({ q, type, location, remote }: JobFilterValues) {
+  const titlePrefix = q
+    ? `${q} jobs`
+    : type
+    ? `${type} developer jobs`
+    : remote
+    ? "Remote developer jobs"
+    : "All developer jobs";
+
+  const titleSuffix = location ? ` in ${location}` : "";
+
+  return `${titlePrefix}${titleSuffix}`;
+}
+
 export default async function Jobboardpage({
   searchParams: { q, type, location, remote, page },
 }: PageProps) {
