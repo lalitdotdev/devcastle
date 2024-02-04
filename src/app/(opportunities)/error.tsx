@@ -1,6 +1,5 @@
 "use client"; // Error components must be Client Components
 
-import { Button } from "@/components/ui/Button";
 import { toast } from "@/hooks/use-toast";
 import Image from "next/image";
 import Link from "next/link";
