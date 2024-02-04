@@ -1,11 +1,18 @@
-import { Job } from "@prisma/client";
 import JobListItem from "./JobListItem";
+import { JobFilterValues } from "../../lib/validators/jobFilter";
 
 interface JobResultsProps {
-  jobs: Job[];
+  filterValues: JobFilterValues;
 }
 
-const JobResults = ({ jobs }: JobResultsProps) => {
+const JobResults = ({
+  filterValues: { q, type, location, remote },
+}: JobResultsProps) => {
+  const searchString = q
+    ?.split(" ")
+    .filter((word) => word.length > 0)
+    .join(" & ");
+
   return (
     <div className="grow space-y-4 overflow-hidden ">
       {jobs.map((job) => (
