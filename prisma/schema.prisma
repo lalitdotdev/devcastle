@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["fullTextSearch" , "fullTextIndex"]
 
 }
 
@@ -250,5 +250,7 @@ model Job {
   updatedAt        DateTime @updatedAt
 
   @@map("jobs")
+  @@fulltext([title])
+  @@fulltext([title , description , companyName , location , type])
 }
 
