@@ -1,6 +1,7 @@
 "use client"; // Error components must be Client Components
 
 import { toast } from "@/hooks/use-toast";
+import { Home, RotateCw } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -47,17 +48,19 @@ export default function Error({
 
       <div className="flex gap-2 items-center justify-center">
         <button
-          className="bg-red-600 text-white px-4 py-2 rounded-lg"
+          className="bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
           onClick={
             // Attempt to recover by trying to re-render the segment
             () => reset()
           }
         >
+          <RotateCw />
           Try again
         </button>
         <Link href="/">
           <p>
-            <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg">
+            <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex gap-2 justify-center items-center">
+              <Home />
               Go to Home
             </button>
           </p>
