@@ -1,5 +1,6 @@
 import JobFilterSidebar from "@/components/Jobboard/JobFilterSidebar";
-import JobListItem from "@/components/Jobboard/JobListItem";
+import JobResults from "@/components/Jobboard/JobResults";
+
 import { db } from "@/lib/db";
 import { JobFilterValues } from "@/lib/validators/jobFilter";
 import { Metadata } from "next";
@@ -39,6 +40,7 @@ export function generateMetadata({
     })} | Campusbuddy Jobs`,
   };
 }
+
 export default async function Jobboardpage({
   searchParams: { q, type, location, remote, page },
 }: PageProps) {
@@ -74,8 +76,13 @@ export default async function Jobboardpage({
         <h1 className="text-3xl font-extrabold tracking-tight lg:text-5xl">
           Job Board
         </h1>
-        <p className="text-lg text-muted-foreground">
-          Find your next opportunity
+        <p className="text-lg text-red-500">Companies Actively Hiring!</p>
+
+        <p className="text-md text-muted-foreground">
+          We update this list once per week with new companies hiring remote
+          positions. Please help us make it better, use the form at the bottom
+          of the page to suggest great remote jobs or suggest updates to the
+          current remote companies.
         </p>
       </div>
       <section className="flex flex-col md:flex-row gap-4">
@@ -83,11 +90,7 @@ export default async function Jobboardpage({
           defaultValues={filterValues}
           distinctLocations={distinctLocations}
         />
-        <div className="grow space-y-4 overflow-hidden scrollbar-thin !scrollbar-track-transparent !scrollbar-thumb-[#212329] ">
-          {jobs.map((job) => (
-            <JobListItem key={job.id} job={job} />
-          ))}
-        </div>
+        <JobResults jobs={jobs} />
       </section>
     </main>
   );
