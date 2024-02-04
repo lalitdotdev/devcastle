@@ -26,6 +26,16 @@ const JobResults = ({
       }
     : {};
 
+  const where: Prisma.JobWhereInput = {
+    AND: [
+      searchFilter,
+      type ? { type } : {},
+      location ? { location } : {},
+      remote ? { locationType: "Remote" } : {},
+      { approved: true },
+    ],
+  };
+
   return (
     <div className="grow space-y-4 overflow-hidden ">
       {jobs.map((job) => (
