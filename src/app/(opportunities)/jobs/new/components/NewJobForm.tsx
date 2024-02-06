@@ -236,7 +236,7 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
                         <div className="flex items-center">
                           <Input
                             id="applicationEmail"
-                            placeholder="Email e.g. xyzcompany@gmail.com"
+                            placeholder="Email"
                             type="email"
                             {...field}
                           />
@@ -254,10 +254,13 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
                     <FormItem className="grow">
                       <FormControl>
                         <Input
-                          id="applicationUrl"
-                          placeholder="URL e.g. https://example.com/jobs/1234"
+                          placeholder="Website URL e.g. https://example.com/jobs/1234"
                           type="url"
                           {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            trigger("applicationEmail");
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
