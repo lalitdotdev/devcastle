@@ -1,12 +1,13 @@
 import { Prisma } from "@prisma/client";
 import JobListItem from "./JobListItem";
 import { JobFilterValues } from "../../lib/validators/jobFilter";
+import { db } from "@/lib/db";
 
 interface JobResultsProps {
   filterValues: JobFilterValues;
 }
 
-const JobResults = ({
+const JobResults = async ({
   filterValues: { q, type, location, remote },
 }: JobResultsProps) => {
   const searchString = q
@@ -36,11 +37,24 @@ const JobResults = ({
     ],
   };
 
+  const jobs = await db.job.findMany({
+    where,
+    orderBy: { createdAt: "desc" },
+  });
+
   return (
     <div className="grow space-y-4 overflow-hidden ">
       {jobs.map((job) => (
         <JobListItem key={job.id} job={job} />
       ))}
+
+      {jobs.length === 0 && (
+        <div className="flex items-center justify-center h-64">
+          <p className="text-gray-500 text-xl font-semibold">
+            No jobs found. Try adjusting your search filters.
+          </p>
+        </div>
+      )}
     </div>
   );
 };
