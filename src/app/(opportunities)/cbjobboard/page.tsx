@@ -10,7 +10,7 @@ interface PageProps {
     q?: string;
     type?: string;
     location?: string;
-    remote?: boolean;
+    remote?: string;
     page?: string;
   };
 }
@@ -28,6 +28,7 @@ function getTitle({ q, type, location, remote }: JobFilterValues) {
 
   return `${titlePrefix}${titleSuffix}`;
 }
+
 export function generateMetadata({
   searchParams: { q, type, location, remote },
 }: PageProps): Metadata {
@@ -36,7 +37,7 @@ export function generateMetadata({
       q,
       type,
       location,
-      remote: Boolean(remote),
+      remote: remote === "true",
     })} | Campusbuddy Jobs`,
   };
 }
@@ -48,17 +49,8 @@ export default async function Jobboardpage({
     q,
     type,
     location,
-    remote: Boolean(remote === true),
+    remote: remote === "true",
   };
-
-  const jobs = await db.job.findMany({
-    where: {
-      approved: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
 
   const distinctLocations = (await db.job
     .findMany({
@@ -90,7 +82,7 @@ export default async function Jobboardpage({
           defaultValues={filterValues}
           distinctLocations={distinctLocations}
         />
-        <JobResults jobs={jobs} />
+        <JobResults filterValues={filterValues} />
       </section>
     </main>
   );
