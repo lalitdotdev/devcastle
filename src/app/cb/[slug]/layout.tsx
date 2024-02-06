@@ -9,20 +9,9 @@ import { notFound } from "next/navigation";
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/Button";
-import {
-  Activity,
-  Bot,
-  Flame,
-  Globe2,
-  Goal,
-  GripHorizontal,
-  Info,
-  Lightbulb,
-  Milestone,
-  Sticker,
-  Zap,
-} from "lucide-react";
+import { Activity, Goal } from "lucide-react";
 import ToFeedButton from "@/components/ToFeedButton";
+
 const Layout = async ({
   children,
   params: { slug },
