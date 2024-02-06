@@ -10,6 +10,8 @@ import { Button } from "../ui/Button";
 async function filterJobs(formData: FormData) {
   "use server";
 
+  //   throw new Error("Some error occured in filtering jobs!");
+
   const values = Object.fromEntries(formData.entries());
 
   const { q, type, location, remote } = jobFilterSchema.parse(values);
@@ -34,8 +36,8 @@ const JobFilterSidebar = ({
   distinctLocations,
 }: JobFilterSidebarProps) => {
   return (
-    <aside className="sticky top-12 md:top-24 h-fit rounded-lg border bg-[#1B1F23] p-4 md:w-[340px]">
-      <form action={filterJobs} key={JSON.stringify(defaultValues)}>
+    <aside className="sticky top-0 md:top-24 h-fit rounded-lg  bg-[#1B1F23] p-4 md:w-[340px]">
+      <form action={filterJobs}>
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
             <Label htmlFor="q">Search</Label>
@@ -89,7 +91,13 @@ const JobFilterSidebar = ({
             />
             <Label htmlFor="remote">Remote jobs</Label>
           </div>
-          <Button className="w-full border-2 border-indigo-600">
+
+          {/* Loader when applying filter and then show button */}
+
+          <Button
+            type="submit"
+            className="text-red-500 w-full border-2 border-red-600"
+          >
             Filter jobs
           </Button>
         </div>
