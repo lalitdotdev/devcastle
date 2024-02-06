@@ -63,7 +63,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
       const { data } = await axios.patch(`/api/editprofile/`, payload);
       return data;
     },
-    onError: err => {
+    onError: (err) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
@@ -91,7 +91,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   return (
     <form
       className={cn(className)}
-      onSubmit={handleSubmit(e => updateUserProfile(e))}
+      onSubmit={handleSubmit((e) => updateUserProfile(e))}
       {...props}
     >
       <Tabs defaultValue="tab1" className="md:w-[80%] items-center">
@@ -205,7 +205,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
               <CardFooter>
                 <Button
                   isLoading={isLoading}
-                  className="bg-transparent border hover:border-blue-500 text-gray"
+                  className="bg-[#4F46E5] text-gray-900 border hover:border-blue-500 "
                 >
                   Update Changes
                 </Button>
