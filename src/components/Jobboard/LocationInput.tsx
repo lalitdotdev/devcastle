@@ -41,12 +41,16 @@ export default forwardRef<HTMLInputElement, LocationInputProps>(
           ref={ref}
         />
         {locationSearchInput.trim() && hasFocus && (
-          <div className="absolute z-20 w-full divide-y rounded-b-lg border-x border-b bg-transparent shadow-xl">
+          <div
+            className="absolute z-20 w-full divide-y
+            divide-gray-600 rounded-md shadow-md top-full max-h-60 overflow-y-auto overflow-x-hidden border border-zinc-600
+            bg-[#282C35] focus:ring-indigo-600 "
+          >
             {!cities.length && <p className="p-3">No results found.</p>}
             {cities.map((city) => (
               <button
                 key={city}
-                className="block w-full p-2 text-start"
+                className="block w-full p-2 text-start hover:bg-indigo-600 hover:text-white transition-colors duration-200 ease-in-out focus:outline-none focus:bg-indigo-600 focus:text-white active:bg-indigo-600 active:text-white"
                 onMouseDown={(e) => {
                   e.preventDefault();
                   onLocationSelected(city);
