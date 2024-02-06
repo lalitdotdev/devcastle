@@ -29,14 +29,35 @@ export default forwardRef<HTMLInputElement, LocationInputProps>(
     }, [locationSearchInput]);
 
     return (
-      <div>
+      <div className="relative">
         <Input
+          placeholder="Search for a city..."
+          type="search"
           value={locationSearchInput}
           onChange={(e) => setLocationSearchInput(e.target.value)}
+          onFocus={() => setHasFocus(true)}
+          onBlur={() => setHasFocus(false)}
           {...props}
           ref={ref}
         />
-        <div>{JSON.stringify(cities)}</div>
+        {locationSearchInput.trim() && hasFocus && (
+          <div className="absolute z-20 w-full divide-y rounded-b-lg border-x border-b bg-transparent shadow-xl">
+            {!cities.length && <p className="p-3">No results found.</p>}
+            {cities.map((city) => (
+              <button
+                key={city}
+                className="block w-full p-2 text-start"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  onLocationSelected(city);
+                  setLocationSearchInput("");
+                }}
+              >
+                {city}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
