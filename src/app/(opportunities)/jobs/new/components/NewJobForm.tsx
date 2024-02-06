@@ -24,6 +24,7 @@ import { locationTypes } from "../../../../../lib/job-types";
 import LocationInput from "@/components/Jobboard/LocationInput";
 import { X } from "lucide-react";
 import Select from "@/components/Jobboard/Select";
+import { Label } from "@/components/ui/Label";
 
 interface NewJobFormProps {}
 
@@ -54,7 +55,7 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
   };
 
   return (
-    <main className="m-auto my-10 max-w-3xl space-y-10">
+    <main className="m-auto my-10 max-w-4xl space-y-10">
       <div className="space-y-5 text-center">
         <H1>Find your perfect developer.</H1>
 
@@ -131,10 +132,6 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
-                  <FormDescription>
-                    The name of the company that is hiring for this position
-                    (e.g. Google)
-                  </FormDescription>
 
                   <FormMessage />
                 </FormItem>
@@ -157,9 +154,6 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
                       }}
                     />
                   </FormControl>
-                  <FormDescription>
-                    A logo that represents the company (optional)
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -192,9 +186,6 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
                       ))}
                     </Select>
                   </FormControl>
-                  <FormDescription>
-                    Select the location type for this job (e.g. Remote, On-site)
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -227,13 +218,54 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
                       <span className="text-sm">{watch("location")}</span>
                     </div>
                   )}
-                  <FormDescription>
-                    The location of the job (optional)
-                  </FormDescription>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <div className="space-y-2">
+              <Label htmlFor="applicationEmail">How to apply</Label>
+              <div className="flex justify-between">
+                <FormField
+                  control={control}
+                  name="applicationEmail"
+                  render={({ field }) => (
+                    <FormItem className="grow">
+                      <FormControl>
+                        <div className="flex items-center">
+                          <Input
+                            id="applicationEmail"
+                            placeholder="Email e.g. xyzcompany@gmail.com"
+                            type="email"
+                            {...field}
+                          />
+                          <span className="mx-2">or</span>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="applicationUrl"
+                  render={({ field }) => (
+                    <FormItem className="grow">
+                      <FormControl>
+                        <Input
+                          id="applicationUrl"
+                          placeholder="URL e.g. https://example.com/jobs/1234"
+                          type="url"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
           </form>
         </Form>
       </div>
