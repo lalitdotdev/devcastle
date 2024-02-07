@@ -276,7 +276,9 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  {/* TODO: Label here as editor doesn't support id attribute so we have to see other methods to do so */}
+                  <Label onClick={() => setFocus("description")}>
+                    Description
+                  </Label>
                   <FormControl>
                     <RichTextEditor
                       onChange={(draft) =>
