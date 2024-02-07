@@ -25,6 +25,9 @@ import LocationInput from "@/components/Jobboard/LocationInput";
 import { X } from "lucide-react";
 import Select from "@/components/Jobboard/Select";
 import { Label } from "@/components/ui/Label";
+import RichTextEditor from "@/components/Jobboard/RichTextEditor";
+import { draftToMarkdown } from "markdown-draft-js";
+import LoadingButton from "@/components/Jobboard/LoadingButton";
 
 interface NewJobFormProps {}
 
@@ -34,7 +37,6 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
   });
 
   const {
-    register,
     handleSubmit,
     formState: { errors, isDirty, isSubmitting, isValid },
     watch,
@@ -269,6 +271,46 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
                 />
               </div>
             </div>
+            <FormField
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <Label onClick={() => setFocus("description")}>
+                    Description
+                  </Label>
+                  <FormControl>
+                    <RichTextEditor
+                      onChange={(draft) =>
+                        field.onChange(draftToMarkdown(draft))
+                      }
+                      ref={field.ref}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="salary"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Salary</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="number" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <LoadingButton
+              type="submit"
+              loading={isSubmitting}
+              className=" bg-[#4F46E5] rounded-none text-gray-900 font-semibold text-md focus:border-4"
+            >
+              Submit
+            </LoadingButton>
           </form>
         </Form>
       </div>
