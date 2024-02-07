@@ -171,7 +171,12 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
                       {...field}
                       defaultValue=""
                       className="bg-[#282C35]"
-                      //   TODO: Add onChange to trigger validation on location input change
+                      onChange={(e) => {
+                        field.onChange(e);
+                        if (e.currentTarget.value === "Remote") {
+                          trigger("location");
+                        }
+                      }}
                     >
                       <option value="" hidden>
                         Select an option
