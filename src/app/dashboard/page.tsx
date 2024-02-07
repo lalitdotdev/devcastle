@@ -5,7 +5,7 @@ import { UserNameForm } from "@/components/UserNameForm";
 import { db } from "@/lib/db";
 
 export const metadata = {
-  title: "Dashboard",
+  title: "Dashboard | Settings ",
   description: "Manage account and website settings.",
 };
 

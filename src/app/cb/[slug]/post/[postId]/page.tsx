@@ -10,10 +10,21 @@ import { ArrowBigDown, ArrowBigUp, Loader2 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CachedPost } from "../../../../../types/redis";
+import { Metadata } from "next";
 
 interface CommunityPostPageProps {
   params: {
     postId: string;
+  };
+}
+
+// generateMetadata for the page
+export function generateMetadata({
+  params: { postId },
+}: CommunityPostPageProps): Metadata {
+  return {
+    title: `Post | Community Post`,
+    description: `Post `,
   };
 }
 
@@ -25,7 +36,7 @@ export const fetchCache = "force-no-store";
 const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
   // get post info from redis cache (cached post info is stored in redis cache as a hash) and then render the page with the post info from redis cache
   const cachedPost = (await redis.hgetall(
-    `post:${params.postId}`,
+    `post:${params.postId}`
   )) as CachedPost;
 
   let post: (Post & { votes: Vote[]; author: User }) | null = null;

@@ -17,7 +17,7 @@ import { Metadata } from "next";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Home",
+    title: "Campusbuddy Home",
     description: "Welcome to Geek Utopia Warm Embrace",
   };
 }

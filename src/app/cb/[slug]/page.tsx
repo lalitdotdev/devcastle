@@ -3,6 +3,7 @@ import PostFeed from "@/components/Posts/PostFeed";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -11,6 +12,12 @@ interface PageProps {
   };
 }
 
+export function generateMetadata({ params: { slug } }: PageProps): Metadata {
+  return {
+    title: `c/${slug}`,
+    description: `Community ${slug}`,
+  };
+}
 const page = async ({ params }: PageProps) => {
   const { slug } = params;
   const session = await getAuthSession();

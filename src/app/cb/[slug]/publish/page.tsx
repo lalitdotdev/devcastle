@@ -10,6 +10,13 @@ interface PageProps {
   };
 }
 
+export function generateMetadata({ params: { slug } }: PageProps) {
+  return {
+    title: `Create Post | ${slug}`,
+    description: `Create a post in c/${slug}`,
+  };
+}
+
 const page = async ({ params }: PageProps) => {
   const community = await db.community.findFirst({
     where: {

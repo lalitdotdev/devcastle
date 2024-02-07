@@ -10,6 +10,7 @@ import axios, { AxiosError } from "axios";
 import { CreateCommunityPayload } from "@/lib/validators/community";
 import { toast } from "@/hooks/use-toast";
 import { useCustomToast } from "@/hooks/use-custom-toast";
+import { Castle } from "lucide-react";
 
 const Page = () => {
   const [communityName, setCommunityName] = useState<string>("");
@@ -37,7 +38,7 @@ const Page = () => {
       return data;
     },
 
-    onError: err => {
+    onError: (err) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
@@ -57,7 +58,7 @@ const Page = () => {
         variant: "destructive",
       });
     },
-    onSuccess: data => {
+    onSuccess: (data) => {
       router.push(`/cb/${data.name}`);
     },
   });
@@ -68,7 +69,7 @@ const Page = () => {
     setCharsRemaining(21 - event.target.value.length);
   };
   const handleDescriptionChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.value.length > 60) return;
     setCommunityDescription(event.target.value);
@@ -79,8 +80,8 @@ const Page = () => {
     <div className="container flex items-center h-full max-w-3xl mx-auto">
       <div className="relative bg-[#171b1f] w-full h-fit p-4 rounded-lg space-y-6 text-gray-400 border border-gray-500">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-semibold text-indigo-600">
-            Create a Community
+          <h1 className="text-xl font-semibold text-indigo-600 flex gap-2 items-center justify-center">
+            Create a Castle
           </h1>
         </div>
         <hr className="bg-indigo-600 h-[2px]" />
@@ -110,7 +111,7 @@ const Page = () => {
           )}
           <div>
             <p className="text-lg font-md pt-2 mt-2 text-indigo-600">
-              What is this community all about ?
+              What is this castle all about ?
             </p>
             <p className="text-xs pb-2 text-gray-500">
               Create a compelling short community description that grabs

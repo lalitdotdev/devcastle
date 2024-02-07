@@ -1,16 +1,32 @@
-import CustomFeed from '@/components/Feed/CustomFeed';
-import GeneralFeed from '@/components/Feed/GeneralFeed';
+import CustomFeed from "@/components/Feed/CustomFeed";
+import GeneralFeed from "@/components/Feed/GeneralFeed";
 
-import { getAuthSession } from '@/lib/auth';
-import { cn } from '@/lib/utils';
-import { AlertTriangle, HomeIcon } from 'lucide-react';
-import Link from 'next/link';
+import { getAuthSession } from "@/lib/auth";
 
+import { Metadata } from "next";
+
+export function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Record<string, string>;
+}): Metadata {
+  return {
+    title: "Curiosity Feed",
+    description: "All the latest updates from your campus community.",
+  };
+}
 const page = async () => {
   // TODO: {/* General feed ---> Logged Out
   // TODO: Custom Feed -----> Logged In */}
 
   const session = await getAuthSession();
+
+  if (session?.user.role === "ADMIN") {
+    // redirect(authOptions?.pages?.signIn || "/");
+    // redirect("/");
+  }
+
+  console.log("session", session);
 
   // if (!session?.user) {
   //   // redirect(authOptions?.pages?.signIn || "/");
@@ -19,7 +35,9 @@ const page = async () => {
 
   return (
     <div className="mx-auto max-w-5xl pt-8">
-      <h1 className="font-bold text-3xl md:text-4xl text-[#6366F1] ">Your feed</h1>
+      <h1 className="font-bold text-3xl md:text-4xl text-[#6366F1] ">
+        Your feed
+      </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
         {/* Display either custom feed or general feed */}
@@ -28,7 +46,7 @@ const page = async () => {
 
         {session ? <CustomFeed /> : <GeneralFeed />}
 
-        <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last ">
+        {/* <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last ">
           <div className="px-6 py-4 flex justify-between text-gray-300 bg-[#262a35]">
             <p className="font-semibold py-3 flex items-center gap-1.5">
               <HomeIcon size={30} />
@@ -57,7 +75,7 @@ const page = async () => {
               </Link>
             </div>
           </dl>
-        </div>
+        </div> */}
       </div>
     </div>
   );
