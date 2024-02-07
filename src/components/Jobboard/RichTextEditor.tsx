@@ -18,7 +18,7 @@ export default forwardRef<Object, EditorProps>(function RichTextEditor(
   return (
     <Editor
       editorClassName={cn(
-        "border rounded-md px-3 min-h-[150px] cursor-text ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ",
+        "border border-zinc-500 rounded-md px-3 min-h-[150px] cursor-text ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 bg-[#1B1F23] ",
         props.editorClassName
       )}
       toolbar={{
