@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
@@ -15,6 +16,16 @@ const getJob = cache(async (slug: string) => {
 
   return job;
 });
+
+export async function generateMetadata({
+  params: { slug },
+}: PageProps): Promise<Metadata> {
+  const job = await getJob(slug);
+
+  return {
+    title: job.title,
+  };
+}
 
 export default async function JobDetailsPage({ params: { slug } }: PageProps) {
   return (
