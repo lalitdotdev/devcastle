@@ -23,7 +23,7 @@ export default function JobDetailsPageComponent({
   },
 }: JobDetailsPageComponentProps) {
   return (
-    <section className="w-full grow space-y-5">
+    <section className="w-full grow space-y-5 bg-[#282C35] p-4">
       <div className="flex items-center gap-3">
         {companyLogoUrl && (
           <Image
@@ -36,7 +36,7 @@ export default function JobDetailsPageComponent({
         )}
         <div>
           <div>
-            <h1 className="text-xl font-bold border-b-4 border-indigo-600 ">
+            <h1 className="text-xl font-bold border-b-4 border-indigo-600 w-fit">
               {title}
             </h1>
 
