@@ -8,9 +8,9 @@
 .dark .cdx-button,
 .dark .ce-popover,
 .dark .ce-toolbar__plus:hover {
-  background: theme('colors.popover.DEFAULT');
+  background: theme("colors.popover.DEFAULT");
   color: #fff;
-  border-color: theme('colors.border');
+  border-color: theme("colors.border");
 }
 
 .dark .ce-inline-tool,
@@ -24,33 +24,33 @@
 .ce-toolbox__button,
 .ce-toolbar__plus {
   color: #808080;
-  border: 1px solid #808080;
+  border: 2px solid #808080;
 }
 
 /* hover class */
 
 .ce-toolbox__button,
 .ce-toolbar__plus:hover {
-  border-color: theme('colors.border');
+  border-color: theme("colors.border");
   background: transparent;
-  border: 1px solid #17309e;
+  border: 2px solid #17309e;
 }
 
 .dark .ce-popover__item-icon,
 .dark .ce-conversion-tool__icon {
-  background-color: theme('colors.muted.DEFAULT');
+  background-color: theme("colors.muted.DEFAULT");
   box-shadow: none;
 }
 
 .dark .cdx-search-field {
-  border-color: theme('colors.border');
-  background: theme('colors.input');
+  border-color: theme("colors.border");
+  background: theme("colors.input");
   color: inherit;
 }
 
 .dark ::selection {
-  background: theme('colors.accent.DEFAULT');
-  color: theme('colors.accent.foreground');
+  background: theme("colors.accent.DEFAULT");
+  color: theme("colors.accent.foreground");
 }
 
 .dark .cdx-settings-button:hover,
@@ -63,12 +63,12 @@
 .dark .ce-popover__item:hover,
 .dark .ce-conversion-tool:hover,
 .dark .ce-toolbar__settings-btn:hover {
-  background-color: theme('colors.accent.DEFAULT');
-  color: theme('colors.accent.foreground');
+  background-color: theme("colors.accent.DEFAULT");
+  color: theme("colors.accent.foreground");
 }
 
 .dark .cdx-notify--error {
-  background: theme('colors.destructive.DEFAULT') !important;
+  background: theme("colors.destructive.DEFAULT") !important;
 }
 
 .dark .cdx-notify__cross::after,
@@ -79,4 +79,18 @@
 
 .codex-editor__redactor {
   padding-bottom: 0 !important;
+}
+
+.ce-popover {
+  background: #282c35;
+  color: #fff;
+}
+
+.cdx-search-field {
+  background: #282c35;
+  border: 1px solid;
+}
+
+.ce-block__content {
+  color: #fff;
 }
