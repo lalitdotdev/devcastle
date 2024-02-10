@@ -10,8 +10,16 @@ import React from "react";
 
 // import CuriosityLogo from "./CuriosityLogo";
 
-import { Github, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
+import {
+  Github,
+  Instagram,
+  Linkedin,
+  Slack,
+  Twitter,
+  Youtube,
+} from "lucide-react";
 import { categories } from "@/lib/categories";
+import H1 from "./h1";
 
 function Footer() {
   const socialLinks = [
@@ -19,22 +27,27 @@ function Footer() {
     {
       name: "Youtube",
       icon: <Youtube />,
-      link: "https://www.youtube.com/KishanSheth21/",
+      link: "https://www.youtube.com/devcastle/",
     },
     {
       name: "LinkedIn",
       icon: <Linkedin />,
-      link: "https://www.linkedin.com/in/koolkishan/",
+      link: "https://www.linkedin.com/in/devcastle/",
     },
     {
       name: "Instagram",
       icon: <Instagram />,
-      link: "https://instagram.com/koolkishansheth",
+      link: "https://instagram.com/devcastle",
     },
     {
       name: "Twitter",
       icon: <Twitter />,
-      link: "https://twitter.com/koolkishansheth",
+      link: "https://twitter.com/devcastle",
+    },
+    {
+      name: "Slack",
+      icon: <Slack />,
+      link: "https://slack.com/devcastle",
     },
   ];
   const data = [
@@ -101,8 +114,8 @@ function Footer() {
     },
   ];
   return (
-    <footer className="max-w-7xl mx-auto px-32 py-16 h-max  text-indigo-400 border-t border-gray-600 bottom-0 sticky">
-      <ul className="flex justify-between">
+    <footer className="max-w-7xl mx-auto px-32 py-16 h-max  text-indigo-400 border-t border-gray-600">
+      {/* <ul className="flex justify-between">
         {data.map(({ headerName, links }) => {
           return (
             <li key={headerName} className="flex flex-col gap-2">
@@ -117,21 +130,47 @@ function Footer() {
             </li>
           );
         })}
-      </ul>
-      <div className="mt-12 flex items-center justify-between">
-        <p className="font-bold text-3xl text-indigo-600">
-          Curiosity <span className="text-gray-400">.</span>
-        </p>
+      </ul> */}
+
+      <div className=" flex items-center justify-between">
+        <div className="flex-col">
+          <H1 className="flex text-indigo-600">
+            DevCastle <span className="text-gray-400">.</span>{" "}
+          </H1>
+          <p className="text-sm text-muted-foreground">
+            Connecting talents with opportunities
+          </p>
+        </div>
+
         <ul className="flex gap-5">
           {socialLinks.map(({ icon, link, name }) => (
             <li
               key={name}
               className="text-xl text-gray-400 hover:text-[#1DBF73] transition-all"
             >
-              <Link href={link}>{icon}</Link>
+              <Link href={link} className="hover:text-indigo-600">
+                {icon}
+              </Link>
             </li>
           ))}
         </ul>
+      </div>
+      <div className=" text-sm text-muted-foreground">
+        © {new Date().getFullYear()} DevCastle , Inc. All rights reserved.
+      </div>
+      <div className="text-sm flex flex-grow text-muted-foreground gap-4 justify-end">
+        <Link href="/about" className="hover:underline">
+          About Us
+        </Link>
+        <Link href="/contact" className="hover:underline">
+          Contact
+        </Link>
+        <Link href="/terms" className="hover:underline">
+          Terms of Service
+        </Link>
+        <Link href="/privacy" className="hover:underline">
+          Privacy Policy
+        </Link>
       </div>
     </footer>
   );
