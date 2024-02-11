@@ -1,5 +1,6 @@
 import JobFilterSidebar from "@/components/Jobboard/JobFilterSidebar";
 import JobResults from "@/components/Jobboard/JobResults";
+import H1 from "@/components/h1";
 
 import { db } from "@/lib/db";
 import { JobFilterValues } from "@/lib/validators/jobFilter";
@@ -38,7 +39,7 @@ export function generateMetadata({
       type,
       location,
       remote: remote === "true",
-    })} | Campusbuddy Jobs`,
+    })} | DevCastle Jobs`,
   };
 }
 
@@ -65,9 +66,14 @@ export default async function Jobboardpage({
   return (
     <main className="max-w-5xl m-auto px-3 my-10 space-y-10 ">
       <div className="space-y-3">
-        <h1 className="text-3xl font-extrabold tracking-tight lg:text-5xl">
-          Job Board
-        </h1>
+        <H1>
+          {getTitle({
+            q,
+            type,
+            location,
+            remote: remote === "true",
+          })}
+        </H1>
         <p className="text-lg text-red-500">Companies Actively Hiring!</p>
 
         <p className="text-md text-muted-foreground">
