@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Backpack,
-  Brain,
-
-  Cross,
-  Feather,
-
-  TerminalSquare,
-} from "lucide-react";
+import { Backpack, Brain, Cross, Feather, TerminalSquare } from "lucide-react";
 
 import Link from "next/link";
 
@@ -16,7 +8,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
@@ -36,16 +27,27 @@ const RightNavContent = () => {
               </span>
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-[#1B1F23] text-gray-400 hidden md:block border border-gray-600 rounded-sm ">
+          <DropdownMenuContent className="bg-[#1B1F23] text-gray-400 hidden md:block border border-gray-600 rounded-sm p-2">
             <DropdownMenuItem className="cursor-pointer " asChild>
               <Link
                 href="/cb/create"
                 className={cn(
-                  "flex items-center justify-center font-semibold p-2 rounded-md transition-all duration-300 ease-in-out gap-2 border-b border-gray-600"
+                  "flex items-center justify-center font-semibold p-2 rounded-md transition-all duration-300 ease-in-out gap-2 border-b border-gray-600 bg-[#282C35]"
                 )}
               >
                 <Cross size={20} />
                 <span>New Castle</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer " asChild>
+              <Link
+                href="/courses/new"
+                className={cn(
+                  " font-semibold flex p-2  rounded-md transition-all duration-300 ease-in-out gap-2 border-b border-gray-600 bg-[#282C35]"
+                )}
+              >
+                <Brain size={22} />
+                <span>New Post</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer " asChild>
@@ -74,17 +76,6 @@ const RightNavContent = () => {
 
             <DropdownMenuSeparator className="bg-gray-600" />
 
-            <DropdownMenuItem className="cursor-pointer " asChild>
-              <Link
-                href="/courses/new"
-                className={cn(
-                  " font-semibold flex p-2 rounded-md transition-all duration-300 ease-in-out gap-2"
-                )}
-              >
-                <Brain size={22} />
-                New Course
-              </Link>
-            </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer " asChild>
               <Link
                 href="/projects/new"
