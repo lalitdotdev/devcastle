@@ -23,7 +23,7 @@ export default function JobDetailsPageComponent({
   },
 }: JobDetailsPageComponentProps) {
   return (
-    <section className="w-full grow space-y-5 bg-[#282C35] p-4">
+    <section className="w-full grow space-y-5 bg-[#282C35] p-4 border border-indigo-600 border-dashed">
       <div className="flex items-center gap-3">
         {companyLogoUrl && (
           <Image

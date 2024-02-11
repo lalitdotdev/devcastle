@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Label } from "../ui/Label";
 import { Input } from "../ui/Input";
 import Select from "./Select";
-import { Button } from "../ui/Button";
+import FormSubmitButton from "./FormSubmitButton";
 
 async function filterJobs(formData: FormData) {
   "use server";
@@ -36,7 +36,7 @@ const JobFilterSidebar = ({
   distinctLocations,
 }: JobFilterSidebarProps) => {
   return (
-    <aside className="sticky top-0 md:top-24 h-fit rounded-lg  bg-[#1B1F23] p-4 md:w-[340px]">
+    <aside className="sticky top-0 md:top-24 h-fit rounded-lg  bg-[#282C35] p-4 md:w-[340px]">
       <form action={filterJobs} key={JSON.stringify(defaultValues)}>
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
@@ -55,7 +55,7 @@ const JobFilterSidebar = ({
               id="type"
               name="type"
               defaultValue={defaultValues.type || ""}
-              className="bg-[#1B1F23]"
+              className="bg-[#282C35]"
             >
               <option value="">All types</option>
               {jobTypes.map((type) => (
@@ -71,7 +71,7 @@ const JobFilterSidebar = ({
               id="location"
               name="location"
               defaultValue={defaultValues.location || ""}
-              className="bg-[#1B1F23]"
+              className="bg-[#282C35]"
             >
               <option value="">All locations</option>
               {distinctLocations.map((location) => (
@@ -94,12 +94,9 @@ const JobFilterSidebar = ({
 
           {/* Loader when applying filter and then show button */}
 
-          <Button
-            type="submit"
-            className="text-red-500 w-full border-2 border-red-600"
-          >
+          <FormSubmitButton type="submit" className="bg-[#4F46E5] w-full ">
             Filter jobs
-          </Button>
+          </FormSubmitButton>
         </div>
       </form>
     </aside>

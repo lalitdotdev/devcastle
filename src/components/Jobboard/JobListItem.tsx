@@ -23,7 +23,7 @@ export default function JobListItem({
 }: JobListItemProps) {
   return (
     // consider giving hover class to article hover: shadow-lg
-    <article className="flex shadow-md gap-3 rounded-lg p-4 hover:shadow-lg border border-gray-700 bg-[#1B1F23]">
+    <article className="flex shadow-lg gap-3 rounded-lg p-4 hover:shadow-lg border border-zinc-700">
       <Image
         className="rounded-lg self-center"
         src={companyLogoUrl || compLogoPlaceholder}
