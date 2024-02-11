@@ -1,3 +1,5 @@
+// @ts-check
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -6,10 +8,6 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "7whi4qsyghrar8gh.public.blob.vercel-storage.com",
     ],
-  },
-  experimental: {
-    appDir: true,
-    serverActions: true,
   },
 };
 
