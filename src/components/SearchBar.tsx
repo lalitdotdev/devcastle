@@ -64,16 +64,16 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
   return (
     <Command
       ref={commandRef}
-      className="relative rounded-full max-w-lg z-50 overflow-visible bg-transparent border-gray-500 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 focus-within:ring-opacity-50"
+      className="relative max-w-[14rem] md:max-w-lg z-50 overflow-visible bg-transparent border border-zinc-500 hover:border-indigo-600 focus-within:ring-1  hover:border-dashed focus-within:ring-blue-500 focus-within:ring-opacity-50 rounded-lg p-2 border-dashed"
     >
       <CommandInput
         isLoading={isFetching}
-        onValueChange={text => {
+        onValueChange={(text) => {
           setInput(text);
           debounceRequest();
         }}
         value={input}
-        className="outline-none border-none focus:border-none focus:outline-none ring-0"
+        className="outline-none border-none focus:border-none focus:outline-none ring-0 "
         placeholder="Search communities..."
       />
 
@@ -82,9 +82,9 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
           {isFetched && <CommandEmpty>No results found.</CommandEmpty>}
           {(queryResults?.length ?? 0) > 0 ? (
             <CommandGroup heading="Unlock the gateway to a pulsating online realm, where like-minded souls converge to ignite your niche with limitless inspiration and connection!">
-              {queryResults?.map(Community => (
+              {queryResults?.map((Community) => (
                 <CommandItem
-                  onSelect={e => {
+                  onSelect={(e) => {
                     router.push(`/cb/${e}`);
                     router.refresh();
                   }}
