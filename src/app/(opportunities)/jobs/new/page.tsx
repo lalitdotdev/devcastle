@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import NewJobForm from "./components/NewJobForm";
+import NewJobForm from "./NewJobForm";
 
 export const metadata: Metadata = {
   title: "Post a new job",
