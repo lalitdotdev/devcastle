@@ -1,5 +1,8 @@
+import JobDetailsPageComponent from "@/components/Jobboard/JobDetailsPageComponent";
+import { Button } from "@/components/ui/Button";
 import { db } from "@/lib/db";
 import { Metadata } from "next";
+
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
@@ -28,7 +31,25 @@ export async function generateMetadata({
 }
 
 export default async function JobDetailsPage({ params: { slug } }: PageProps) {
+  const job = await getJob(slug);
+  const { applicationEmail, applicationUrl } = job;
+  const applicationLink = applicationEmail
+    ? `mailto:${applicationEmail}`
+    : applicationUrl;
+
+  if (!applicationLink) {
+    console.error("Job has no application link or email.");
+    notFound();
+  }
+
   return (
-    <main className="m-auto my-10 flex max-w-5xl flex-col items-center gap-5 px-3 md:flex-row md:items-start"></main>
+    <main className="m-auto my-10 flex max-w-5xl flex-col items-center gap-5 px-3 md:flex-row md:items-start">
+      <JobDetailsPageComponent job={job} />
+      <aside>
+        <Button variant="subtle" className="w-full md:w-fit">
+          <a href={applicationLink}>Apply Now</a>
+        </Button>
+      </aside>
+    </main>
   );
 }
