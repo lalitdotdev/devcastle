@@ -1,12 +1,7 @@
-
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { formatDistanceToNowStrict } from "date-fns";
 import locale from "date-fns/locale/en-US";
-
-import { useSession } from "next-auth/react";
-import { User } from "next-auth";
-import { UserRole } from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -61,18 +56,16 @@ export function formatTimeToNow(date: Date): string {
 }
 
 export function formatMoney(amount: number) {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
-  }
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+}
 
-  export function toSlug(str: string) {
-    return str
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
-  }
-
-
-//   utility function to check if logged in user role is 'ADMIN' in next-auth
+// convert a string to a slug (e.g. "Hello World" => "hello-world")
+export function toSlug(str: string) {
+  return str
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+}
