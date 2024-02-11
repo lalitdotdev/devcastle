@@ -11,8 +11,8 @@ export function generateMetadata({
   searchParams: Record<string, string>;
 }): Metadata {
   return {
-    title: "Curiosity Feed",
-    description: "All the latest updates from your campus community.",
+    title: "DevCastle Updates",
+    description: "All the latest updates from your castles.",
   };
 }
 const page = async () => {
@@ -26,7 +26,7 @@ const page = async () => {
     // redirect("/");
   }
 
-  console.log("session", session);
+  //   console.log("session", session);
 
   // if (!session?.user) {
   //   // redirect(authOptions?.pages?.signIn || "/");
