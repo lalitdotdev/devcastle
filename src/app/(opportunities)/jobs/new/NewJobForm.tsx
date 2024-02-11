@@ -12,8 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
-
-import { toast } from "@/hooks/use-toast";
 import { jobTypes } from "@/lib/job-types";
 import { CreateJobValues, createJobSchema } from "@/lib/validators/jobFilter";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +26,7 @@ import { Label } from "@/components/ui/Label";
 import RichTextEditor from "@/components/Jobboard/RichTextEditor";
 import { draftToMarkdown } from "markdown-draft-js";
 import LoadingButton from "@/components/Jobboard/LoadingButton";
+import { createJobPosting } from "./actions";
 
 interface NewJobFormProps {}
 
@@ -46,14 +45,30 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
     setFocus,
   } = form;
 
-  const onSubmit = async (data: CreateJobValues) => {
-    toast({
-      description: (
-        <pre>
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+  //   const onSubmit = async (data: CreateJobValues) => {
+  //     toast({
+  //       description: (
+  //         <pre>
+  //           <code>{JSON.stringify(data, null, 2)}</code>
+  //         </pre>
+  //       ),
+  //     });
+  //   };
+
+  const onSubmit = async (values: CreateJobValues) => {
+    const formData = new FormData();
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
+      }
     });
+
+    try {
+      await createJobPosting(formData);
+    } catch (error) {
+      alert("Something went wrong, please try again.");
+    }
   };
 
   return (
@@ -110,6 +125,7 @@ const NewJobForm: FC<NewJobFormProps> = ({}) => {
                       <option value="" hidden>
                         Select an option
                       </option>
+
                       {jobTypes.map((jobType) => (
                         <option key={jobType} value={jobType}>
                           {jobType}
