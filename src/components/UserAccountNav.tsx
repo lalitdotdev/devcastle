@@ -13,8 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
 
-// import { signOut } from "next-auth/react";
-
 interface UserAccountNavProps {
   user: Pick<User, "name" | "image" | "email">;
   username: string | null | undefined;
@@ -25,7 +23,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <UserAvatar
-          className="h-8 w-8 border-2 border-zinc-300 "
+          className="h-10 w-10"
           user={{
             name: user.name || null,
             image: user.image || null,
@@ -33,13 +31,13 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="bg-[#1B1F23] text-gray-400 w-48 border border-gray-700"
-        align="end"
+        className="bg-[#1B1F23] text-gray-400 w-48 border border-gray-700 rounded-none shadow-lg"
+        align="start"
       >
         {/* Link to /username */}
 
         <Link href={`/u/${username}`}>
-          <div className="flex items-center justify-start gap-2 p-2 text-gray-400">
+          <div className="flex items-center justify-start gap-2 p-2 text-gray-400 cursor-pointer">
             <div className="flex flex-col space-y-1 leading-none">
               {user.name && <p className="font-medium">{user.name}</p>}
               {user.email && (
@@ -51,16 +49,16 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
           </div>
         </Link>
 
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild className="cursor-pointer">
           <Link href="/feed">Feed</Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild className="cursor-pointer">
           <Link href="/dashboard">Dashboard</Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
-          <Link href="/cbjobboard">Job Opportunities</Link>
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href="/cbjobboard">Opportunities / Open Source Programs</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem
