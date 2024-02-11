@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function NotFound({ reset }: { reset: () => void }) {
   return (
     <div className="m-auto my-10  space-y-5 py-3 text-center items-center max-h-screen overflow-hidden justify-center">
-      <H1>404! Not Found</H1>
+      <H1 className="text-red-500">404! Not Found</H1>
       <p className="text-muted-foreground">
         Sorry, the page you are looking for does not exist.
       </p>
