@@ -1,27 +1,25 @@
 import Link from "next/link";
 
-import Image from "next/image";
 import SearchBar from "./SearchBar";
 
 import UserAccountNav from "./UserAccountNav";
-import { Button, buttonVariants } from "./ui/Button";
-import { getServerSession } from "next-auth";
+
 import { authOptions } from "@/lib/auth";
 import RightNavContent from "./RightNavContent";
-import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.svg";
-import { ThemeToggle } from "./ThemeToggle";
+
 import { TerminalSquare } from "lucide-react";
+import { buttonVariants } from "@/components/ui/Button";
+import { getServerSession } from "next-auth";
 
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <nav className="flex m-auto fixed h-fit top-0 inset-x-0  z-[10] py-2 align-center justify-center  bg-[#1B1F23] ">
-      <div className="container min-w-max mx-auto flex items-center justify-between ">
+    <nav className="flex m-auto fixed h-fit top-0  inset-x-0  z-[10] py-2 align-center justify-center  bg-[#1B1F23] ">
+      <div className="container min-w-max mx-auto flex items-center justify-between gap-2 ">
         <Link
           href="/"
-          className="items-center hidden gap-2 sm:flex text-gray-500"
+          className="items-center justify-center gap-2 sm:flex text-gray-500"
         >
           {/* <Image
             src={logo}
@@ -36,13 +34,18 @@ const Navbar = async () => {
             </div>
             <span className="text-green-600 mr-[1px]">campus</span>buddy
           </p> */}
+
           <TerminalSquare
             size={40}
             className="animate-pulse transition-all duration-800 ease-in-out text-indigo-600"
           />
-          <span className="">
-            {/* campusbuddy.networks */}
-            <span className=" text-md font-medium">Campusbuddy Network</span>
+
+          {/* campusbuddy.networks */}
+          <span className=" text-md font-medium hidden md:block">
+            DevCastle
+            {/* indigo colored dot but bit larger */}
+            <span className="text-indigo-600 text-2xl">.</span>
+            Network
           </span>
         </Link>
 
@@ -50,7 +53,7 @@ const Navbar = async () => {
         <SearchBar />
 
         <div className="flex">
-          <RightNavContent />
+          {session?.user?.email && <RightNavContent />}
 
           {/* TODO: THEMETOGGLE BUTTON HERE */}
 
