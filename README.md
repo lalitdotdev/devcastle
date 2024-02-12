@@ -1,31 +1,31 @@
-# CampusBuddy
+# DevCastle
 
-![campusbuddyv2](https://socialify.git.ci/mrExplorist/campusbuddyv2/image?description=1&descriptionEditable=An%20%20ultimate%20platform%20designed%20to%20empower%20students%20%F0%9F%9A%80%20with%20a%20rich%20array%20of%20features%2C%20fostering%20connectivity%20and%20%20collaboration.%20Actively%20Building%20%F0%9F%8F%97&font=Raleway&forks=1&issues=1&name=1&owner=1&pattern=Floating%20Cogs&pulls=1&stargazers=1&theme=Light)
+![devcastle](https://socialify.git.ci/mrExplorist/campusbuddyv2/image?description=1&descriptionEditable=An%20%20ultimate%20platform%20designed%20to%20empower%20students/developers%20%F0%9F%9A%80%20with%20a%20rich%20array%20of%20features%2C%20fostering%20connectivity%20and%20%20collaboration.%20Actively%20Building%20%F0%9F%8F%97&font=Raleway&forks=1&issues=1&name=1&owner=1&pattern=Floating%20Cogs&pulls=1&stargazers=1&theme=Light)
 
 ## Actively Building 🏗️
 
-CampusBuddy is a dynamic and vibrant online platform that serves as a hub for students to connect, collaborate, and thrive within their campus community and across campuses . 🎓✨
+DevCastle is a platform by the developers and for the developers to connect talents with opportunities. We are a community of developers, designers, and creators who are passionate about building and creating things. 🎓✨
 
 ## A small step in filling the gap faced by students and developers.
 
-With a strong emphasis on community building, CampusBuddy provides a space where students can engage in meaningful discussions within joined communities, share valuable resources, and find support from like-minded individuals. 🤝🌟
+With a strong emphasis on community building, DevCastle provides a space where students can engage in meaningful discussions within joined communities, share valuable resources, and find support from like-minded individuals. 🤝🌟
 
-CampusBuddy also offers a robust blogging platform, enabling students to share their experiences, insights, and expertise with the wider community. This creates an environment of knowledge sharing and inspires others to learn and grow. 📚📝
+DevCastle also offers a robust blogging platform, enabling students to share their experiences, insights, and expertise with the wider community. This creates an environment of knowledge sharing and inspires others to learn and grow. 📚📝
 
-In addition to its community and gig features, CampusBuddy serves as a comprehensive resource center, providing students with access to a vast array of educational materials, career guidance, and internship opportunities. 🎯🌐
+In addition to its community and gig features, DevCastle serves as a comprehensive resource center, providing students with access to a vast array of educational materials, career guidance, and internship opportunities. 🎯🌐
 
-With a user-friendly interface and seamless navigation, CampusBuddy aims to empower students and facilitate their personal and professional growth. Join CampusBuddy today and unlock endless opportunities for community, gigs, blogs, and resources as you navigate through your college journey. 🚀🔗
+With a user-friendly interface and seamless navigation, DevCastle aims to empower students and facilitate their personal and professional growth. Join CampusBuddy today and unlock endless opportunities for community, gigs, blogs, and resources as you navigate through your college journey. 🚀🔗
 
 ## Features
 
-CampusBuddy offers a variety of features to enhance the student experience on campus: :rocket:
+DevCastle offers a variety of features to enhance the student experience on campus: :rocket:
 
 ## Features
 
 | Feature                 | Description                                                                                                                                 |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Community Pages**     | CampusBuddy provides a platform for students to create and join communities centered around shared interests or extracurricular activities. |
-| **Blogs**               | CampusBuddy includes a blog section featuring articles written by students and faculty on various academic and non-academic topics.         |
+| **Community Pages**     | DevCastle provides a platform for students to create and join communities centered around shared interests or extracurricular activities. |
+| **Blogs**               | DevCastle includes a blog section featuring articles written by students and faculty on various academic and non-academic topics.         |
 | **Markdown Support**    | Users can create rich text posts with support for Markdown syntax.                                                                          |
 | **Comment System**      | Users can comment on posts and reply to other users' comments.                                                                              |
 | **Space**               | Host audio conferences within the community using a separate platform called Coderspaces, powered by CampusBuddy.                           |
@@ -82,16 +82,16 @@ Get information about various opportunities such as competitions, scholarships, 
 
 ## Getting Started
 
-To run CampusBuddy locally, follow these steps:
+To run DevCastle locally, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/campusbuddy.git`
+1. Clone the repository: `git clone https://github.com/your-username/devcastle.git`
 2. Install dependencies: `npm install`
 3. Start the development server: `npm run dev`
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Contributing
 
-We welcome contributions to CampusBuddy! To contribute, fork the repository, create a feature branch, and submit a pull request. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate. See the [CONTRIBUTING](CONTRIBUTING.md) file for more information.
+We welcome contributions to DevCastle! To contribute, fork the repository, create a feature branch, and submit a pull request. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate. See the [CONTRIBUTING](CONTRIBUTING.md) file for more information.
 
 ## Contact
 
