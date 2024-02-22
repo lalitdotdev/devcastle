@@ -14,6 +14,7 @@ import {
   UserCheck2,
   UserCog2,
 } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -38,6 +39,15 @@ const user = {
   followingCount: 20,
   articlesCount: 2,
 };
+
+// generate metadata for the page after /cb in slug
+
+export function generateMetadata({ params: { slug } }: pageProps): Metadata {
+  return {
+    title: `${slug} | Profile`,
+    description: `Profile of ${slug}`,
+  };
+}
 
 const Page = async ({ params }: pageProps) => {
   const { slug } = params;

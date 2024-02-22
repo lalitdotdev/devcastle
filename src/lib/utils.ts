@@ -54,3 +54,18 @@ export function formatTimeToNow(date: Date): string {
     },
   });
 }
+
+export function formatMoney(amount: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+}
+
+// convert a string to a slug (e.g. "Hello World" => "hello-world")
+export function toSlug(str: string) {
+  return str
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+}

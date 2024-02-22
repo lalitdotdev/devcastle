@@ -1,12 +1,12 @@
 // Handling the logic for api route /community/post/vote
 
-import { getAuthSession } from '@/lib/auth';
-import { db } from '@/lib/db';
-import { redis } from '@/lib/redis';
-import { PostVoteValidator } from '@/lib/validators/vote';
-import { CachedPost } from '@/types/redis';
+import { getAuthSession } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { redis } from "@/lib/redis";
+import { PostVoteValidator } from "@/lib/validators/vote";
+import { CachedPost } from "@/types/redis";
 
-import { z } from 'zod';
+import { z } from "zod";
 
 const CACHE_AFTER_UPVOTES = 1;
 // This API route is going to encapsulate One Piece One Central piece of the very very cool caching data logic that we're going to make use of in this application where we cache the most popular posts depending on UPVOTE and then we're able to fetch that data super quickly on the front end whenever somebody visits that post
@@ -21,7 +21,7 @@ export async function PATCH(req: Request) {
     const session = await getAuthSession();
 
     if (!session?.user) {
-      return new Response('Unauthorized', { status: 401 });
+      return new Response("Unauthorized", { status: 401 });
     }
 
     // check if user has already voted on this post
@@ -45,7 +45,7 @@ export async function PATCH(req: Request) {
     });
 
     if (!post) {
-      return new Response('Post not found', { status: 404 });
+      return new Response("Post not found", { status: 404 });
     }
 
     if (existingVote) {
@@ -62,14 +62,14 @@ export async function PATCH(req: Request) {
 
         // Recount the votes
         const votesAmt = post.votes.reduce((acc, vote) => {
-          if (vote.type === 'UPVOTE') return acc + 1;
-          if (vote.type === 'DOWNVOTE') return acc - 1;
+          if (vote.type === "UPVOTE") return acc + 1;
+          if (vote.type === "DOWNVOTE") return acc - 1;
           return acc;
         }, 0);
 
         if (votesAmt >= CACHE_AFTER_UPVOTES) {
           const cachePayload: CachedPost = {
-            authorUsername: post.author.username ?? '',
+            authorUsername: post.author.username ?? "",
             content: JSON.stringify(post.content),
             id: post.id,
             title: post.title,
@@ -80,7 +80,7 @@ export async function PATCH(req: Request) {
           await redis.hset(`post:${postId}`, cachePayload); // Store the post data as a hash
         }
 
-        return new Response('OK');
+        return new Response("OK");
       }
 
       // if vote type is different, update the vote
@@ -98,8 +98,8 @@ export async function PATCH(req: Request) {
 
       // Recount the votes
       const votesAmt = post.votes.reduce((acc, vote) => {
-        if (vote.type === 'UPVOTE') return acc + 1;
-        if (vote.type === 'DOWNVOTE') return acc - 1;
+        if (vote.type === "UPVOTE") return acc + 1;
+        if (vote.type === "DOWNVOTE") return acc - 1;
         return acc;
       }, 0);
 
@@ -107,7 +107,7 @@ export async function PATCH(req: Request) {
 
       if (votesAmt >= CACHE_AFTER_UPVOTES) {
         const cachePayload: CachedPost = {
-          authorUsername: post.author.username ?? '',
+          authorUsername: post.author.username ?? "",
           content: JSON.stringify(post.content),
           id: post.id,
           title: post.title,
@@ -118,7 +118,7 @@ export async function PATCH(req: Request) {
         await redis.hset(`post:${postId}`, cachePayload); // Store the post data as a hash
       }
 
-      return new Response('OK');
+      return new Response("OK");
     }
 
     // if no existing vote, create a new vote
@@ -132,8 +132,8 @@ export async function PATCH(req: Request) {
 
     // Recount the votes
     const votesAmt = post.votes.reduce((acc, vote) => {
-      if (vote.type === 'UPVOTE') return acc + 1;
-      if (vote.type === 'DOWNVOTE') return acc - 1;
+      if (vote.type === "UPVOTE") return acc + 1;
+      if (vote.type === "DOWNVOTE") return acc - 1;
       return acc;
     }, 0);
 
@@ -141,7 +141,7 @@ export async function PATCH(req: Request) {
 
     if (votesAmt >= CACHE_AFTER_UPVOTES) {
       const cachePayload: CachedPost = {
-        authorUsername: post.author.username ?? '',
+        authorUsername: post.author.username ?? "",
         content: JSON.stringify(post.content),
         id: post.id,
         title: post.title,
@@ -152,13 +152,13 @@ export async function PATCH(req: Request) {
       await redis.hset(`post:${postId}`, cachePayload); // Store the post data as a hash
     }
 
-    return new Response('OK');
+    return new Response("OK");
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response('Invalid PATCH request data passed', { status: 400 });
+      return new Response("Invalid PATCH request data passed", { status: 400 });
     }
 
-    return new Response('Could not register your vote. Please try later', {
+    return new Response("Could not register your vote. Please try later", {
       status: 500,
     });
   }

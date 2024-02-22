@@ -6,15 +6,25 @@ import { getAuthSession } from "@/lib/auth";
 import Image from "next/image";
 import SignIn from "@/components/Auth/SignIn";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
 // const SignIn = dynamic(
 //   async () => (await import("@/components/Auth/SignIn")).default,
 //   {
 //     ssr: false,
 //   },
+
 // );
+
+export function generateMetadata(): Metadata {
+  return {
+    title: "DevCastle - Geek Utopia Warm Embrace",
+    description: "Welcome to Geek Utopia Warm Embrace",
+  };
+}
+
 export default async function Home() {
   const session = await getAuthSession();
-
   if (session?.user) {
     redirect("/feed");
   }

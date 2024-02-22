@@ -72,10 +72,10 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border scrollbar-thin !scrollbar-track-gray-600 !scrollbar-thumb-[#282C35];
   }
   body {
-    @apply bg-background text-foreground !scrollbar-thin !scrollbar-track-transparent !scrollbar-thumb-[#212329];
+    @apply bg-background text-foreground !scrollbar-thin !scrollbar-track-transparent !scrollbar-thumb-[#282C35];
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }

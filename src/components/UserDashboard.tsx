@@ -36,13 +36,19 @@ import {
   SelectValue,
 } from "./ui/select";
 
-interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
+import H1 from "./h1";
+
+interface UserDashboardProps extends React.HTMLAttributes<HTMLFormElement> {
   user: Pick<User, "id" | "username" | "image" | "about">;
 }
 
 type FormData = z.infer<typeof UserProfileValidator>;
 
-export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
+export function UserDashboard({
+  user,
+  className,
+  ...props
+}: UserDashboardProps) {
   const router = useRouter();
   const {
     handleSubmit,
@@ -63,7 +69,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
       const { data } = await axios.patch(`/api/editprofile/`, payload);
       return data;
     },
-    onError: err => {
+    onError: (err) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
@@ -91,18 +97,18 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   return (
     <form
       className={cn(className)}
-      onSubmit={handleSubmit(e => updateUserProfile(e))}
+      onSubmit={handleSubmit((e) => updateUserProfile(e))}
       {...props}
     >
       <Tabs defaultValue="tab1" className="md:w-[80%] items-center">
         <Tabs defaultValue="account" className="w-full">
           <div className="border-b border-gray-500">
-            <TabsList className="grid grid-cols-5  md:w-[45%]">
+            <TabsList className="grid grid-cols-6  md:w-[50%] gap-4">
               <TabsTrigger value="account">Account</TabsTrigger>
               <TabsTrigger value="articles">Articles</TabsTrigger>
               <TabsTrigger value="bookmarks">BookMarks</TabsTrigger>
               <TabsTrigger value="gigs">Gigs</TabsTrigger>
-
+              <TabsTrigger value="kanban">Kanban</TabsTrigger>
               <TabsTrigger value="imports">Imports</TabsTrigger>
             </TabsList>
           </div>
@@ -110,7 +116,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
             <Card className="border-none">
               <CardHeader>
                 <CardTitle className="text-lg font-medium leading-6">
-                  Personal Information
+                  <H1>Personal Information</H1>
                 </CardTitle>
                 <CardDescription className="flex flex-wrap max-w-[80%]">
                   We value your information as it enables us to curate
@@ -212,6 +218,86 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
               </CardFooter>
             </Card>
           </TabsContent>
+          <TabsContent value="articles">
+            <Card>
+              <CardHeader>
+                <CardTitle>Articles</CardTitle>
+                <CardDescription>
+                  <H1>
+                    Your articles are a great way to share your knowledge with
+                    the community.
+                  </H1>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>Articles</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="bookmarks">
+            <Card>
+              <CardHeader>
+                <CardTitle>Bookmarks</CardTitle>
+                <CardDescription>
+                  <H1>
+                    Your bookmarks are a great way to save your favorite
+                    articles , resources , posts and more.
+                  </H1>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>Bookmarks</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="gigs">
+            <Card>
+              <CardHeader>
+                <CardTitle>Gigs and Colloborative Projects</CardTitle>
+                <CardDescription>
+                  <H1>
+                    Your created gigs and projects to showcase your work and
+                    find collaborators.
+                  </H1>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>Gigs</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="kanban">
+            <Card>
+              <CardHeader>
+                <CardTitle>Kanban</CardTitle>
+                <CardDescription>
+                  <H1>
+                    Your kanban board is a great way to organize your tasks and
+                    keep track of your progress on projects , tasks , job
+                    applications and more.
+                  </H1>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>{/* Custom kanban here */}</CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="imports">
+            <Card>
+              <CardHeader>
+                <CardTitle>Imports and RSS Feed</CardTitle>
+                <CardDescription>
+                  <H1>
+                    Your imports are a great way to import your data from other
+                    platforms and rss feeds.
+                  </H1>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>Imports</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* <TabsContent value="password">
             <Card>
               <CardHeader>

@@ -19,6 +19,7 @@ module.exports = {
       backgroundImage: {
         "rec-pattern": "url('/assets/images/recCommsArt.svg')",
         "footer-texture": "url('/img/footer-texture.png')",
+        "castle-art": "url('/assets/images/castle-art.jpg')",
       },
 
       colors: {

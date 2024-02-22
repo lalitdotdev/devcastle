@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 
 import { authOptions, getAuthSession } from "@/lib/auth";
-import { UserNameForm } from "@/components/UserNameForm";
+
 import { db } from "@/lib/db";
+import { UserDashboard } from "@/components/UserDashboard";
 
 export const metadata = {
-  title: "Dashboard",
+  title: "Dashboard | Settings ",
   description: "Manage account and website settings.",
 };
 
@@ -31,7 +32,7 @@ export default async function SettingsPage() {
     <div className="max-w-6xl mx-auto ">
       <div className="grid items-start gap-2">
         <div className="grid ">
-          <UserNameForm
+          <UserDashboard
             user={{
               id: session.user.id,
               username: session?.user.username || "",

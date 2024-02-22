@@ -12,18 +12,23 @@ export const UserRegisterationValidator = z.object({
     .max(30, {
       message: "Username must not be longer than 30 characters.",
     }),
-  email: z.string().email() || z.string().min(2).max(30),
+  email:
+    z.string().email({
+      message: "Email is required!.",
+    }) || z.string().min(2).max(30),
   password: z
     .string()
     .min(8)
     .max(50)
-    .refine(value => passwordPattern.test(value), {
+    .refine((value) => passwordPattern.test(value), {
       message:
         "Password must be at least 8 characters long and contain at least one letter, one number, and one special character (@$!%*#?&).",
     }),
 });
 
 export const UserLoginValidator = z.object({
-  email: z.string().email(),
+  email: z.string().email({
+    message: "Email is required !",
+  }),
   password: z.string(),
 });
