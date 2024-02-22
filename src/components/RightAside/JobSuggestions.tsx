@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { FC } from 'react'
 import { Separator } from '../ui/separator'
 import { Button } from '../ui/Button'
-'
 
 interface JobSuggestionsProps {
     newJobPostings: Job[]
