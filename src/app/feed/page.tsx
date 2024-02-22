@@ -1,84 +1,97 @@
 import CustomFeed from "@/components/Feed/CustomFeed";
 import GeneralFeed from "@/components/Feed/GeneralFeed";
+import RightAside from "@/components/RightAside/RightAside";
+
 
 import { getAuthSession } from "@/lib/auth";
+import { db } from "@/lib/db";
+
 
 import { Metadata } from "next";
 
+
 export function generateMetadata({
-  searchParams,
+    searchParams,
 }: {
-  searchParams: Record<string, string>;
+    searchParams: Record<string, string>;
 }): Metadata {
-  return {
-    title: "DevCastle Updates",
-    description: "All the latest updates from your castles.",
-  };
+    return {
+        title: "DevCastle Updates",
+        description: "All the latest updates from your castles.",
+    };
 }
 const page = async () => {
-  // TODO: {/* General feed ---> Logged Out
-  // TODO: Custom Feed -----> Logged In */}
+    // TODO: {/* General feed ---> Logged Out
+    // TODO: Custom Feed -----> Logged In */}
 
-  const session = await getAuthSession();
+    const session = await getAuthSession();
 
-  if (session?.user.role === "ADMIN") {
-    // redirect(authOptions?.pages?.signIn || "/");
-    // redirect("/");
-  }
+    if (session?.user.role === "ADMIN") {
+        // redirect(authOptions?.pages?.signIn || "/");
+        // redirect("/");
+    }
 
-  //   console.log("session", session);
+    const communities = await db.community.findMany({
+        take: 5,
+        orderBy: {
+            subscribers: {
+                _count: "desc",
+            },
+        },
+    })
 
-  // if (!session?.user) {
-  //   // redirect(authOptions?.pages?.signIn || "/");
-  //   redirect("/");
-  // }
+    // Get 5 new job postings based on the createdAt date and display them in the right aside component
 
-  return (
-    <div className="mx-auto max-w-5xl pt-8">
-      <h1 className="font-bold text-3xl md:text-4xl text-[#6366F1] ">
-        Your feed
-      </h1>
+    const newJobPostings = await db.job.findMany({
+        take: 5,
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
-        {/* Display either custom feed or general feed */}
 
-        {/* @ts-expect-error server component */}
 
-        {session ? <CustomFeed /> : <GeneralFeed />}
 
-        {/* <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last ">
-          <div className="px-6 py-4 flex justify-between text-gray-300 bg-[#262a35]">
-            <p className="font-semibold py-3 flex items-center gap-1.5">
-              <HomeIcon size={30} />
-              Home Feed
-            </p>
-            <span className="mr-4 text-[#ffc107]">
-              <AlertTriangle size={30} />
-            </span>
-          </div>
-          <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm ">
-            <div className="justify-between gap-x-4 py-3">
-              <div className="bg-[#1a1e26] rounded-md p-4 shadow-md">
-                <p className="text-zinc-300 whitespace-normal">
-                  Dive into creativity with <span className="font-semibold text-zinc-400">ArtNPhilosophy</span> or
-                  explore opportunities in <span className="font-semibold text-zinc-400">RemoteGigs</span>. <br />✨
-                  Start by searching from the bar and join the conversation!
-                </p>
-              </div>
+
+
+
+    //   console.log("session", session);
+
+    // if (!session?.user) {
+    //   // redirect(authOptions?.pages?.signIn || "/");
+    //   redirect("/");
+    // }
+
+
+
+
+    // check if user is subscribed to community or not if user is logged in then show leave community button and if not then show join community button
+
+
+    // return (
+    //     <pre className="mt-16 text-white">
+    //         {JSON.stringify(communities, null, 2)}
+    //     </pre>
+    // );
+
+    return (
+        <div className="mx-auto max-w-5xl pt-8">
+            <h1 className="font-bold text-3xl md:text-4xl text-[#6366F1] ">
+                Your feed
+            </h1>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
+                {/* Display either custom feed or general feed */}
+
+                {/* @ts-expect-error server component */}
+
+                {session ? <CustomFeed /> : <GeneralFeed />}
+                <RightAside communities={communities} newJobPostings={newJobPostings} />
+
+
             </div>
-
-            <div className=" text-zinc-300 rounded-md mb-2 border ">
-              <Link className={cn('flex flex-col justify-center items-center p-2')} href="/cb/create">
-                <div className="flex gap-2  p-1">
-                  <span className="mt-1 font-semibold">Create Community</span>
-                </div>
-              </Link>
-            </div>
-          </dl>
-        </div> */}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default page;

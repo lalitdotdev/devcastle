@@ -1,48 +1,13 @@
-import { Prisma } from "@prisma/client";
+import { Job } from "@prisma/client";
 import JobListItem from "./JobListItem";
-import { JobFilterValues } from "../../lib/validators/jobFilter";
-import { db } from "@/lib/db";
+
 import Link from "next/link";
 
 interface JobResultsProps {
-  filterValues: JobFilterValues;
+  jobs: Job[];
 }
 
-const JobResults = async ({
-  filterValues: { q, type, location, remote },
-}: JobResultsProps) => {
-  const searchString = q
-    ?.split(" ")
-    .filter((word) => word.length > 0)
-    .join(" & ");
-
-  const searchFilter: Prisma.JobWhereInput = searchString
-    ? {
-        OR: [
-          { title: { search: searchString } },
-          { companyName: { search: searchString } },
-          { type: { search: searchString } },
-          { locationType: { search: searchString } },
-          { location: { search: searchString } },
-        ],
-      }
-    : {};
-
-  const where: Prisma.JobWhereInput = {
-    AND: [
-      searchFilter,
-      type ? { type } : {},
-      location ? { location } : {},
-      remote ? { locationType: "Remote" } : {},
-      { approved: true },
-    ],
-  };
-
-  const jobs = await db.job.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-  });
-
+const JobResults = ({ jobs }: JobResultsProps) => {
   return (
     <div className="grow space-y-4 overflow-hidden ">
       {jobs.map((job) => (

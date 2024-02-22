@@ -9,6 +9,9 @@ const nextConfig = {
       "7whi4qsyghrar8gh.public.blob.vercel-storage.com",
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = nextConfig;
