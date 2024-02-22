@@ -288,7 +288,7 @@ const NewJobForm: FC<NewJobFormProps> = ({ }) => {
                                 />
                             </div>
                         </div>
-                        {/* <FormField
+                        <FormField
                             control={control}
                             name="description"
                             render={({ field }) => (
@@ -307,7 +307,7 @@ const NewJobForm: FC<NewJobFormProps> = ({ }) => {
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        /> */}
+                        />
                         <FormField
                             control={control}
                             name="salary"
