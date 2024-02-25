@@ -23,26 +23,26 @@ import H1 from "./h1";
 
 function Footer() {
     const socialLinks = [
-        { name: "Github", icon: <Github />, link: "https://www.github.com" },
+        { name: "Github", icon: <Github />, link: "https://www.github.com/mrExplorist/devcastle" },
         {
             name: "Youtube",
             icon: <Youtube />,
-            link: "https://www.youtube.com/devcastle/",
+            link: "https://www.youtube.com",
         },
         {
             name: "LinkedIn",
             icon: <Linkedin />,
-            link: "https://www.linkedin.com/in/devcastle/",
+            link: "https://www.linkedin.com/in/pinglalit",
         },
         {
             name: "Instagram",
             icon: <Instagram />,
-            link: "https://instagram.com/devcastle",
+            link: "https://instagram.com",
         },
         {
             name: "Twitter",
             icon: <Twitter />,
-            link: "https://twitter.com/devcastle",
+            link: "https://twitter.com/Mr_Explorist",
         },
         {
             name: "Slack",
