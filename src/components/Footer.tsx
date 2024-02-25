@@ -23,7 +23,7 @@ import H1 from "./h1";
 
 function Footer() {
     const socialLinks = [
-        { name: "Github", icon: <Github />, link: "https://www.github.com/mrExplorist" },
+        { name: "Github", icon: <Github />, link: "https://www.github.com/mrExplorist/devcastle" },
         {
             name: "Youtube",
             icon: <Youtube />,
