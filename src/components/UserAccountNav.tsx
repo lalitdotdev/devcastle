@@ -1,9 +1,10 @@
 "use client";
 
-import { Activity, BookMarked, Briefcase, FilePlus, FolderKanban, Newspaper, TrendingUp, UserCog, User as UserIcon } from "lucide-react";
+import { Activity, BookMarked, BookOpenCheck, Briefcase, FilePlus, FolderKanban, GraduationCap, HeartHandshake, HelpingHand, Newspaper, TrendingUp, UserCog, User as UserIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetTrigger } from "./ui/sheet";
 
 import { FC } from "react";
+import { Github } from "lucide-react";
 import { Library } from "lucide-react";
 import Link from "next/link";
 import { Separator } from "./ui/separator";
@@ -33,7 +34,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                             />
                         </div>
                     </SheetTrigger>
-                    <SheetContent className="w-[380px] sm:w-[400px]  bg-[#1B1F23] text-gray-400 border border-gray-600 rounded-l-2xl p-4 text-sm overflow-hidden">
+                    <SheetContent className="w-[380px] sm:w-[400px]  bg-[#1B1F23] text-gray-400 border border-gray-600 rounded-l-2xl p-4 text-sm overflow-hidden data-[state=closed]:animate-out">
                         <div className="space-y-1">
                             <div className="flex items-center justify-start gap-2 p-2 text-gray-400 ">
                                 <div className="flex gap-4 items-center jc space-y-1 leading-none">
@@ -90,6 +91,19 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 <span>Your BookMarks </span>
                             </Link>
 
+                            <Separator className="bg-gray-700" />
+                            <SheetDescription className="text-xs">Professional Connections and get Mentorship</SheetDescription>
+                            <Link href="/network" className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2")}>
+                                <GraduationCap size={22} />
+                                <span>Gain Mentorship</span>
+                            </Link>
+
+                            <Link href="/network" className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2")}>
+                                <HeartHandshake size={22} />
+                                <span>
+                                    Professional Network
+                                </span>
+                            </Link>
 
                             <Separator className="bg-gray-700" />
                             <SheetDescription className="text-xs">Find and post Opportunities</SheetDescription>
@@ -98,7 +112,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 <span>Post an Opportunity</span>
                             </Link>
                             <Link
-                                href="/cbjobboard"
+                                href="/opportunities"
                                 className={cn(
                                     "flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2"
                                 )}
@@ -109,21 +123,31 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
 
                             <Link href="/articles/publish" className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2")}>
                                 <Library size={22} />
-                                <span>Free Resources</span>
+                                <span>Free Resources and Tools</span>
                             </Link>
+
                             <Link href="/articles/categories/all" className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2")}>
                                 <Newspaper size={22} />
                                 <span>Articles</span>
                             </Link>
-
+                            <Separator className="bg-gray-700" />
+                            <SheetDescription className="text-xs">Catalog and Archives to get you inspired</SheetDescription>
                             <Link href="/startups/catalog" className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2")}>
                                 <TrendingUp size={22} />
                                 <span>Startup Archives </span>
                             </Link>
 
+                            <Link href="/interviews/catalog" className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2")}>
+                                <BookOpenCheck size={22} />
+                                <span>Interview Catalog </span>
+                            </Link>
+
                             <Separator className="bg-gray-700 " />
+
+
+
                             <SheetFooter>
-                                <div className="cursor-pointer justify-end bottom-0 my-auto left-0 flex-grow p-2 mt-2" onClick={
+                                <div className="cursor-pointer justify-end bottom-0 my-auto left-0 flex-grow " onClick={
                                     (event) => {
                                         event.preventDefault();
                                         signOut({
@@ -133,47 +157,17 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 }>
                                     Sign Out
                                 </div>
+                                <div className="flex gap-2">
+                                    <Link href="https://github.com/mrExplorist/devcastle" className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2 hover:text-blue-800")}>
+                                        <Github size={24} />
+                                    </Link>
+
+                                    <Link href="" className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2 hover:text-blue-800")}>
+                                        <HelpingHand size={26} />
+                                    </Link>
+                                </div>
                             </SheetFooter>
                         </div>
-
-                        {/* <DropdownMenuItem className="cursor-pointer " asChild>
-                            <Link
-                                href="/jobs/new"
-                                className={cn(
-                                    " font-semibold flex p-2 rounded-md transition-all duration-300 ease-in-out gap-2"
-                                )}
-                            >
-                                <Backpack size={22} />
-                                Post a Job
-                            </Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem className="cursor-pointer " asChild>
-                            <Link
-                                href="/articles/publish"
-                                className={cn(
-                                    " font-semibold flex p-2 rounded-md transition-all duration-300 ease-in-out gap-2"
-                                )}
-                            >
-                                <Feather size={22} />
-                                New Article
-                            </Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator className="bg-gray-600" />
-
-                        <DropdownMenuItem className="cursor-pointer " asChild>
-                            <Link
-                                href="/projects/new"
-                                className={cn(
-                                    " font-semibold flex p-2 rounded-md transition-all duration-300 ease-in-out gap-2"
-                                )}
-                            >
-
-                                <TerminalSquare size={22} />
-                                New Project
-                            </Link>
-                        </DropdownMenuItem> */}
                     </SheetContent>
                 </Sheet>
             </div>
