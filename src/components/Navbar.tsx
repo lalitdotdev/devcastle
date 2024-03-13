@@ -1,13 +1,10 @@
 import Link from "next/link";
-
-import SearchBar from "./SearchBar";
-
-import UserAccountNav from "./UserAccountNav";
-
-import { authOptions } from "@/lib/auth";
 import RightNavContent from "./RightNavContent";
-
+import SearchBar from "./SearchBar";
+import { Separator } from "./ui/separator";
 import { TerminalSquare } from "lucide-react";
+import UserAccountNav from "./UserAccountNav";
+import { authOptions } from "@/lib/auth";
 import { buttonVariants } from "@/components/ui/Button";
 import { getServerSession } from "next-auth";
 
@@ -15,11 +12,11 @@ const Navbar = async () => {
     const session = await getServerSession(authOptions);
 
     return (
-        <nav className="flex m-auto fixed h-fit top-0  inset-x-0  z-[10] py-2 align-center justify-center  bg-[#1B1F23] ">
-            <div className="container min-w-max mx-auto flex items-center justify-between gap-2 ">
+        <nav className="m-auto fixed h-fit top-0  z-[10] py-2 align-center justify-center  bg-[#1B1F23]  left-0 w-full px-4 ">
+            <div className="max-w-7xl justify-between min-w-max mx-auto flex items-center  gap-2 ">
                 <Link
                     href="/"
-                    className="items-center justify-center gap-2 sm:flex text-gray-500"
+                    className="items-center justify-center gap-2 sm:flex text-zinc-400"
                 >
                     {/* <Image
             src={logo}
@@ -41,32 +38,37 @@ const Navbar = async () => {
                     />
 
                     {/* devcastle.networks */}
-                    <span className="font-semibold hidden md:block items-center justify-center">
-                        DevCastle
+                    <span className="font-semibold hidden md:block items-center justify-center text-xl">
+                        devcastle
                         {/* indigo colored dot but bit larger */}
-                        <span className=" text-[#6366F1] ">.network</span>
                     </span>
                 </Link>
 
                 {/* Search-Bar */}
-                <SearchBar />
+                <div className="flex justify-center items-center gap-3">
+                    <SearchBar />
+                    <Separator orientation="vertical" className="h-6 w-0.5 bg-zinc-600" />
 
-                <div className="flex">
-                    {session?.user?.email && <RightNavContent />}
+                    <div className="flex">
+                        {session?.user?.email && <RightNavContent />}
 
-                    {/* TODO: THEMETOGGLE BUTTON HERE */}
+                        {/* TODO: THEMETOGGLE BUTTON HERE */}
 
-                    {/* actions */}
-                    {session?.user ? (
-                        <UserAccountNav
-                            user={session.user}
-                            username={session?.user?.username}
-                        />
-                    ) : (
-                        <Link href="/sign-in" className={buttonVariants()}>
-                            Sign In
-                        </Link>
-                    )}
+                        {/* actions */}
+                        {session?.user ? (
+                            <UserAccountNav
+                                user={session.user}
+                                username={session?.user?.username}
+                            />
+                        ) : (
+                            <Link href="/sign-in" className={buttonVariants({
+                                size: "sm",
+                                className: "text-zinc-300 border border-zinc-500 "
+                            })}>
+                                SignIn
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
         </nav>
