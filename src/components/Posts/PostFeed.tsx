@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, Suspense, useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 
 import { ExtendedPost } from "@/types/db.d";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
