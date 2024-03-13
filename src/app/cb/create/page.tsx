@@ -1,17 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
+
+import { Button } from "@/components/ui/Button";
 import { CreateCommunityPayload } from "@/lib/validators/community";
+import H1 from "@/components/h1";
+import { Input } from "@/components/ui/Input";
 import { toast } from "@/hooks/use-toast";
 import { useCustomToast } from "@/hooks/use-custom-toast";
-import { Castle } from "lucide-react";
-import H1 from "@/components/h1";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const Page = () => {
     const [communityName, setCommunityName] = useState<string>("");
@@ -137,8 +136,9 @@ const Page = () => {
                 <div className="flex justify-end gap-4">
                     <Button
                         disabled={isLoading}
-                        onClick={() => router.back()}
                         className="text-gray-400"
+                        onClick={() => router.back()}
+
                     >
                         Dismiss
                     </Button>

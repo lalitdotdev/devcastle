@@ -1,22 +1,17 @@
 import CustomFeed from "@/components/Feed/CustomFeed";
 import GeneralFeed from "@/components/Feed/GeneralFeed";
-import RightAside from "@/components/RightAside/RightAside";
-
-
-import { getAuthSession } from "@/lib/auth";
-import { db } from "@/lib/db";
-
-
 import { Metadata } from "next";
-
+import RightAside from "@/components/RightAside/RightAside";
+import { db } from "@/lib/db";
+import { getAuthSession } from "@/lib/auth";
 
 export function generateMetadata({
-    searchParams,
+
 }: {
     searchParams: Record<string, string>;
 }): Metadata {
     return {
-        title: "DevCastle Updates",
+        title: "DevCastle — Your feed",
         description: "All the latest updates from your castles.",
     };
 }
@@ -51,10 +46,6 @@ const page = async () => {
 
 
 
-
-
-
-
     //   console.log("session", session);
 
     // if (!session?.user) {
@@ -84,7 +75,6 @@ const page = async () => {
                 {/* Display either custom feed or general feed */}
 
                 {/* @ts-expect-error server component */}
-
                 {session ? <CustomFeed /> : <GeneralFeed />}
                 <RightAside communities={communities} newJobPostings={newJobPostings} />
 

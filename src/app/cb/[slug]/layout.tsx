@@ -9,9 +9,9 @@ import { notFound } from "next/navigation";
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/Button";
-import { Activity, Goal } from "lucide-react";
+
 import ToFeedButton from "@/components/ToFeedButton";
-import { Separator } from "@/components/ui/separator";
+
 
 const Layout = async ({
     children,
@@ -90,7 +90,7 @@ const Layout = async ({
                                 <p className="text-sm  text-gray-400">{communityDescription}</p>
                             </div>
                         </div>
-                        <dl className="hidden md:block divide-y divide-gray-100 px-6 py-4 text-sm  ">
+                        <dl className=" divide-y divide-gray-100 px-6 py-4 text-sm  ">
                             <div className="flex justify-between gap-x-4 py-3">
                                 <dt className="text-gray-500">Created</dt>
                                 <dd className="text-gray-400">

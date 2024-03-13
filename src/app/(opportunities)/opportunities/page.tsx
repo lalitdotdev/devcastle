@@ -1,11 +1,10 @@
-import JobFilterSidebar from "@/components/Jobboard/JobFilterSidebar";
-import JobResults from "@/components/Jobboard/JobResults";
 import H1 from "@/components/h1";
-
-import { db } from "@/lib/db";
+import JobFilterSidebar from "@/components/Jobboard/JobFilterSidebar";
 import { JobFilterValues } from "@/lib/validators/jobFilter";
-import { Prisma } from "@prisma/client";
+import JobResults from "@/components/Jobboard/JobResults";
 import { Metadata } from "next";
+import { Prisma } from "@prisma/client";
+import { db } from "@/lib/db";
 
 interface PageProps {
     searchParams: {
@@ -99,7 +98,7 @@ export default async function Jobboardpage({
     return (
         <main className="max-w-5xl m-auto px-3 my-10 space-y-10 ">
             <div className="space-y-3">
-                <H1 className="text-zinc-400">
+                <H1 className="gradient-text animate-gradient">
                     {getTitle({
                         q,
                         type,
@@ -107,7 +106,7 @@ export default async function Jobboardpage({
                         remote: remote === "true",
                     })}
                 </H1>
-                <p className="text-lg text-red-500">Companies Actively Hiring!</p>
+                <p className="text-lg text-n-14">Companies Actively Hiring!</p>
 
                 <p className="text-md text-muted-foreground">
                     We update this list once per week with new companies hiring remote

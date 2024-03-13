@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  *::-webkit-scrollbar {
+    width: 6px; /* Adjust width as needed */
+  }
+
+  /* Track styles */
+  *::-webkit-scrollbar-track {
+    background-color: #222121; /* Adjust track color */
+  }
+
+  /* Thumb styles */
+  *::-webkit-scrollbar-thumb {
+    background-color: #777; /* Adjust thumb color */
+  }
+
+  /* Thumb hover styles (optional) */
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #777; /* Adjust hover color */
+  }
+  .bg-dot-white {
+    background-image: radial-gradient(white 1px, transparent 1px);
+  }
+
+  .bg-dot-black {
+    background-image: radial-gradient(black 1px, transparent 1px);
+  }
+  .gradient-text {
+    background: linear-gradient(
+      to right,
+      #a855f7,
+      #ec4899,
+      #eab308,
+      #ec4899,
+      #a855f7,
+      #ec4899,
+      #eab308
+    );
+    background-clip: text;
+    background-size: 300% 300%;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -72,10 +114,10 @@
 
 @layer base {
   * {
-    @apply border-border scrollbar-thin !scrollbar-track-gray-600 !scrollbar-thumb-[#282C35];
+    @apply border-border;
   }
   body {
-    @apply bg-background text-foreground !scrollbar-thin !scrollbar-track-transparent !scrollbar-thumb-[#282C35];
+    @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }

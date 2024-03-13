@@ -1,9 +1,10 @@
-import { Job } from "@prisma/client";
-import Image from "next/image";
-import compLogoPlaceholder from "@/assets/complogo.png";
 import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
 import { formatMoney, formatTimeToNow } from "@/lib/utils";
+
 import { Badge } from "../ui/badge";
+import Image from "next/image";
+import { Job } from "@prisma/client";
+import compLogoPlaceholder from "@/assets/complogo.png";
 
 interface JobListItemProps {
     job: Job;
@@ -33,8 +34,8 @@ export default function JobListItem({
             />
             <div className="flex flex-col flex-grow space-y-3">
                 <div>
-                    <h2 className="text-xl font-md">{title}</h2>
-                    <h3 className="text-[#CCCDCE]">{companyName}</h3>
+                    <h2 className="text-xl font-md text-color-5">{title}</h2>
+                    <h3 className="text-[#CCCDCE] font-semibold">{companyName}</h3>
                 </div>
                 <div className="text-muted-foreground">
                     <p className="flex items-center gap-1.5 sm:hidden">

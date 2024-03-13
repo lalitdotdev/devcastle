@@ -1,11 +1,11 @@
-import { jobTypes } from "@/lib/job-types";
 import { JobFilterValues, jobFilterSchema } from "@/lib/validators/jobFilter";
 
-import { redirect } from "next/navigation";
-import { Label } from "../ui/Label";
-import { Input } from "../ui/Input";
-import Select from "./Select";
 import FormSubmitButton from "./FormSubmitButton";
+import { Input } from "../ui/Input";
+import { Label } from "../ui/Label";
+import Select from "./Select";
+import { jobTypes } from "@/lib/job-types";
+import { redirect } from "next/navigation";
 
 async function filterJobs(formData: FormData) {
     "use server";
@@ -23,7 +23,7 @@ async function filterJobs(formData: FormData) {
         ...(remote && { remote: "true" }),
     });
 
-    redirect(`cbjobboard/?${searchParams.toString()}`);
+    redirect(`opportunities/?${searchParams.toString()}`);
 }
 
 interface JobFilterSidebarProps {
@@ -94,7 +94,7 @@ const JobFilterSidebar = ({
 
                     {/* Loader when applying filter and then show button */}
 
-                    <FormSubmitButton type="submit" className="bg-[#4F46E5] w-full text-white">
+                    <FormSubmitButton type="submit" className="bg-color-accentBlue w-full text-white">
                         Filter jobs
                     </FormSubmitButton>
                 </div>
