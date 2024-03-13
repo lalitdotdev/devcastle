@@ -25,7 +25,7 @@ export default function Footer() {
         },
         {
             id: 5,
-            href: 'https://github.com/mrExplorist',
+            href: 'https://github.com/mrExplorist/devcastle',
             label: 'Contribute on Github',
         },
         {
