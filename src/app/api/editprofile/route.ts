@@ -1,6 +1,7 @@
-import { getAuthSession } from "@/lib/auth";
-import { db } from "@/lib/db";
 import { UserProfileValidator } from "@/lib/validators/username";
+import { db } from "@/lib/db";
+import { getAuthSession } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export async function PATCH(req: Request) {
@@ -35,6 +36,7 @@ export async function PATCH(req: Request) {
         about: about,
       },
     });
+    revalidatePath("/");
 
     return new Response("OK");
   } catch (error) {
@@ -46,7 +48,7 @@ export async function PATCH(req: Request) {
 
     return new Response(
       "Could not update profile at this time. Please try later",
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
