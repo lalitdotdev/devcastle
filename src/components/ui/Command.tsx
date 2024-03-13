@@ -1,11 +1,12 @@
 "use client";
 
-import { DialogProps } from "@radix-ui/react-dialog";
-import { Command as CommandPrimitive } from "cmdk";
-import { Loader2, Search } from "lucide-react";
 import * as React from "react";
 
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
+import { Loader2, Search } from "lucide-react";
+
+import { Command as CommandPrimitive } from "cmdk";
+import { DialogProps } from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 
 const Command = React.forwardRef<
@@ -47,12 +48,12 @@ const CommandInput = React.forwardRef<
         {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 shrink-0  animate-spin text-indigo-600" />
         ) : (
-            <Search className="mr-2 h-3 w-3 shrink-0 opacity-50 text-gray-100" />
+            <Search className="mr-2 h-3 w-3 shrink-0 opacity-50 text-gray-100" strokeWidth="3" />
         )}
         <CommandPrimitive.Input
             ref={ref}
             className={cn(
-                "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 text-gray-300 ",
+                "flex h-6 w-full rounded-md bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 text-gray-300 ",
                 className,
             )}
             {...props}
