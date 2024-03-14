@@ -1,14 +1,12 @@
 "use server";
 
-import { db } from "@/lib/db";
-import { toSlug } from "@/lib/utils";
 import { createJobSchema } from "@/lib/validators/jobFilter";
-
-import { put } from "@vercel/blob";
+import { db } from "@/lib/db";
 import { nanoid } from "nanoid";
-import { redirect } from "next/navigation";
-
 import path from "path";
+import { put } from "@vercel/blob";
+import { redirect } from "next/navigation";
+import { toSlug } from "@/lib/utils";
 
 export async function createJobPosting(formData: FormData) {
   const values = Object.fromEntries(formData.entries());
@@ -56,7 +54,7 @@ export async function createJobPosting(formData: FormData) {
       applicationUrl: applicationUrl?.trim(),
       description: description?.trim(),
       salary: parseInt(salary),
-      approved: true,
+      approved: false,
     },
   });
 
