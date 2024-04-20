@@ -10,6 +10,7 @@ interface PageProps {
 }
 
 const getJob = cache(async (slug: string) => {
+    "use server"
     const job = await db.job.findUnique({
         where: { slug },
     });
