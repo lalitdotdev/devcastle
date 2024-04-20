@@ -1,17 +1,14 @@
 // wrapper component around all the page component
 
-import { getAuthSession } from "@/lib/auth";
-import { db } from "@/lib/db";
-
-import { ReactNode } from "react";
-import { format } from "date-fns";
-import { notFound } from "next/navigation";
-import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/Button";
-
+import { ReactNode } from "react";
+import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import ToFeedButton from "@/components/ToFeedButton";
-
+import { buttonVariants } from "@/components/ui/Button";
+import { db } from "@/lib/db";
+import { format } from "date-fns";
+import { getAuthSession } from "@/lib/auth";
+import { notFound } from "next/navigation";
 
 const Layout = async ({
     children,
@@ -127,9 +124,10 @@ const Layout = async ({
                             {session?.user && (
                                 <Link
                                     className={buttonVariants({
+                                        variant: 'outline',
                                         className: 'w-full mb-6 bg-transparent hover:bg-indigo-500 text-white',
                                     })}
-                                    href={`cb/${slug}/publish`}
+                                    href={`/cb/${slug}/publish`}
                                 >
                                     Create Post
                                 </Link>
