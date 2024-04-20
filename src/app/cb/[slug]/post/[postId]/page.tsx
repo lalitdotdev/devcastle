@@ -1,16 +1,17 @@
+import { ArrowBigDown, ArrowBigUp, Loader2, Upload } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/Button";
+import { Post, User, Vote } from "@prisma/client";
+
+import { CachedPost } from "../../../../../types/redis";
 import CommentsSection from "@/components/CommentsSection";
 import EditorOutputContent from "@/components/EditorOutputContent";
-import PostVoteServer from "@/components/post-vote/PostVoteServer";
-import { Button, buttonVariants } from "@/components/ui/Button";
-import { db } from "@/lib/db";
-import { redis } from "@/lib/redis";
-import { formatTimeToNow } from "@/lib/utils";
-import { Post, User, Vote } from "@prisma/client";
-import { ArrowBigDown, ArrowBigUp, Loader2, Upload } from "lucide-react";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
-import { CachedPost } from "../../../../../types/redis";
 import { Metadata } from "next";
+import PostVoteServer from "@/components/post-vote/PostVoteServer";
+import { Suspense } from "react";
+import { db } from "@/lib/db";
+import { formatTimeToNow } from "@/lib/utils";
+import { notFound } from "next/navigation";
+import { redis } from "@/lib/redis";
 
 interface CommunityPostPageProps {
     params: {
