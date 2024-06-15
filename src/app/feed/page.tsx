@@ -27,7 +27,7 @@ const page = async () => {
     }
 
     const communities = await db.community.findMany({
-        take: 5,
+        take: 8,
         orderBy: {
             subscribers: {
                 _count: "desc",
