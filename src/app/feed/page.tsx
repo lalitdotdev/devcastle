@@ -6,7 +6,6 @@ import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
 export function generateMetadata({
-
 }: {
     searchParams: Record<string, string>;
 }): Metadata {
@@ -27,7 +26,7 @@ const page = async () => {
     }
 
     const communities = await db.community.findMany({
-        take: 8,
+        take: 7,
         orderBy: {
             subscribers: {
                 _count: "desc",
@@ -77,7 +76,6 @@ const page = async () => {
                 {/* @ts-expect-error server component */}
                 {session ? <CustomFeed /> : <GeneralFeed />}
                 <RightAside communities={communities} newJobPostings={newJobPostings} />
-
 
             </div>
         </div>

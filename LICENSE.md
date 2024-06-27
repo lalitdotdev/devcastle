@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2020 Abel Chang
+Copyright (c) 2024 Lalit Sharma
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
