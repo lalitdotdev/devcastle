@@ -12,7 +12,7 @@ const Navbar = async () => {
     const session = await getServerSession(authOptions);
 
     return (
-        <nav className="m-auto fixed h-fit top-0  z-[10] py-2 align-center justify-center  bg-[#1B1F23]  left-0 w-full px-4 ">
+        <nav className="m-auto fixed h-fit top-0  z-[10] py-4 align-center justify-center  bg-[#1B1F23]  left-0 w-full px-4 ">
             <div className="max-w-7xl justify-between min-w-max mx-auto flex items-center  gap-2 ">
                 <Link
                     href="/"
@@ -38,7 +38,7 @@ const Navbar = async () => {
                     />
 
                     {/* devcastle.networks */}
-                    <span className="font-semibold hidden md:block items-center justify-center text-xl">
+                    <span className="font-md hidden md:block items-center justify-center text-xl">
                         devcastle
                         {/* indigo colored dot but bit larger */}
                     </span>

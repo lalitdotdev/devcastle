@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
+
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
@@ -14,7 +15,7 @@ export const metadata = {
 
 //importing custom fonts
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Poppins({ subsets: ["latin"], weight: ['100', '200', '300', '400', '500', '600', '700'] });
 
 export default function RootLayout({
     children,
