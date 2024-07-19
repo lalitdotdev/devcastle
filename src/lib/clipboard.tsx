@@ -15,7 +15,7 @@ export default function Clipboard() {
 
     return (
         <CopyToClipboard text="mailfor.lalitsharma@gmail.com" onCopy={handleCopy}>
-            <span className="leading-tight text-light-gray font-normal cursor-pointer hover:underline">
+            <span className="leading-tighter text-light-gray  font-light cursor-pointer hover:underline">
                 {copied ? "Copied to clipboard!" : "mailfor.lalitsharma@gmail.com"}
             </span>
         </CopyToClipboard>
