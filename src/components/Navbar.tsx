@@ -34,7 +34,7 @@ const Navbar = async () => {
           </p> */}
 
                     <TerminalSquare
-                        size={48}
+                        size={42}
                         className="animate-pulse transition-all duration-800 ease-in-out text-indigo-600"
                     />
 
