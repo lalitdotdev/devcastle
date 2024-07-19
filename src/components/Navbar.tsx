@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NavbarRoutes } from "./routes/navbar-routes";
 import RightNavContent from "./RightNavContent";
 import SearchBar from "./SearchBar";
 import { Separator } from "./ui/separator";
@@ -12,8 +13,8 @@ const Navbar = async () => {
     const session = await getServerSession(authOptions);
 
     return (
-        <nav className="m-auto fixed h-fit top-0  z-[10] py-4 align-center justify-center  bg-[#1B1F23]  left-0 w-full px-4 ">
-            <div className="max-w-7xl justify-between min-w-max mx-auto flex items-center  gap-2 ">
+        <nav className="m-auto fixed h-fit top-0  z-[10] py-4 align-center justify-center  bg-[#1B1F23]  left-0 w-full border-b-2 border-zinc-800">
+            <div className="max-w-7xl justify-between min-w-max mx-auto flex items-center  gap-2 px-4 py-2">
                 <Link
                     href="/"
                     className="items-center justify-center gap-2 sm:flex text-zinc-400"
@@ -33,7 +34,7 @@ const Navbar = async () => {
           </p> */}
 
                     <TerminalSquare
-                        size={40}
+                        size={48}
                         className="animate-pulse transition-all duration-800 ease-in-out text-indigo-600"
                     />
 
@@ -48,7 +49,7 @@ const Navbar = async () => {
                 <div className="flex justify-center items-center gap-3">
                     <SearchBar />
                     <Separator orientation="vertical" className="h-6 w-0.5 bg-zinc-600" />
-
+                    <NavbarRoutes />
                     <div className="flex">
                         {session?.user?.email && <RightNavContent />}
 
