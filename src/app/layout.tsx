@@ -4,6 +4,7 @@ import { Inter, Poppins } from "next/font/google";
 
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
+import Sidebar from "@/components/sidebar/sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 
@@ -34,8 +35,15 @@ export default function RootLayout({
         >
             <body className="min-h-screen pt-12 bg-[#1B1F23] antialiased">
                 <Providers>
-                    {/* @ts-expect-error Server Component */}
-                    <Navbar />
+                    <header className="h-20 fixed inset-y-0 w-full z-50">
+                        {/* @ts-expect-error Server Component */}
+                        <Navbar />
+                    </header>
+
+
+                    <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50">
+                        <Sidebar />
+                    </div>
                     {/* Rendering authModal alongside other components */}
                     {authModal}
                     <div className="container max-w-7xl mx-auto h-full pt-12">
