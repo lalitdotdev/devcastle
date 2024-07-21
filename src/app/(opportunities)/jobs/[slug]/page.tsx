@@ -22,7 +22,7 @@ const getJob = cache(async (slug: string) => {
 
 // generateStaticParams
 
-export async function generateStaticParams() {
+export async function generateJobs() {
     const jobs = await db.job.findMany({
         where: {
             approved: true,
@@ -33,6 +33,8 @@ export async function generateStaticParams() {
     });
     return jobs.map(({ slug }) => slug);
 }
+
+
 
 export async function generateMetadata({
     params: { slug },
