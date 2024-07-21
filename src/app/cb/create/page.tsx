@@ -77,7 +77,7 @@ const Page = () => {
     };
 
     return (
-        <div className="container flex items-center h-full max-w-3xl mx-auto">
+        <div className="container flex items-center h-full max-w-3xl mx-auto mt-12">
             <div className="relative bg-[#212329] w-full h-fit p-4 rounded-lg space-y-6 text-gray-400 border border-gray-500">
                 <div className="flex justify-between items-center">
                     <H1 className="text-xl font-semibold text-zinc-500 flex gap-2 items-center justify-center">
