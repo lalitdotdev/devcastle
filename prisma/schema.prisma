@@ -73,8 +73,10 @@ model User {
     Subscription Subscription[]
     Vote         Vote[]
     CommentVote  CommentVote[]
-    followers    User[]         @relation(name: "Followers") // Users that follow me
-    follows      User[]         @relation(name: "Followers") // Users that I follow
+
+    bookmarks Bookmark[]
+    followers User[]     @relation(name: "Followers") // Users that follow me
+    follows   User[]     @relation(name: "Followers") // Users that I follow
     // GitHubRepo GitHubRepo[] // New relationship for
 }
 
@@ -122,6 +124,7 @@ model Post {
     authorId String
 
     // categories Category[]
+    bookmarks Bookmark[]
     // tags      Tag[]
 
     comments Comment[]
@@ -198,6 +201,20 @@ model CommentVote {
     @@id([userId, commentId])
     @@index([commentId])
     @@index([userId])
+}
+
+model Bookmark {
+    id     String @id @default(cuid())
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    postId String
+    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+
+    @@unique([userId, postId])
+    @@index([postId])
+    @@map("bookmarks")
 }
 
 // model Category {
