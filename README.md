@@ -24,24 +24,22 @@ DevCastle offers a variety of features to enhance the student experience on camp
 
 ## Features
 
-| Feature              | Description                                                                                                                               |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| **Community Pages**  | DevCastle provides a platform for students to create and join communities centered around shared interests or extracurricular activities. |
-| **Blogs**            | DevCastle includes a blog section featuring articles written by students and faculty on various academic and non-academic topics.         |
-| **Markdown Support** | Users can create rich text posts with support for Markdown syntax.                                                                        |
-| **Comment System**   | Users can comment on posts and reply to other users' comments.                                                                            |
-
-| **Job Portal** | DevCastle features a job portal where students can find and apply for internships, fellowships, and other opportunities. |
-| **Admin Panel** | An admin panel is available to manage jobs and ensure that only verified jobs are posted. |
-| **User Dashboard** | Users have access to a personalized dashboard where they can view their posts, comments, and other activities. |
-| **User Profile** | Users can update their profile information, including their name, profile picture, and bio. |
-| **Notifications** | Users receive notifications for important updates, such as new posts, comments, and job listings. |
-| **Alumni Connect** | Connect with alumni and exchange experiences, advice, and career development tips. |
-| **Internships** | Find and apply for internships and fellowships in various industries. |
-
-| **Space** | Host audio conferences within the community using a separate platform called Coderspaces, powered by CampusBuddy. |
-| **Explore Gigs** | Gig Platform (Upcoming): Find and post gigs for students to work on projects and earn valuable experience. |
-| **Chatbot Integration** | The app includes an AI-powered chatbot to answer common questions and provide assistance to users. |
+| Feature                 | Description                                                                                                                               |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Community Pages**     | DevCastle provides a platform for students to create and join communities centered around shared interests or extracurricular activities. |
+| **Blogs**               | DevCastle includes a blog section featuring articles written by students and faculty on various academic and non-academic topics.         |
+| **Markdown Support**    | Users can create rich text posts with support for Markdown syntax.                                                                        |
+| **Comment System**      | Users can comment on posts and reply to other users' comments.                                                                            |
+| **Job Portal**          | DevCastle features a job portal where students can find and apply for internships, fellowships, and other opportunities.                  |
+| **Admin Panel**         | An admin panel is available to manage jobs and ensure that only verified jobs are posted.                                                 |
+| **User Dashboard**      | Users have access to a personalized dashboard where they can view their posts, comments, and other activities.                            |
+| **User Profile**        | Users can update their profile information, including their name, profile picture, and bio.                                               |
+| **Notifications**       | Users receive notifications for important updates, such as new posts, comments, and job listings.                                         |
+| **Alumni Connect**      | Connect with alumni and exchange experiences, advice, and career development tips.                                                        |
+| **Internships**         | Find and apply for internships and fellowships in various industries.                                                                     |
+| **Space**               | Host audio conferences within the community using a separate platform called Coderspaces, powered by CampusBuddy.                         |
+| **Explore Gigs**        | Gig Platform (Upcoming): Find and post gigs for students to work on projects and earn valuable experience.                                |
+| **Chatbot Integration** | The app includes an AI-powered chatbot to answer common questions and provide assistance to users.                                        |
 
 ## Upcoming Features :hammer_and_wrench:
 
