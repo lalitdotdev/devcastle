@@ -1,10 +1,12 @@
 # DevCastle
 
-![devcastle](https://socialify.git.ci/mrExplorist/campusbuddyv2/image?description=1&descriptionEditable=An%20%20ultimate%20platform%20designed%20to%20empower%20students/developers%20%F0%9F%9A%80%20with%20a%20rich%20array%20of%20features%2C%20fostering%20connectivity%20and%20%20collaboration.%20Actively%20Building%20%F0%9F%8F%97&font=Raleway&forks=1&issues=1&name=1&owner=1&pattern=Floating%20Cogs&pulls=1&stargazers=1&theme=Light)
+<p align="center">
+DevCastle is a platform by the developers and for the developers to connect talents with opportunities. We are a community of developers, designers, and creators who are passionate about building and creating things. 🎓✨
+</p>
+
+![devcastle](https://socialify.git.ci/lalitdotdev/devcastle/image?description=1&font=KoHo&issues=1&language=1&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
 
 ## Actively Building 🏗️
-
-DevCastle is a platform by the developers and for the developers to connect talents with opportunities. We are a community of developers, designers, and creators who are passionate about building and creating things. 🎓✨
 
 ## A small step in filling the gap faced by students and developers.
 
@@ -22,15 +24,24 @@ DevCastle offers a variety of features to enhance the student experience on camp
 
 ## Features
 
-| Feature                 | Description                                                                                                                                 |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Community Pages**     | DevCastle provides a platform for students to create and join communities centered around shared interests or extracurricular activities. |
-| **Blogs**               | DevCastle includes a blog section featuring articles written by students and faculty on various academic and non-academic topics.         |
-| **Markdown Support**    | Users can create rich text posts with support for Markdown syntax.                                                                          |
-| **Comment System**      | Users can comment on posts and reply to other users' comments.                                                                              |
-| **Space**               | Host audio conferences within the community using a separate platform called Coderspaces, powered by CampusBuddy.                           |
-| **Explore Gigs**        | Gig Platform (Upcoming): Find and post gigs for students to work on projects and earn valuable experience.                                  |
-| **Chatbot Integration** | The app includes an AI-powered chatbot to answer common questions and provide assistance to users.                                          |
+| Feature              | Description                                                                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Community Pages**  | DevCastle provides a platform for students to create and join communities centered around shared interests or extracurricular activities. |
+| **Blogs**            | DevCastle includes a blog section featuring articles written by students and faculty on various academic and non-academic topics.         |
+| **Markdown Support** | Users can create rich text posts with support for Markdown syntax.                                                                        |
+| **Comment System**   | Users can comment on posts and reply to other users' comments.                                                                            |
+
+| **Job Portal** | DevCastle features a job portal where students can find and apply for internships, fellowships, and other opportunities. |
+| **Admin Panel** | An admin panel is available to manage jobs and ensure that only verified jobs are posted. |
+| **User Dashboard** | Users have access to a personalized dashboard where they can view their posts, comments, and other activities. |
+| **User Profile** | Users can update their profile information, including their name, profile picture, and bio. |
+| **Notifications** | Users receive notifications for important updates, such as new posts, comments, and job listings. |
+| **Alumni Connect** | Connect with alumni and exchange experiences, advice, and career development tips. |
+| **Internships** | Find and apply for internships and fellowships in various industries. |
+
+| **Space** | Host audio conferences within the community using a separate platform called Coderspaces, powered by CampusBuddy. |
+| **Explore Gigs** | Gig Platform (Upcoming): Find and post gigs for students to work on projects and earn valuable experience. |
+| **Chatbot Integration** | The app includes an AI-powered chatbot to answer common questions and provide assistance to users. |
 
 ## Upcoming Features :hammer_and_wrench:
 
@@ -45,7 +56,10 @@ DevCastle offers a variety of features to enhance the student experience on camp
 - [x] User dashboard UI
 - [x] User Profile updation
 - [x] Comment system
+- [x] Job Portal
+- [x] Admin Panel for managing jobs and ensure only verified jobs are posted
 - [ ] Dedicated Blog section for sharing articles(Building)
+- [ ] Make job portal more interactive and user friendly and Integrate Advanced Functionality into DevCastle Job Board with AI.
 - [ ] Alumni Connect: Connect with alumni and exchange experiences (TODO)
 - [ ] Internships: Find and apply for internships and fellowships (TODO)
 - [ ] Audio Conferencing: Host audio conferences within the community a separate platform coderspaces powered by Campusbuddy.
@@ -93,7 +107,47 @@ To run DevCastle locally, follow these steps:
 
 We welcome contributions to DevCastle! To contribute, fork the repository, create a feature branch, and submit a pull request. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate. See the [CONTRIBUTING](CONTRIBUTING.md) file for more information.
 
-## Contact
+# 🧰 Tools & Packages
+
+## Dependencies
+
+| Package                                                                              | Description                                                            | Version |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- | ------- |
+| [@hookform/resolvers](https://www.npmjs.com/package/@hookform/resolvers)             | Resolver library for react-hook-form                                   | 3.1.1   |
+| [@mantine/hooks](https://www.npmjs.com/package/@mantine/hooks)                       | A collection of React hooks                                            | 6.0.13  |
+| [@next-auth/prisma-adapter](https://www.npmjs.com/package/@next-auth/prisma-adapter) | Prisma adapter for NextAuth.js                                         | 1.0.6   |
+| [@prisma/client](https://www.npmjs.com/package/@prisma/client)                       | Prisma Client                                                          | 5.11.0  |
+| [@tanstack/react-query](https://www.npmjs.com/package/@tanstack/react-query)         | Powerful data-fetching library for React                               | 4.29.11 |
+| [axios](https://www.npmjs.com/package/axios)                                         | Promise-based HTTP client for the browser and Node.js                  | 1.7.2   |
+| [bcrypt](https://www.npmjs.com/package/bcrypt)                                       | Library to hash passwords                                              | 5.1.0   |
+| [framer-motion](https://www.npmjs.com/package/framer-motion)                         | Library for animations in React                                        | 11.0.3  |
+| [ky](https://www.npmjs.com/package/ky)                                               | Tiny and elegant HTTP client based on Fetch API                        | 1.4.0   |
+| [next](https://www.npmjs.com/package/next)                                           | React framework for production                                         | 14.2.3  |
+| [next-auth](https://www.npmjs.com/package/next-auth)                                 | Authentication for Next.js                                             | 4.22.1  |
+| [next-themes](https://www.npmjs.com/package/next-themes)                             | Theme management for Next.js                                           | 0.2.1   |
+| [prisma](https://www.npmjs.com/package/prisma)                                       | Next-generation ORM                                                    | 5.11.0  |
+| [react](https://www.npmjs.com/package/react)                                         | React library                                                          | 18.2.0  |
+| [react-dom](https://www.npmjs.com/package/react-dom)                                 | Entry point of the DOM renderer for React                              | 18.2.0  |
+| [react-hook-form](https://www.npmjs.com/package/react-hook-form)                     | Performant, flexible, and extensible forms with easy-to-use validation | 7.45.2  |
+| [tailwindcss](https://www.npmjs.com/package/tailwindcss)                             | Utility-first CSS framework                                            | 3.3.2   |
+| [typescript](https://www.npmjs.com/package/typescript)                               | Language for application scale JavaScript development                  | 5.0.4   |
+| [zod](https://www.npmjs.com/package/zod)                                             | TypeScript-first schema declaration and validation library             | 3.23.8  |
+
+## Dev Dependencies
+
+| Package                                                                        | Description                                                              | Version |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------- |
+| [eslint](https://www.npmjs.com/package/eslint)                                 | Linter tool for identifying and reporting on patterns in JavaScript      | 8.56.0  |
+| [eslint-config-next](https://www.npmjs.com/package/eslint-config-next)         | Next.js ESLint configuration                                             | 14.1.0  |
+| [eslint-config-prettier](https://www.npmjs.com/package/eslint-config-prettier) | Turns off all rules that are unnecessary or might conflict with Prettier | 9.1.0   |
+| [typescript](https://www.npmjs.com/package/typescript)                         | Language for application scale JavaScript development                    | 5.0.4   |
+
+## 👦 Contact Author
+
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://litsharmadev.tech)
+[![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/lalitdotdev)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/pinglalit)
+[![github](https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lalitdotdev)
 
 ## License
 
