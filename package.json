@@ -60,7 +60,7 @@
     "bcrypt": "^5.1.0",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
-    "cmdk": "^0.2.0",
+    "cmdk": "^1.0.0",
     "date-fns": "^2.30.0",
     "draft-js": "^0.11.7",
     "editorjs-react-renderer": "^3.5.1",
