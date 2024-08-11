@@ -1,8 +1,6 @@
 import CustomFeed from "@/components/Feed/CustomFeed";
-import { DynamicIslandDemo } from "@/components/DynamicIslandDemo";
 import GeneralFeed from "@/components/Feed/GeneralFeed";
 import { HomeFeedTabs } from "@/components/ui/HomeFeedTabs";
-import Image from "next/image";
 import JobResults from "@/components/Jobboard/JobResults";
 import { Metadata } from "next";
 import { Prisma } from "@prisma/client";
@@ -21,17 +19,6 @@ export function generateMetadata({
     };
 }
 
-const DummyContent = () => {
-    return (
-        <Image
-            src="/linear.webp"
-            alt="dummy image"
-            width="1000"
-            height="1000"
-            className="object-cover object-left-top h-[60%]  md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto"
-        />
-    );
-};
 
 
 const page = async () => {
@@ -165,18 +152,6 @@ const page = async () => {
 
     return (
         <div className=" pt-8 h-full w-full mx-auto">
-
-
-            {/* <h1 className="font-bold text-3xl md:text-4xl  " style={{
-                background: "linear-gradient(135deg, #542daf, #ff9100)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-            }}>
-                Your feed
-            </h1> */}
-
-
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 py-6 space-y-8 space-x-24 w-full ">
                 {/* Display either custom feed or general feed */}
                 {/* <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex max-w-5xl mx-auto w-full  items-start justify-start my-40"> */}
@@ -185,11 +160,8 @@ const page = async () => {
                 </div> */}
                 {/* </div> */}
 
-
                 <div className="w-full ">
-
                     <HomeFeedTabs tabs={tabs} />
-
                 </div>
 
                 <RightAside communities={communities} newJobPostings={newJobPostings} />
