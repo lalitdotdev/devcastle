@@ -69,6 +69,7 @@
     "eslint-config-next": "^14.1.0",
     "eslint-config-prettier": "^9.1.0",
     "framer-motion": "^11.0.3",
+    "ky": "^1.4.0",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.257.0",
     "markdown-draft-js": "^2.4.0",
