@@ -118,7 +118,8 @@ const page = async () => {
             content: (
                 <div className="w-full ">
                     <div className="w-full overflow-hidden relative h-full rounded-2xl p-4 text-xl md:text-4xl font-bold mb-4 text-white border  border-purple-700 ">
-                        <p>Services</p>
+                        <p className="text-red-400">Coming Soon ...</p>
+                        <p className="text-sm text-gray-500 font-normal">We are working on adding services to DevCastle. Stay tuned for updates.</p>
                     </div>
                     <Separator className="mb-4 bg-gray-600" />
                     {/* <JobResults jobs={jobs} /> */}
