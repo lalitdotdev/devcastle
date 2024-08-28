@@ -7,10 +7,11 @@ interface JobResultsProps {
 }
 
 const JobResults = ({ jobs }: JobResultsProps) => {
+    // console.log(jobs)
     return (
         <div className="grow space-y-4 overflow-hidden ">
             {jobs.map((job) => (
-                <Link href={`/jobs/${job.slug}`} key={job.id} className="block">
+                <Link href={`jobs/${job.slug}`} key={job.id} className="block">
                     <JobListItem job={job} />
                 </Link>
             ))}

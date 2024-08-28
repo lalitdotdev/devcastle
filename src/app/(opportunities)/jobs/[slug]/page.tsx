@@ -11,58 +11,81 @@ interface PageProps {
 
 const getJob = cache(async (slug: string) => {
     "use server"
-    const job = await db.job.findUnique({
-        where: { slug },
-    });
+    try {
+        const job = await db.job.findUnique({
+            where: { slug },
+        });
 
-    if (!job) notFound();
+        if (!job) {
+            console.error(`Job not found for slug: ${slug}`);
+            notFound();
+        }
 
-    return job;
+        return job;
+    } catch (error) {
+        console.error(`Error fetching job with slug ${slug}:`, error);
+        throw error;
+    }
 });
 
-// generateStaticParams
 export async function generateStaticParams() {
-    const jobs = await db.job.findMany({
-        where: {
-            approved: true,
-        },
-        select: {
-            slug: true,
-        },
-    });
-    return jobs.map(({ slug }) => slug); // map to slug in db jobs
+    try {
+        const jobs = await db.job.findMany({
+            where: {
+                approved: true,
+            },
+            select: {
+                slug: true,
+            },
+        });
+        return jobs.map(({ slug }) => slug);
+    } catch (error) {
+        console.error("Error in generateStaticParams:", error);
+        return [];
+    }
 }
 
 export async function generateMetadata({
     params: { slug },
 }: PageProps): Promise<Metadata> {
-    const job = await getJob(slug);
-
-    return {
-        title: job.title,
-    };
+    try {
+        const job = await getJob(slug);
+        return {
+            title: job.title,
+        };
+    } catch (error) {
+        console.error(`Error generating metadata for slug ${slug}:`, error);
+        return {
+            title: "Job Details",
+        };
+    }
 }
 
 export default async function JobDetailsPage({ params: { slug } }: PageProps) {
-    const job = await getJob(slug);
-    const { applicationEmail, applicationUrl } = job;
-    const applicationLink = applicationEmail
-        ? `mailto:${applicationEmail}`
-        : applicationUrl;
+    try {
+        const job = await getJob(slug);
+        const { applicationEmail, applicationUrl } = job;
+        const applicationLink = applicationEmail
+            ? `mailto:${applicationEmail}`
+            : applicationUrl;
 
-    if (!applicationLink) {
-        console.error("Job has no application link or email.");
-        notFound();
+        if (!applicationLink) {
+            console.error(`Job has no application link or email. Slug: ${slug}`);
+            notFound();
+        }
+
+        return (
+            <main className="m-auto my-10 flex max-w-5xl flex-col items-center gap-5 px-3 md:flex-row md:items-start">
+                <JobDetailsPageComponent job={job} />
+                <aside>
+                    <Button className="border-2 border-indigo-500 bg-indigo-700 text-zinc-100 pt-2">
+                        <a href={applicationLink}>Apply Now</a>
+                    </Button>
+                </aside>
+            </main>
+        );
+    } catch (error) {
+        console.error(`Error rendering JobDetailsPage for slug ${slug}:`, error);
+        throw error;
     }
-
-    return (
-        <main className="m-auto my-10 flex max-w-5xl flex-col items-center gap-5 px-3 md:flex-row md:items-start">
-            <JobDetailsPageComponent job={job} />
-            <aside>
-                <Button className="border-2 border-indigo-500  bg-indigo-700 text-zinc-100 pt-2">
-                    <a href={applicationLink}>Apply Now</a>
-                </Button>
-            </aside>
-        </main>
-    );
 }
