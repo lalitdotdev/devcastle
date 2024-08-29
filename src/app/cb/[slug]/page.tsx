@@ -1,9 +1,10 @@
+import CommunityAvatar from "@/components/Avatars/CommunityAvatar";
+import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
+import { Metadata } from "next";
 import MiniCreatePost from "@/components/MiniCreatePost";
 import PostFeed from "@/components/Posts/PostFeed";
-import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
-import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Metadata } from "next";
+import { getAuthSession } from "@/lib/auth";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -33,6 +34,7 @@ const page = async ({ params }: PageProps) => {
                     votes: true,
                     comments: true,
                     community: true,
+                    bookmarks: true,
                 },
                 orderBy: {
                     createdAt: "desc",
@@ -48,9 +50,16 @@ const page = async ({ params }: PageProps) => {
 
     return (
         <>
-            <h1 className="font-bold text-3xl md:text-4xl h-14 text-gray-400">
-                c/{community.name}
-            </h1>
+
+            <div className="flex items-center gap-2 bg-gradient-to-br from-zinc-800 to-transparent p-4 rounded-xl md:pl-8">
+                <CommunityAvatar seed={community.name} classNames="w-12 h-12 rounded-xl p-2 " />
+                <h1 className="font-normal text-3xl md:text-4xl  text-gray-400">
+                    c/{community.name}
+                </h1>
+            </div>
+
+
+
             <MiniCreatePost session={session} />
 
 
