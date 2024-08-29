@@ -72,7 +72,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
     const posts = data?.pages.flatMap(page => page) ?? initialPosts;
 
     return (
-        <ul className="flex flex-col col-span-2 space-y-8">
+        <ul className="flex flex-col col-span-2 space-y-2">
             {posts.map((post, index) => {
                 // votes logic here
 
