@@ -1,6 +1,12 @@
 "use client"
 
-import { BookMarked, Building, Compass, Home, List, User } from "lucide-react"
+import { BookMarked, BookmarkPlus, Boxes, Building, Compass, Home, List, Rocket, User } from "lucide-react"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { usePathname, useRouter } from "next/navigation"
 
 import SidebarRouteItem from "./sidebar-route-item"
@@ -42,8 +48,18 @@ const guestRoutes = [
     {
         icon: BookMarked,
         label: "Saved Jobs",
-        href: "/savedJobs",
-    }
+        href: "/bookmarks",
+    },
+    {
+        icon: Rocket,
+        label: "Launches",
+        href: "/launches"
+    },
+    {
+        icon: Boxes,
+        label: "Categories",
+        href: "/showcase/categories"
+    },
 ]
 
 export const SidebarRoutes = () => {
@@ -52,11 +68,17 @@ export const SidebarRoutes = () => {
 
     const isAdminPage = pathname?.startsWith("/admin")
     const routes = isAdminPage ? adminRoutes : guestRoutes;
-    return (<div className="flex flex-col gap-y-4 mt-4">
-        {routes.map((route) => (
-            <SidebarRouteItem key={route.href} icon={route.icon} label={route.label} href={route.href} />
-        ))}
-    </div>)
+    return (
+
+        <TooltipProvider><div className="flex flex-col gap-y-4 mt-4">
+            {routes.map((route) => (
+
+                <SidebarRouteItem key={route.href} icon={route.icon} label={route.label} href={route.href} />
+            ))}
+        </div>
+        </TooltipProvider>
+
+    )
 }
 
 

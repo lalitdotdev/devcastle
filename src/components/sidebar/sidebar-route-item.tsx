@@ -1,5 +1,6 @@
 "use client"
 
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { usePathname, useRouter } from "next/navigation";
 
 import { LucideIcon } from "lucide-react";
@@ -24,12 +25,18 @@ const SidebarRouteItem = ({ icon: Icon, label, href }: SidebarRouteItemProps) =>
         router.push(href)
     }
     return (
-        <button onClick={onClick} className={cn("flex items-center gap-x-2 py-4 text-zinc-400 text-sm font-[500] pl-6 cursor-pointer", isActive && "bg-gray-100")}>
+        <div onClick={onClick} className={cn("flex items-center gap-x-2 py-4 text-zinc-400 text-sm font-[500] pl-6 cursor-pointer", isActive && "border-r-4 border-blue-600")}>
             <div className="flex items-center gap-x-2 ">
-                <Icon size={24} className="mr-4" />
-                <span>{label}</span>
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Icon size={24} className="mr-4" />
+                    </TooltipTrigger >
+                    <TooltipContent side="right" className="text-xs">
+                        <span>{label}</span>
+                    </TooltipContent>
+                </Tooltip>
             </div>
-        </button>
+        </div>
     )
 }
 
