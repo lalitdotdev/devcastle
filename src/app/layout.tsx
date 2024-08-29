@@ -7,7 +7,6 @@ import Providers from "@/components/Providers";
 import Sidebar from "@/components/sidebar/sidebar";
 import { SonnerToaster } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
-import clsx from "clsx";
 import { cn } from "@/lib/utils";
 import { getAuthSession } from "@/lib/auth";
 
@@ -17,8 +16,7 @@ export const metadata = {
         "DevCastle is a platform by the developers and for the developers to connect talents with opportunities. We are a community of developers, designers, and creators who are passionate about building and creating things.",
 };
 
-//importing custom fonts
-
+// Importing custom fonts
 const inter = Poppins({ subsets: ["latin"], weight: ['100', '200', '300', '400', '500', '600', '700'] });
 
 export default async function RootLayout({
@@ -30,7 +28,6 @@ export default async function RootLayout({
 }) {
 
     const session = await getAuthSession();
-
 
     return (
         <html
@@ -48,18 +45,12 @@ export default async function RootLayout({
                         <Navbar />
                     </header>
 
-
-
                     {/* Sidebar only for auth user */}
-                    {/* {session?.user && ( */}
-                    <div className="fixed inset-y-0 left-0 z-50 w-64">
-                        <Sidebar />
-                    </div>
-                    {/* )} */}
-
-
-
-
+                    {session?.user && (
+                        <div className="fixed inset-y-0 left-0 z-50 w-64">
+                            <Sidebar />
+                        </div>
+                    )}
 
                     {/* Rendering authModal alongside other components */}
                     {authModal}
@@ -68,11 +59,9 @@ export default async function RootLayout({
                         {children}
                     </div>
 
-
-
+                    <Toaster />
+                    <SonnerToaster />
                 </Providers>
-                <Toaster />
-                <SonnerToaster />
             </body>
         </html>
     );
