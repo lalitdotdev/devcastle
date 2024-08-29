@@ -1,9 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider        = "prisma-client-js"
-    previewFeatures = ["fullTextSearch", "fullTextIndex"]
+    previewFeatures = ["fullTextIndex", "fullTextSearch"]
 }
 
 datasource db {
@@ -39,56 +36,46 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([userId])
-}
-
-enum UserRole {
-    ADMIN
-    USER
+    @@map("sessions")
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    about         String?
-    emailVerified DateTime?
-
-    createdCommunities Community[] @relation("CreatedBy")
-
-    username String? @unique
-
-    image          String? // Profile picture
-    hashedPassword String?
-
-    role     UserRole  @default(USER)
-    accounts Account[]
-    sessions Session[]
-    Post     Post[]
-    articles Article[]
-
-    isProfileInfoSet Boolean? @default(false)
-    createdAt        DateTime @default(now())
-
-    Comment      Comment[]
-    Subscription Subscription[]
-    Vote         Vote[]
-    CommentVote  CommentVote[]
-
-    bookmarks Bookmark[]
-    followers User[]     @relation(name: "Followers") // Users that follow me
-    follows   User[]     @relation(name: "Followers") // Users that I follow
-    // GitHubRepo GitHubRepo[] // New relationship for
+    id                    String         @id @default(cuid())
+    name                  String?
+    email                 String?        @unique
+    about                 String?
+    emailVerified         DateTime?
+    username              String?        @unique
+    image                 String?
+    hashedPassword        String?
+    role                  UserRole       @default(USER)
+    isProfileInfoSet      Boolean?       @default(false)
+    createdAt             DateTime       @default(now())
+    createdCommunities    Community[]    @relation("CreatedBy")
+    accounts              Account[]
+    sessions              Session[]
+    Post                  Post[]
+    articles              Article[]
+    Comment               Comment[]
+    Subscription          Subscription[]
+    Vote                  Vote[]
+    CommentVote           CommentVote[]
+    likes                 Like[]
+    bookmarks             Bookmark[]
+    following             Follow[]       @relation("Following")
+    followers             Follow[]       @relation("Followers")
+    receivedNotifications Notification[] @relation("Recipient")
+    issuedNotifications   Notification[] @relation("Issuer")
 }
 
 model Community {
-    id          String  @id @default(cuid())
-    name        String  @unique
+    id          String         @id @default(cuid())
+    name        String         @unique
     description String?
-
     createdAt   DateTime       @default(now())
     updatedAt   DateTime       @updatedAt
-    posts       Post[]
     creatorId   String?
+    posts       Post[]
     Creator     User?          @relation("CreatedBy", fields: [creatorId], references: [id])
     subscribers Subscription[]
 
@@ -97,10 +84,10 @@ model Community {
 }
 
 model Subscription {
-    user        User      @relation(fields: [userId], references: [id])
     userId      String
-    community   Community @relation(fields: [communityId], references: [id])
     communityId String
+    user        User      @relation(fields: [userId], references: [id])
+    community   Community @relation(fields: [communityId], references: [id])
 
     @@id([userId, communityId])
     @@index([communityId])
@@ -108,95 +95,101 @@ model Subscription {
 }
 
 model Post {
-    id String @id @default(cuid())
-
-    title     String
-    content   Json?
-    // slug String @unique
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    published   Boolean   @default(false)
-    community   Community @relation(fields: [communityId], references: [id])
-    communityId String
-
-    author   User   @relation(fields: [authorId], references: [id])
-    authorId String
-
-    // categories Category[]
-    bookmarks Bookmark[]
-    // tags      Tag[]
-
-    comments Comment[]
-    votes    Vote[]
+    id                  String         @id @default(cuid())
+    title               String
+    content             Json?
+    createdAt           DateTime       @default(now())
+    updatedAt           DateTime       @updatedAt
+    published           Boolean        @default(false)
+    communityId         String
+    authorId            String
+    community           Community      @relation(fields: [communityId], references: [id])
+    attachments         Media[]
+    author              User           @relation(fields: [authorId], references: [id])
+    likes               Like[]
+    bookmarks           Bookmark[]
+    comments            Comment[]
+    votes               Vote[]
+    linkedNotifications Notification[]
 
     @@index([communityId])
     @@index([authorId])
 }
 
+model Media {
+    id        String    @id @default(cuid())
+    postId    String?
+    type      MediaType
+    url       String
+    createdAt DateTime  @default(now())
+    post      Post?     @relation(fields: [postId], references: [id], onDelete: SetNull)
+
+    @@index([postId])
+    @@map("post_media")
+}
+
 model Article {
-    id        String  @id @default(cuid())
+    id        String   @id @default(cuid())
     title     String
     content   Json?
-    published Boolean @default(false)
-
-    author    User     @relation(fields: [authorId], references: [id])
+    published Boolean  @default(false)
     authorId  String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    author    User     @relation(fields: [authorId], references: [id])
 
     @@index([authorId])
 }
 
 model Comment {
-    id String @id @default(cuid())
-
-    text String
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    author   User   @relation(fields: [authorId], references: [id])
-    authorId String
-
-    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-    postId String
-
+    id        String        @id @default(cuid())
+    text      String
+    createdAt DateTime      @default(now())
+    updatedAt DateTime      @updatedAt
+    authorId  String
+    postId    String
     replyToId String?
-    replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    replies   Comment[] @relation("ReplyTo")
-
-    votes     CommentVote[]
     commentId String?
+    author    User          @relation(fields: [authorId], references: [id])
+    post      Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+    replyTo   Comment?      @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    replies   Comment[]     @relation("ReplyTo")
+    votes     CommentVote[]
 
     @@index([authorId])
     @@index([postId])
     @@index([replyToId])
 }
 
-model Vote {
-    user   User     @relation(fields: [userId], references: [id])
+model Like {
     userId String
-    post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+    postId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, postId])
+    @@index([postId])
+    @@map("likes")
+}
+
+model Vote {
+    userId String
     postId String
     type   VoteType
+    user   User     @relation(fields: [userId], references: [id])
+    post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
     @@id([userId, postId])
     @@index([postId])
     @@index([userId])
 }
 
-enum VoteType {
-    UPVOTE
-    DOWNVOTE
-}
-
 model CommentVote {
-    user      User     @relation(fields: [userId], references: [id])
     userId    String
-    comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
     commentId String
     type      VoteType
+    user      User     @relation(fields: [userId], references: [id])
+    comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
     @@id([userId, commentId])
     @@index([commentId])
@@ -204,41 +197,29 @@ model CommentVote {
 }
 
 model Bookmark {
-    id     String @id @default(cuid())
-    userId String
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    postId String
-    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-
+    id        String   @id @default(cuid())
+    userId    String
+    postId    String
     createdAt DateTime @default(now())
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
     @@unique([userId, postId])
     @@index([postId])
     @@map("bookmarks")
 }
 
-// model Category {
-//   id    String     @id @default(cuid())
-//   name  String  @unique
-//   posts Post[]
-// }
+model Follow {
+    followerId  String
+    followingId String
+    follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+    following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
 
-// model Tag {
-//   id    String     @id @default(cuid())
-//   name  String  @unique
-//   posts Post[]
-// }
-
-// // model GitHubRepo {
-//   id        String   @id @default(cuid())
-//   name      String
-//   fullName  String
-//   url       String
-//   createdAt DateTime
-//   updatedAt DateTime @updatedAt
-//   owner     User     @relation(fields: [ownerId], references: [id])
-//   ownerId   String
-// }
+    @@unique([followerId, followingId])
+    @@index([followerId])
+    @@index([followingId])
+    @@map("follows")
+}
 
 model Job {
     id               Int      @id @default(autoincrement())
@@ -260,4 +241,66 @@ model Job {
     @@fulltext([title])
     @@fulltext([title, description, companyName, location, type])
     @@map("jobs")
+}
+
+model Notification {
+    id          String           @id @default(cuid())
+    recipientId String
+    issuerId    String
+    postId      String?
+    type        NotificationType
+    read        Boolean          @default(false)
+    createdAt   DateTime         @default(now())
+    recipient   User             @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+    issuer      User             @relation("Issuer", fields: [issuerId], references: [id], onDelete: Cascade)
+    post        Post?            @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    @@index([recipientId])
+    @@index([issuerId])
+    @@index([postId])
+    @@map("notifications")
+}
+
+model Essay {
+    id             String     @id @default(cuid())
+    title          String
+    link           String     @unique
+    contentSnippet String?
+    pubDate        DateTime
+    description    String?
+    categories     Category[]
+    createdAt      DateTime   @default(now())
+    updatedAt      DateTime   @updatedAt
+
+    @@index([pubDate])
+}
+
+model Category {
+    id          String   @id @default(cuid())
+    name        String   @unique
+    description String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    Essays      Essay[]
+}
+
+enum UserRole {
+    ADMIN
+    USER
+}
+
+enum MediaType {
+    IMAGE
+    VIDEO
+}
+
+enum VoteType {
+    UPVOTE
+    DOWNVOTE
+}
+
+enum NotificationType {
+    LIKE
+    FOLLOW
+    COMMENT
 }
