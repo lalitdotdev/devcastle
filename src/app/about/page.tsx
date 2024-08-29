@@ -29,8 +29,8 @@ export default function About() {
                     </h1>
                 </div>
                 <div className=" col-start-6 col-span-5 max-w-xl lg:max-w-none text-sm  md:text-2xl  leading-[130%] text-light-gray font-sm space-y-7 tracking-wide leading-5">
-                    <p className="space-y-8 flex flex-col">
-                        <span>
+                    <p className="space-y-8 flex flex-col font-mono">
+                        <span className=''>
                             <strong>DevCastle</strong> is a platform by the developers and for the developers to connect talents with opportunities. We are a community of developers, designers, and creators who are passionate about building and creating things.
                         </span>
 

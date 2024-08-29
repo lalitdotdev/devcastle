@@ -25,7 +25,7 @@ const SidebarRouteItem = ({ icon: Icon, label, href }: SidebarRouteItemProps) =>
         router.push(href)
     }
     return (
-        <div onClick={onClick} className={cn("flex items-center gap-x-2 py-4 text-zinc-400 text-sm font-[500] pl-6 cursor-pointer", isActive && "border-r-4 border-blue-600")}>
+        <div onClick={onClick} className={cn("flex items-center gap-x-2 py-4 text-zinc-400 text-sm font-[500] pl-6 cursor-pointer", isActive && "border-r-4 border-blue-600 text-blue-600")}>
             <div className="flex items-center gap-x-2 ">
                 <Tooltip>
                     <TooltipTrigger>

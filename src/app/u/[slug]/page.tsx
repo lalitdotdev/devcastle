@@ -16,6 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import React from 'react';
+import { Timeline } from "../_components/Timeline";
 import { UserCog } from 'lucide-react';
 import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
@@ -67,6 +68,8 @@ export function generateMetadata({ params: { slug } }: pageProps): Metadata {
 const Page = async ({ params }: pageProps) => {
     const { slug } = params;
 
+
+
     const session = await getAuthSession();
 
     const profile = await db.user.findFirst({
@@ -84,14 +87,157 @@ const Page = async ({ params }: pageProps) => {
     // Get user posts from db
 
 
-
+    const data = [
+        {
+            title: "2024",
+            content: (
+                <div>
+                    <p className="text-neutral-500 text-xs md:text-sm font-normal mb-8">
+                        Scaled and optimized speed of blah blah 10x times.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Image
+                            src="https://assets.aceternity.com/templates/startup-1.webp"
+                            alt="startup template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                        <Image
+                            src="https://assets.aceternity.com/templates/startup-2.webp"
+                            alt="startup template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                        <Image
+                            src="https://assets.aceternity.com/templates/startup-3.webp"
+                            alt="startup template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                        <Image
+                            src="https://assets.aceternity.com/templates/startup-4.webp"
+                            alt="startup template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                    </div>
+                </div>
+            ),
+        },
+        {
+            title: "Early 2023",
+            content: (
+                <div>
+                    <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-normal mb-8">
+                        I usually run out of copy, but when I see content this big, I try to
+                        integrate lorem ipsum.
+                    </p>
+                    <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-normal mb-8">
+                        Lorem ipsum is for people who are too lazy to write copy. But we are
+                        not. Here are some more example of beautiful designs I built.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Image
+                            src="https://assets.aceternity.com/pro/hero-sections.png"
+                            alt="hero template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                        <Image
+                            src="https://assets.aceternity.com/features-section.png"
+                            alt="feature template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                        <Image
+                            src="https://assets.aceternity.com/pro/bento-grids.png"
+                            alt="bento template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                        <Image
+                            src="https://assets.aceternity.com/cards.png"
+                            alt="cards template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                    </div>
+                </div>
+            ),
+        },
+        {
+            title: "Changelog",
+            content: (
+                <div>
+                    <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-normal mb-4">
+                        Deployed 5 new components on Aceternity today
+                    </p>
+                    <div className="mb-8">
+                        <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-xs md:text-sm">
+                            ✅ Card grid component
+                        </div>
+                        <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-xs md:text-sm">
+                            ✅ Startup template Aceternity
+                        </div>
+                        <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-xs md:text-sm">
+                            ✅ Random file upload lol
+                        </div>
+                        <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-xs md:text-sm">
+                            ✅ Himesh Reshammiya Music CD
+                        </div>
+                        <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-xs md:text-sm">
+                            ✅ Salman Bhai Fan Club registrations open
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Image
+                            src="https://assets.aceternity.com/pro/hero-sections.png"
+                            alt="hero template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                        <Image
+                            src="https://assets.aceternity.com/features-section.png"
+                            alt="feature template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                        <Image
+                            src="https://assets.aceternity.com/pro/bento-grids.png"
+                            alt="bento template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                        <Image
+                            src="https://assets.aceternity.com/cards.png"
+                            alt="cards template"
+                            width={500}
+                            height={500}
+                            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+                        />
+                    </div>
+                </div>
+            ),
+        },
+    ];
 
     return (
 
         <main className="mx-auto my-6 w-full px-4  sm:max-w-5xl md:max-w-6xl lg:px-8">
             <div className="flex flex-col md:flex-row py-8 justify-center md:items-center  border-gray-600 mb-4 rounded-md border p-4">
                 <div className=" w-full flex flex-col md:justify-start items-center md:flex-row md:gap-4">
-                    <div className="sm:m-0 shadow-lg overflow-hidden h-[86px] w-[86px] md:h-auto md:w-auto bg-red-500 border-4 rounded-full border-yellow-400 mt-1 object-cover">
+                    <div className="sm:m-0 shadow-lg overflow-hidden h-[74px] w-[74px]   border-4 rounded-full  mt-1 object-cover">
                         {profile?.image && (
                             <Image
                                 src={profile?.image}
@@ -226,7 +372,7 @@ const Page = async ({ params }: pageProps) => {
             {/* Profile tabs */}
             <div>
                 <Tabs defaultValue="about" className="w-full">
-                    <div className="border-b border-gray-400 md:font-semibold w-full ">
+                    <div className="border-b border-neutral-600 md:font-semibold w-full ">
                         <TabsList className="grid md:grid-cols-6 grid-cols-3 md:w-4/5 w-full ">
                             <TabsTrigger value="about">About</TabsTrigger>
                             <TabsTrigger value="articles">Articles</TabsTrigger>
@@ -253,30 +399,9 @@ const Page = async ({ params }: pageProps) => {
                     </TabsContent>
 
                     <TabsContent value='experience' className="max-lg:pt-4">
-                        <div>
-                            <div className="flex flex-col gap-4 p-4">
-                                <h3 className="text-2xl font-bold text-indigo-500">Experience</h3>
-                                <div className="flex flex-col gap-4">
-                                    <div className="flex gap-4 items-center">
-                                        <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
-                                            <GraduationCap size={32} />
-                                        </div>
-                                        <div>
-                                            <h4 className="text-lg font-semibold text-n-2">Full Stack Developer</h4>
-                                            <p className="text-gray-400">2021 - Present</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-4 items-center">
-                                        <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
-                                            <Code2Icon size={32} />
-                                        </div>
-                                        <div>
-                                            <h4 className="text-lg font-semibold text-n-2">Full Stack Developer</h4>
-                                            <p className="text-gray-400">2021 - Present</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div className="w-full">
+                            <Timeline data={data} />
                         </div>
 
                     </TabsContent>

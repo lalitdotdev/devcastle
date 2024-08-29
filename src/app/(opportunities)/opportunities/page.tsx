@@ -115,6 +115,9 @@ export default async function Jobboardpage({
                     current remote companies.
                 </p>
             </div>
+
+            <hr className="border-t border-zinc-700" />
+
             <section className="flex flex-col md:flex-row gap-4">
                 <JobFilterSidebar
                     defaultValues={filterValues}
