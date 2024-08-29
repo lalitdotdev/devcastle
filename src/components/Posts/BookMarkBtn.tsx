@@ -42,7 +42,6 @@ export default function BookmarkButton({
         onMutate: async () => {
             toast.success(`Post ${data.isBookmarkedByUser ? "un" : ""}bookmarked`);
             await queryClient.cancelQueries({ queryKey });
-
             const previousState = queryClient.getQueryData<BookmarkInfo>(queryKey);
 
             queryClient.setQueryData<BookmarkInfo>(queryKey, () => ({
