@@ -9,7 +9,7 @@ import { Bookmark } from "lucide-react";
 import { BookmarkInfo } from "@/types/types";
 import { cn } from "@/lib/utils";
 import kyInstance from "@/lib/ky";
-import { toast } from 'sonner'
+import { toast } from "sonner";
 
 interface BookmarkButtonProps {
     postId: string;
