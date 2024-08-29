@@ -5,16 +5,17 @@ import { notionists } from '@dicebear/collection'
 
 const UserAvatarFallback = ({ seed, classNames }: { seed: string, classNames?: string }) => {
     try {
-
         const avatar = createAvatar(notionists, {
             seed: seed.toString(),
-            // .. other options
         });
+
         if (!avatar) {
             return null;
         }
+
         const svg = avatar.toString();
         const dataUrl = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+
         return (
             <Image
                 className={classNames}
@@ -25,8 +26,9 @@ const UserAvatarFallback = ({ seed, classNames }: { seed: string, classNames?: s
             />
         );
     } catch (error) {
+        console.error("Error generating fallback avatar:", error);
         return null;
     }
 }
 
-export default UserAvatarFallback
+export default UserAvatarFallback;
