@@ -78,7 +78,7 @@ const SearchBar: FC<SearchBarProps> = ({ }) => {
             />
 
             {input.length > 0 && (
-                <CommandList className="absolute z-999  border border-zinc-600 top-full bg-[#2D333B] inset-x-0 shadow rounded-md text-gray-400">
+                <CommandList className="absolute z-50  border border-zinc-600 top-full bg-[#2D333B] inset-x-0 shadow rounded-md text-gray-400">
                     {isFetched && <CommandEmpty>No results found.</CommandEmpty>}
                     {(queryResults?.length ?? 0) > 0 ? (
                         <CommandGroup heading="Unlock the gateway to a pulsating online realm!">
