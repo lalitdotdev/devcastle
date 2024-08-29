@@ -64,7 +64,7 @@ const SearchBar: FC<SearchBarProps> = ({ }) => {
     return (
         <Command
             ref={commandRef}
-            className="relative w-[10rem] md:w-[18rem] max-w-[20rem] z-50 overflow-visible bg-transparent border  focus-within:ring-1 border-zinc-600 focus-within:ring-opacity-50 rounded-lg p-1 "
+            className="relative w-[10rem] md:w-[18rem] max-w-[20rem] z-50 overflow-visible bg-transparent border  focus-within:ring-1 focus-within:ring-opacity-50 rounded-lg p-1 border-zinc-700 "
         >
             <CommandInput
                 isLoading={isFetching}
@@ -78,7 +78,7 @@ const SearchBar: FC<SearchBarProps> = ({ }) => {
             />
 
             {input.length > 0 && (
-                <CommandList className="absolute bg-[#2D333B] border border-zinc-600 top-full inset-x-0 shadow rounded-md text-gray-400">
+                <CommandList className="absolute z-999  border border-zinc-600 top-full bg-[#2D333B] inset-x-0 shadow rounded-md text-gray-400">
                     {isFetched && <CommandEmpty>No results found.</CommandEmpty>}
                     {(queryResults?.length ?? 0) > 0 ? (
                         <CommandGroup heading="Unlock the gateway to a pulsating online realm!">
@@ -90,9 +90,10 @@ const SearchBar: FC<SearchBarProps> = ({ }) => {
                                     }}
                                     key={Community.id}
                                     value={Community.name}
+                                    className="cursor-pointer hover:bg-zinc-600 z-999"
                                 >
-                                    <Globe className="mr-2 h-4 w-4 text-zinc-400" />
-                                    <a className="text-gray-300 hover:text-gray-400" href={`/cb/${Community.name}`}>
+                                    <Globe className="mr-2 h-4 w-4 text-zinc-400 " />
+                                    <a className=" hover:text-gray-400 cursor-pointer" href={`/cb/${Community.name}`}>
                                         cb/{Community.name}
                                     </a>
                                 </CommandItem>
