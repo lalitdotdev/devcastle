@@ -1,5 +1,17 @@
+import {
+    Github,
+    Instagram,
+    Linkedin,
+    Slack,
+    Twitter,
+    Youtube,
+} from "lucide-react";
+
+import H1 from "./h1";
 import Link from "next/link";
 import React from "react";
+import { categories } from "@/lib/categories";
+
 // import {
 //   FiGithub,
 //   FiInstagram,
@@ -10,16 +22,6 @@ import React from "react";
 
 // import CuriosityLogo from "./CuriosityLogo";
 
-import {
-    Github,
-    Instagram,
-    Linkedin,
-    Slack,
-    Twitter,
-    Youtube,
-} from "lucide-react";
-import { categories } from "@/lib/categories";
-import H1 from "./h1";
 
 function Footer() {
     const socialLinks = [
@@ -114,31 +116,16 @@ function Footer() {
         },
     ];
     return (
-        <footer className="max-w-7xl mx-auto px-32 py-16 h-max  text-indigo-400 border-t border-gray-600 hidden md:block">
-            {/* <ul className="flex justify-between">
-        {data.map(({ headerName, links }) => {
-          return (
-            <li key={headerName} className="flex flex-col gap-2">
-              <span className="font-semibold">{headerName}</span>
-              <ul className="flex flex-col gap-2">
-                {links.map(({ name, link }) => (
-                  <li key={name} className="text-gray-400">
-                    <Link href={link}>{name}</Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          );
-        })}
-      </ul> */}
+        <footer className="md:max-w-7xl mx-auto md:px-32 py-16 h-max  text-indigo-400 border-t border-gray-600 flex flex-col ">
 
-            <div className=" flex items-center justify-between">
+
+            <div className=" flex flex-col md:flex-row md:items-center justify-between">
                 <div className="flex-col">
-                    <H1 className="flex text-indigo-600">
+                    <H1 className="flex text-gray-400">
                         DevCastle <span className="text-green-600">.</span>{" "}
                     </H1>
                     <p className="text-sm text-muted-foreground">
-                        Connecting talents with opportunities
+                        Castles of developers , creators , makers and designers.
                     </p>
                 </div>
 
@@ -158,7 +145,7 @@ function Footer() {
             <div className=" text-sm text-muted-foreground">
                 © {new Date().getFullYear()} DevCastle , Inc. All rights reserved.
             </div>
-            <div className="text-sm flex flex-grow text-muted-foreground gap-4 justify-end">
+            <div className="text-sm flex md:flex-grow text-muted-foreground gap-4 justify-end">
                 <Link href="/about" className="hover:underline">
                     About Us
                 </Link>
