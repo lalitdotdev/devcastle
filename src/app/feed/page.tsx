@@ -1,11 +1,12 @@
+import CommunityAvatar from "@/components/Avatars/CommunityAvatar";
 import CustomFeed from "@/components/Feed/CustomFeed";
 import GeneralFeed from "@/components/Feed/GeneralFeed";
 import { HomeFeedTabs } from "@/components/ui/HomeFeedTabs";
 import JobResults from "@/components/Jobboard/JobResults";
 import { Metadata } from "next";
 import { Prisma } from "@prisma/client";
-import RightAside from "@/components/RightAside/RightAside";
 import { Separator } from "@/components/ui/separator";
+import ToolbarExpandable from "@/components/ToolbarDynamics";
 import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
@@ -32,25 +33,19 @@ const page = async () => {
         // redirect("/");
     }
 
-    const communities = await db.community.findMany({
-        take: 7,
-        orderBy: {
-            subscribers: {
-                _count: "desc",
-            },
-        },
-    })
+    // const communities = await db.community.findMany({
+    //     take: 7,
+    //     orderBy: {
+    //         subscribers: {
+    //             _count: "desc",
+    //         },
+    //     },
+    // })
 
 
 
     // Get 5 new job postings based on the createdAt date and display them in the right aside component
 
-    const newJobPostings = await db.job.findMany({
-        take: 5,
-        orderBy: {
-            createdAt: "desc",
-        },
-    });
 
     const where: Prisma.JobWhereInput = {
         AND: [
@@ -73,11 +68,16 @@ const page = async () => {
             title: "Feed",
             value: "feed",
             content: (
-                <div className="w-full ">
-                    <div className="w-full overflow-hidden relative h-full rounded-2xl p-4 text-xl md:text-4xl font-bold mb-4 text-white border  border-purple-700 ">
-                        <p>Your Feed</p>
+                <div className="w-full overflow-y-auto h-full ">
+                    <div className="flex items-center gap-2 bg-gradient-to-br from-zinc-800 to-transparent p-4 rounded-xl md:pl-8">
+                        <CommunityAvatar seed={"xyz"} classNames="w-12 h-12 rounded-xl p-2 " />
+                        <h1 className="font-normal text-3xl md:text-4xl  text-gray-400">
+                            Your Feed
+                        </h1>
                     </div>
-                    <Separator className="mb-4 bg-gray-600" />
+
+
+                    <Separator className="my-4 bg-gray-700" />
                     {/* @ts-expect-error server component */}
                     {session ? <CustomFeed /> : <GeneralFeed />}
                 </div>
@@ -113,8 +113,8 @@ const page = async () => {
         // ),
 
         {
-            title: "Services",
-            value: "services",
+            title: "Showcases",
+            value: "showcases",
             content: (
                 <div className="w-full ">
                     <div className="w-full overflow-hidden relative h-full rounded-2xl p-4 text-xl md:text-4xl font-bold mb-4 text-white border  border-purple-700 ">
@@ -152,21 +152,18 @@ const page = async () => {
     // );
 
     return (
-        <div className=" pt-8 h-full w-full mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 py-6 space-y-8 space-x-24 w-full ">
-                {/* Display either custom feed or general feed */}
-                {/* <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex max-w-5xl mx-auto w-full  items-start justify-start my-40"> */}
-                {/* <div className="py-0 perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start ">
-                    <HomeFeedTabs tabs={tabs} />
-                </div> */}
-                {/* </div> */}
+        <div className=" pt-8 h-full w-full mx-auto ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 py-6 space-y-8 space-x-24 w-full  md:px-10 md:pl-20 ">
 
                 <div className="w-full ">
                     <HomeFeedTabs tabs={tabs} />
                 </div>
 
-                <RightAside communities={communities} newJobPostings={newJobPostings} />
 
+                <div className=" top-16 md:top-24 justify-center md:right-32 mx-auto fixed w-1/3  ">
+                    <ToolbarExpandable />
+
+                </div>
             </div>
         </div>
     );
