@@ -1,36 +1,36 @@
-import { Job } from '@prisma/client'
+"use server"
+
 import { Briefcase, Plus } from 'lucide-react'
-import Link from 'next/link'
-import { FC } from 'react'
-import { Separator } from '../ui/separator'
+
 import { Button } from '../ui/Button'
+import Link from 'next/link'
+import { Separator } from '../ui/separator'
+import { db } from '@/lib/db'
 
-interface JobSuggestionsProps {
-    newJobPostings: Job[]
-}
-
-const JobSuggestions: FC<JobSuggestionsProps> = ({ newJobPostings }) => {
+const JobSuggestions = async () => {
 
     // new JobPosting is array of jobs and i want to give link to apply on that job via link or email
+    const newJobPostings = await db.job.findMany({
+        take: 10,
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
 
     return (
 
-        <div className="hidden lg:block lg:w-80  ">
-            <div className="h-fit">
-                <div className=" bg-[#212329] rounded-lg p-4 mb-4 text-white  shadow-sm ">
+        <div className="hidden lg:block w-full  ">
+            <div className=" top-0 overflow-y-scroll h-3/4">
+                <div className=" rounded-lg p-4 mb-4  shadow-sm ">
                     {/* Want to giv background image in below div */}
-                    <div className='flex flex-end px-[6px] py-[10px] h-[120px] border-lg font-semibold bg-castle-art bg-cover'>
-                        <h2 className="text-lg font-bold text-zinc-300">
-                            New Opportunities
-                        </h2>
-                    </div>
-                    <Separator className=' bg-gray-500 my-4' />
 
-                    <ul>
+                    <Separator className=' bg-gray-700 my-4' />
+
+                    <ul className="flex flex-col space-y-4">
                         {newJobPostings.map((job) => (
-                            <li key={job.id} className="mb-4 flex justify-between border-b  border-gray-500 text-sm">
+                            <li key={job.id} className="mb-4 flex justify-between  text-sm text-gray-100 ">
                                 <Link href={`/jobs/${job.slug}`}>
-                                    <div className="flex items-center space-x-2 mb-2">
+                                    <div className="flex items-center space-x-2 mb-2 ">
                                         {/* <a className="flex items-center space-x-2"> */}
                                         {/* <Image
                                             src={job.name}
