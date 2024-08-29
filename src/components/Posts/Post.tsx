@@ -11,6 +11,7 @@ import PostVoteClient from "../post-vote/PostVoteClient";
 import { Button } from "../ui/Button";
 import { Separator } from "../ui/separator";
 import BookmarkButton from "./BookMarkBtn";
+import { PostData } from "@/types/types";
 
 
 type PartialVote = Pick<Vote, "type">;
@@ -22,7 +23,7 @@ interface PostProps {
         author: User;
         votes: Vote[];
         bookmarks: Bookmark[];
-    };
+    } | PostData;
 
     votesAmt?: number;
     currentVote?: PartialVote;

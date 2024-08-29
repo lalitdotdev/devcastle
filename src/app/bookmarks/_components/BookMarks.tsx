@@ -54,13 +54,16 @@ export default function Bookmarks() {
         );
     }
 
+
+    console.log(posts)
+
     return (
         <InfiniteScrollContainer
             className="space-y-5"
             onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
         >
             {posts.map((post) => ( // todo: fix type error here
-                <Post key={post.id} post={post as Post} communityName={post.community.name} />
+                <Post key={post.id} post={post} communityName={post.community.name} />
 
             ))}
             {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
