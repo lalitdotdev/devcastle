@@ -30,7 +30,7 @@ export const HomeFeedTabs = ({
         <>
             <div
                 className={cn(
-                    "flex flex-row items-center justify-start  relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-fit border border-white/10 p-2 rounded-full",
+                    "flex flex-row items-center justify-start  relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-fit border border-white/10 md:p-2 p-1 rounded-full tracking-tighter ",
                     containerClassName
                 )}
             >
@@ -44,7 +44,7 @@ export const HomeFeedTabs = ({
                         }}
                         onMouseLeave={() => setHovering(false)}
                         className={cn(
-                            "relative px-4 py-2 rounded-full",
+                            "relative px-2 py-1 rounded-full",
                             tabClassName,
                             active.value === tab.value && activeTabClassName
                         )}
@@ -58,7 +58,7 @@ export const HomeFeedTabs = ({
                                 )}
                             />
                         )}
-                        <span className="relative block text-white dark:text-white">
+                        <span className="relative block text-white dark:text-white text-sm">
                             {tab.title}
                         </span>
                     </button>

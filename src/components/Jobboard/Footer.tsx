@@ -41,7 +41,11 @@ export default function Footer() {
                 <span className="sr-only">DEVCASTLE</span>
                 <div className="flex items-center justify-center w-full py-2">
                     <h2 className=" text-6xl uppercase font-extrabold text-light-gray md:text-[12rem]">devcastle</h2>
+
                 </div>
+                <p className='text-center text-sm text-light-gray'>
+                    Castle of developers , designers , creators , builders , and more.
+                </p>
             </div>
             <div className="flex flex-col gap-y-12 gap-x-2 md:flex-row items-start justify-between pt-6 pb-10 text-neutral-500">
                 <div className="gap-y-4 b-8 flex flex-col text-base  text-[1.2rem] ">

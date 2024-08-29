@@ -1,65 +1,46 @@
-import { Loader } from 'lucide-react'
-import React from 'react'
-import Skeleton from './ui/skeleton'
+import { Loader } from 'lucide-react';
+import Skeleton from './ui/skeleton';
 
 const LoadingSkeleton = () => {
     return (
-        <div className='w-full h-screen'>
-            <Loader className='animate-spin text-indigo-600 h-8 w-8 ' />
-            <div className="hidden md:flex gap-4 px-28 py-10 max-w-7xl w-full justify-center items-center ">
-                <div className="space-y-8 w-full">
-                    <div className="flex flex-col w-full">
-                        <Skeleton className="h-18 w-60 mb-4" />
-                        <div className="rounded-xl bg-[#1F1F21]">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center space-x-4">
-                                    <Skeleton className="h-12 w-12 rounded-full" />
-                                    <div>
-                                        <Skeleton className="h-4 w-24" />
-                                    </div>
-                                </div>
-                            </div>
-                            <Skeleton className="h-6 w-3/4 mb-4" />
-                            <Skeleton className="h-6 w-1/2 mb-4" />
-                            <Skeleton className="h-6 w-1/2 mb-4" />
-                            <Skeleton className="h-6 w-3/4 mb-4" />
-                            <div className="flex items-center justify-between w-1/2">
-                                <Skeleton className="h-6 w-20" />
-                                <Skeleton className="h-6 w-20" />
-                                <Skeleton className="h-6 w-20" />
-                            </div>
+        <div className='container w-full max-w-7xl'>
+            {/* Loader */}
+            {/* <div className="flex justify-center items-center py-10">
+                <Loader className='animate-spin text-indigo-600 h-8 w-8' />
+            </div> */}
+
+            {/* Main Content Area */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mx-auto pt-14">
+                {/* Tabs Skeleton */}
+                <div>
+                    <div className="flex flex-col">
+                        <div className="mb-10">
+                            <Skeleton className="h-12 w-full rounded-full mb-4 p-6" />
+                        </div>
+                        <div className="space-y-4">
+                            <Skeleton className="h-20 w-full rounded-xl" />
+
                         </div>
                     </div>
-                    <div className="flex flex-col w-full">
-                        <Skeleton className="h-18 w-60 mb-4" />
-                        <div className="rounded-xl bg-[#1F1F21]">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center space-x-4">
-                                    <Skeleton className="h-12 w-12 rounded-full" />
-                                    <div>
-                                        <Skeleton className="h-4 w-24" />
-                                    </div>
-                                </div>
-                            </div>
-                            <Skeleton className="h-6 w-3/4 mb-4" />
-                            <Skeleton className="h-6 w-1/2 mb-4" />
-                            <Skeleton className="h-6 w-1/2 mb-4" />
-                            <Skeleton className="h-6 w-3/4 mb-4" />
-                            <div className="flex items-center justify-between w-1/2">
-                                <Skeleton className="h-6 w-20" />
-                                <Skeleton className="h-6 w-20" />
-                                <Skeleton className="h-6 w-20" />
-                            </div>
-                        </div>
+
+                    {/* Main Content Placeholder */}
+                    <div className="flex flex-col space-y-4 mt-8">
+                        <Skeleton className="h-40 w-full rounded-xl mb-4" />
+                        {/* <div className="space-y-4">
+                            <Skeleton className="h-60 w-full rounded-xl" />
+                            <Skeleton className="h-60 w-full rounded-xl" />
+                            <Skeleton className="h-60 w-full rounded-xl" />
+                        </div> */}
                     </div>
                 </div>
-                <div className='flex flex-col gap-4'>
-                    <Skeleton className="w-56 h-48" />
-                    <Skeleton className="w-56 h-48" />
+                {/* Right Aside Skeleton */}
+                <div className="flex flex-col space-y-4 p-14">
+                    <Skeleton className="h-80 w-[18rem] rounded-xl" />
+                    <Skeleton className="h-80 w-[18rem] rounded-xl" />
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default LoadingSkeleton
+export default LoadingSkeleton;
