@@ -28,23 +28,6 @@ const page = async () => {
 
     const session = await getAuthSession();
 
-    if (session?.user.role === "ADMIN") {
-        // redirect(authOptions?.pages?.signIn || "/");
-        // redirect("/");
-    }
-
-    // const communities = await db.community.findMany({
-    //     take: 7,
-    //     orderBy: {
-    //         subscribers: {
-    //             _count: "desc",
-    //         },
-    //     },
-    // })
-
-
-
-    // Get 5 new job postings based on the createdAt date and display them in the right aside component
 
 
     const where: Prisma.JobWhereInput = {
@@ -153,14 +136,14 @@ const page = async () => {
 
     return (
         <div className=" pt-8 h-full w-full mx-auto ">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 py-6 space-y-8 space-x-24 w-full  md:px-10 md:pl-20 ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 py-6 space-x-24 w-full  md:px-10 md:pl-20 ">
 
                 <div className="w-full ">
                     <HomeFeedTabs tabs={tabs} />
                 </div>
 
 
-                <div className=" top-16 md:top-24 justify-center md:right-32 mx-auto fixed w-1/3  ">
+                <div className=" top-16  justify-center md:right-32 mx-auto fixed w-1/3  ">
                     <ToolbarExpandable />
 
                 </div>

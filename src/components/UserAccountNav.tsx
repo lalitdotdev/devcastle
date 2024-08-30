@@ -42,11 +42,11 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                         </div>
                     </SheetTrigger>
                     <SheetContent className="w-[240px] md:w-[400px]  bg-[#1B1F23] text-gray-400 border border-gray-600 rounded-l-2xl p-4 text-xs md:text-sm overflow-hidden data-[state=closed]:animate-out">
-                        <div className="space-y-1">
+                        <div className="space-y-[2.2px] md:space-y-1">
                             {/* User info section */}
-                            <div className="flex items-center justify-start gap-2 p-2 text-gray-400 ">
-                                {/* ... (user info content) ... */}
-                            </div>
+                            {/* <div className="flex items-center justify-start gap-2 p-2 text-gray-400 ">
+
+                            </div> */}
                             {/* <Separator className="bg-gray-700" /> */}
 
                             {/* Navigation links */}
@@ -62,7 +62,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 { href: "/opportunities", icon: Compass, label: "Browse Opportunities" },
                                 { href: "/opportunities", icon: Briefcase, label: "Opportunities / OS Programs" },
                                 { href: "/articles/publish", icon: Library, label: "Free Resources and Tools" },
-                                { href: "/articles/categories/all", icon: Newspaper, label: "Articles" },
+                                // { href: "/articles/categories/all", icon: Newspaper, label: "Articles" },
                                 { href: "/startups/catalog/essays", icon: TrendingUp, label: "Startup Archives" },
                                 { href: "/startups/catalog/workatstartups", icon: Briefcase, label: "Work At Startups" },
                                 { href: "/startups/catalog/jobstimeline", icon: Activity, label: "Jobs Timeline" },
@@ -79,14 +79,15 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                         <item.icon size={22} />
                                         <span>{item.label}</span>
                                     </Link>
-                                    {index === 1 || index === 4 || index === 6 || index === 11 ? (
+                                    {index === 1 || index === 4 || index === 6 || index === 10 ? (
                                         <Separator className="bg-gray-700 my-4" />
                                     ) : null}
-                                    {index === 6 || index === 11 ? (
+                                    {index === 6 || index === 10 ? (
                                         <SheetDescription className="text-xs my-2">
                                             {index === 6 ? "Professional Connections and get Mentorship" : "Catalog and Archives to get you inspired"}
                                         </SheetDescription>
                                     ) : null}
+
                                 </React.Fragment>
                             ))}
 
