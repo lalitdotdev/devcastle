@@ -14,9 +14,9 @@ export default async function EssaysPage() {
 
 
     return (
-        <main className="container mx-auto px-4 p-6 md:p-12 max-w-screen-xl">
+        <main className="md:px-24 mx-auto md:p-12 max-w-screen-xl">
 
-            <div className="flex flex-col  justify-center gap-4 py-8 md:py-16">
+            <div className=" flex flex-col  justify-center gap-4 py-8 ">
                 <h1 className="md:text-6xl text-4xl font-bold my-4  rounded-xl gradient-text animate-gradient">Paul Graham Essays</h1>
 
 

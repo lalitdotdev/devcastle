@@ -13,7 +13,7 @@ interface EssayListProps {
 
 export default function EssayList({ essays }: EssayListProps) {
     return (
-        <ul className="grid gap-6 ">
+        <ul className="grid gap-2 md:border-l md:px-4 border-gray-700 rounded-md ">
             {essays.map((essay, index) => (
                 <motion.li
                     key={essay.id}
@@ -22,12 +22,12 @@ export default function EssayList({ essays }: EssayListProps) {
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     className="rounded-lg overflow-hidden  hover:shadow-2xl transition-shadow duration-300 border border-gray-700"
                 >
-                    <div className="p-6">
+                    <div className="p-3">
                         <a
                             href={essay.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xl font-bold text-blue-400 hover:text-blue-300 transition-colors"
+                            className="text-lg md:font-semibold text-blue-400 hover:text-blue-300 transition-colors"
                         >
                             {essay.title}
                             {essay.contentSnippet && (

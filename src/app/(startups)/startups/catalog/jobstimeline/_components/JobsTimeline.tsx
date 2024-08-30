@@ -59,18 +59,18 @@ const JobsTimelineStories: React.FC = () => {
     };
 
     return (
-        <div className="max-w-5xl mx-auto mt-12 p-1 md:p-4">
+        <div className="max-w-5xl mx-auto mt-12 p-1 md:p-3">
             <h1 className="text-3xl md:text-4xl font-bold mb-6 py-6 text-slate-300">Top Jobs Timeline Stories</h1>
             <p className="text-sm text-gray-500 mb-4 py-6">
                 Get a glimpse of the top stories from the Jobs Timeline section. You can find more stories on the <a href="https://news.ycombinator.com/jobs" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors duration-300">Jobs Timeline</a> website.
                 <br /> <br />
                 Note: The Jobs Timeline section is a curated list of the top stories from the Hacker News section. It is not a comprehensive list of all the jobs stories.
             </p>
-            <ul className="space-y-8 border-l border-gray-700 px-8">
+            <ul className="space-y-8 border-l p-1 border-gray-700 md:px-4 rounded-md">
                 {stories.map((story, index) => (
                     <motion.li
                         key={story.id}
-                        className="rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow duration-300 border-l border-gray-700"
+                        className="rounded-lg shadow-sm p-2 md:p-4 hover:shadow-md transition-shadow duration-300 border-l border-gray-700"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
