@@ -3,6 +3,7 @@
 
 import { Category, Essay } from "@prisma/client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 type EssayWithCategories = Essay & { categories: Category[] };
@@ -20,13 +21,10 @@ export default function EssayList({ essays }: EssayListProps) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="rounded-lg overflow-hidden  hover:shadow-2xl transition-shadow duration-300 border border-gray-700"
+                    className="rounded-lg overflow-hidden  hover:shadow-2xl transition-shadow duration-300 border border-gray-700 p-2 md:p-3"
                 >
-                    <div className="p-3">
-                        <a
-                            href={essay.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                    <Link href={essay.link} className="p-0" target="_blank" rel="noopener noreferrer">
+                        <div
                             className="text-lg md:font-semibold text-blue-400 hover:text-blue-300 transition-colors"
                         >
                             {essay.title}
@@ -35,7 +33,7 @@ export default function EssayList({ essays }: EssayListProps) {
                                     {essay.contentSnippet}
                                 </p>
                             )}
-                        </a>
+                        </div>
 
                         {
                             essay.pubDate && (
@@ -61,7 +59,7 @@ export default function EssayList({ essays }: EssayListProps) {
                                 ))}
                             </div>
                         )}
-                    </div>
+                    </Link>
                 </motion.li>
             ))
             }
