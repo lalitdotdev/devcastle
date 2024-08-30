@@ -30,9 +30,10 @@ export default function JobDetailsPageComponent({
                     <Image
                         src={companyLogoUrl}
                         alt="Company logo"
-                        width={100}
-                        height={100}
-                        className="rounded-xl"
+                        width={280}
+                        height={280}
+
+                        className="rounded-xl border border-gray-500 object-contain "
                     />
                 )}
                 <div className="border-4 border-blue-800 px-4 rounded-md w-full p-4">

@@ -30,7 +30,7 @@ export const HomeFeedTabs = ({
         <>
             <div
                 className={cn(
-                    "flex flex-row items-center justify-start  relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-fit border border-white/10 md:p-2 p-1 rounded-full tracking-tighter ",
+                    "flex flex-row items-center justify-start  relative overflow-auto  no-visible-scrollbar max-w-full border border-white/10 md:p-2 p-1 rounded-full tracking-tighter ",
                     containerClassName
                 )}
             >

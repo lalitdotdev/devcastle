@@ -41,7 +41,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                             />
                         </div>
                     </SheetTrigger>
-                    <SheetContent className="w-[280px] md:w-[400px]  bg-[#1B1F23] text-gray-400 border border-gray-600 rounded-l-2xl p-4 text-sm overflow-hidden data-[state=closed]:animate-out">
+                    <SheetContent className="w-[240px] md:w-[400px]  bg-[#1B1F23] text-gray-400 border border-gray-600 rounded-l-2xl p-4 text-xs md:text-sm overflow-hidden data-[state=closed]:animate-out">
                         <div className="space-y-1">
                             {/* User info section */}
                             <div className="flex items-center justify-start gap-2 p-2 text-gray-400 ">
