@@ -32,13 +32,13 @@ export default function JobDetailsPageComponent({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full grow space-y-8 bg-gradient-to-br from-[#2A303C] to-[#1B1F23] p-6 rounded-xl shadow-2xl"
+            className="w-full grow space-y-8 bg-gradient-to-br from-[#2A303C] to-[#1B1F23] md:p-6 p-1 rounded-xl shadow-2xl"
         >
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2, duration: 0.3 }}
-                className="flex flex-col md:flex-row items-center gap-6"
+                className="flex flex-col md:flex-row items-center"
             >
                 {companyLogoUrl && (
                     <motion.div
@@ -108,7 +108,7 @@ export default function JobDetailsPageComponent({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.3 }}
-                className="bg-[#252A34] p-6 rounded-lg shadow-inner"
+                className="bg-[#252A34] p-1 md:p-2 rounded-lg shadow-inner"
             >
                 {description && (
                     <div className="prose prose-invert max-w-none">
