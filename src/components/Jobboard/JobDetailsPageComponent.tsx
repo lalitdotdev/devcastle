@@ -1,10 +1,14 @@
+"use client"
+
 import { Banknote, Briefcase, Globe2, MapPin } from "lucide-react";
 
 import Image from "next/image";
 import { Job } from "@prisma/client";
 import Link from "next/link";
 import Markdown from "./Markdown";
+import React from 'react';
 import { formatMoney } from "@/lib/utils";
+import { motion } from 'framer-motion';
 
 interface JobDetailsPageComponentProps {
     job: Job;
@@ -24,58 +28,94 @@ export default function JobDetailsPageComponent({
     },
 }: JobDetailsPageComponentProps) {
     return (
-        <section className="w-full grow space-y-5 bg-[#1B1F23] p-4 rounded-xl">
-            <div className="flex items-center gap-3">
+        <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full grow space-y-8 bg-gradient-to-br from-[#2A303C] to-[#1B1F23] p-6 rounded-xl shadow-2xl"
+        >
+            <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.3 }}
+                className="flex flex-col md:flex-row items-center gap-6"
+            >
                 {companyLogoUrl && (
-                    <Image
-                        src={companyLogoUrl}
-                        alt="Company logo"
-                        width={280}
-                        height={280}
-
-                        className="rounded-xl border border-gray-500 object-contain "
-                    />
+                    <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <Image
+                            src={companyLogoUrl}
+                            alt="Company logo"
+                            width={150}
+                            height={150}
+                            className="rounded-full border-4 border-blue-500 object-contain bg-white p-2 shadow-lg"
+                        />
+                    </motion.div>
                 )}
-                <div className="border-4 border-blue-800 px-4 rounded-md w-full p-4">
-                    <div className="">
-                        <h1 className="md:text-3xl text-xl text-color-accentBlue font-bold  w-fit py-4  ">
-                            {title}
-                        </h1>
-
-                        <p className="font-semibold p-2">
-                            {applicationUrl ? (
-                                <Link
-                                    href={new URL(applicationUrl).origin}
-                                    className="text-indigo-600  hover:text-indigo-700 underline underline-offset-4 "
-                                >
-                                    {companyName}
-                                </Link>
-                            ) : (
-                                <span>{companyName}</span>
-                            )}
-                        </p>
-                    </div>
-                    <div className="text-slate-200">
-                        <p className="flex items-center gap-1.5">
-                            <Briefcase size={16} className="shrink-0" />
-                            {type}
-                        </p>
-                        <p className="flex items-center gap-1.5">
-                            <MapPin size={16} className="shrink-0" />
-                            {locationType}
-                        </p>
-                        <p className="flex items-center gap-1.5">
-                            <Globe2 size={16} className="shrink-0" />
-                            {location || "Worldwide"}
-                        </p>
-                        <p className="flex items-center gap-1.5">
-                            <Banknote size={16} className="shrink-0" />
-                            {formatMoney(salary)}
-                        </p>
-                    </div>
+                <div className="flex-1 bg-[#252A34] p-6 rounded-lg shadow-inner">
+                    <motion.h1
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3, duration: 0.3 }}
+                        className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-4"
+                    >
+                        {title}
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4, duration: 0.3 }}
+                        className="text-xl text-gray-300 mb-6"
+                    >
+                        {applicationUrl ? (
+                            <Link
+                                href={new URL(applicationUrl).origin}
+                                className="text-blue-400 hover:text-blue-300 transition-colors duration-200 underline underline-offset-4"
+                            >
+                                {companyName}
+                            </Link>
+                        ) : (
+                            <span>{companyName}</span>
+                        )}
+                    </motion.p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5, duration: 0.3 }}
+                        className="grid grid-cols-2 gap-4 text-gray-300"
+                    >
+                        {[
+                            { Icon: Briefcase, text: type },
+                            { Icon: MapPin, text: locationType },
+                            { Icon: Globe2, text: location || "Worldwide" },
+                            { Icon: Banknote, text: formatMoney(salary) },
+                        ].map(({ Icon, text }, index) => (
+                            <motion.p
+                                key={index}
+                                className="flex items-center gap-2 bg-[#1B1F23] p-3 rounded-md"
+                                whileHover={{ scale: 1.05, backgroundColor: "#2A303C" }}
+                            >
+                                <Icon size={20} className="text-blue-400 shrink-0" />
+                                <span className="text-sm md:text-base">{text}</span>
+                            </motion.p>
+                        ))}
+                    </motion.div>
                 </div>
-            </div >
-            <div>{description && <Markdown>{description}</Markdown>}</div>
-        </section >
+            </motion.div>
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.3 }}
+                className="bg-[#252A34] p-6 rounded-lg shadow-inner"
+            >
+                {description && (
+                    <div className="prose prose-invert max-w-none">
+                        <Markdown>{description}</Markdown>
+                    </div>
+                )}
+            </motion.div>
+        </motion.section>
     );
 }

@@ -1,6 +1,8 @@
+import ApplyNowButton from "../_components/ApplyNowBtn";
 import { Button } from "@/components/ui/Button";
 import JobDetailsPageComponent from "@/components/Jobboard/JobDetailsPageComponent";
 import { Metadata } from "next";
+import React from 'react';
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 
@@ -67,12 +69,12 @@ export default async function JobDetailsPage({ params: { slug } }: PageProps) {
     }
 
     return (
-        <main className="m-auto my-10 flex max-w-5xl flex-col items-center gap-5 px-3 md:flex-row md:items-start">
-            <JobDetailsPageComponent job={job} />
-            <aside>
-                <Button className="border-2 border-indigo-500 bg-indigo-700 text-zinc-100 pt-2">
-                    <a href={applicationLink}>Apply Now</a>
-                </Button>
+        <main className="m-auto my-10 flex max-w-5xl flex-col items-center gap-5 px-3  md:items-start">
+            <div className="w-full md:w-3/4">
+                <JobDetailsPageComponent job={job} />
+            </div>
+            <aside className="w-full md:w-1/4 sticky top-5">
+                <ApplyNowButton applicationLink={applicationLink} />
             </aside>
         </main>
     );
