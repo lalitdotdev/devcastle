@@ -1,6 +1,6 @@
 "use client";
 
-import { Activity, ArrowUpWideNarrow, BookMarked, BookOpenCheck, Briefcase, Compass, FilePlus, FolderKanban, GraduationCap, HeartHandshake, HelpingHand, Newspaper, TrendingUp, UserCog, User as UserIcon } from "lucide-react";
+import { Activity, ArrowUpWideNarrow, BookMarked, Briefcase, Compass, FilePlus, FolderKanban, GraduationCap, HeartHandshake, HelpingHand, Rocket, TrendingUp, UserCog, User as UserIcon } from "lucide-react";
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetTrigger } from "./ui/sheet";
 
@@ -43,11 +43,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                     </SheetTrigger>
                     <SheetContent className="w-[240px] md:w-[400px]  bg-[#1B1F23] text-gray-400 border border-gray-600 rounded-l-2xl p-4 text-xs md:text-sm overflow-hidden data-[state=closed]:animate-out">
                         <div className="space-y-[2.2px] md:space-y-1">
-                            {/* User info section */}
-                            {/* <div className="flex items-center justify-start gap-2 p-2 text-gray-400 ">
 
-                            </div> */}
-                            {/* <Separator className="bg-gray-700" /> */}
 
                             {/* Navigation links */}
                             {[
@@ -67,6 +63,9 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 { href: "/startups/catalog/workatstartups", icon: Briefcase, label: "Work At Startups" },
                                 { href: "/startups/catalog/jobstimeline", icon: Activity, label: "Jobs Timeline" },
                                 { href: "/startups/catalog/topstories", icon: ArrowUpWideNarrow, label: "Top Stories" },
+                                { href: "/startups/catalog/phfeed", icon: Rocket, label: "Startup Launchpad" },
+
+
                             ].map((item, index) => (
                                 <React.Fragment key={item.href}>
                                     <Link
