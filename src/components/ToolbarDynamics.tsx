@@ -138,8 +138,8 @@ export default function ToolbarExpandable() {
 
     return (
         <MotionConfig transition={transition}>
-            <div className='w-3/4 bg-[#212329] rounded-3xl border border-slate-600   hidden md:flex' ref={ref}>
-                <div className='h-full w-full   '>
+            <div className='w-3/4 bg-[#212329] rounded-3xl border border-slate-600   hidden md:flex mt-20' ref={ref}>
+                <div className='h-full w-full  '>
 
                     <div className='flex space-x-4 p-2 flex-col md:flex-row' ref={menuRef}>
                         {ITEMS.map((item) => (
