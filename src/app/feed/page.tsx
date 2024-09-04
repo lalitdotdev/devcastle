@@ -5,6 +5,7 @@ import { HomeFeedTabs } from "@/components/ui/HomeFeedTabs";
 import JobResults from "@/components/Jobboard/JobResults";
 import { Metadata } from "next";
 import { Prisma } from "@prisma/client";
+import ProductHuntFeedImporter from "@/components/Feed/ProductHuntFeedImport";
 import { Separator } from "@/components/ui/separator";
 import ToolbarExpandable from "@/components/ToolbarDynamics";
 import { db } from "@/lib/db";
@@ -99,14 +100,9 @@ const page = async () => {
             title: "Showcases",
             value: "showcases",
             content: (
-                <div className="w-full ">
-                    <div className="w-full overflow-hidden relative h-full rounded-2xl p-4 text-xl md:text-4xl font-bold mb-4 text-white border  border-purple-700 ">
-                        <p className="text-red-400">Coming Soon ...</p>
-                        <p className="text-sm text-gray-500 font-normal">We are working on adding services to DevCastle. Stay tuned for updates.</p>
-                    </div>
-                    <Separator className="mb-4 bg-gray-600" />
-                    {/* <JobResults jobs={jobs} /> */}
-                </div>
+                <main className="w-full ">
+                    <ProductHuntFeedImporter />
+                </main>
             ),
         }
 
