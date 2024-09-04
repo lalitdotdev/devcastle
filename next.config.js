@@ -20,6 +20,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "uploadthing.com",
       },
+      {
+        protocol: "https",
+        hostname: "ph-files.imgix.net",
+      },
     ],
   },
   eslint: {
