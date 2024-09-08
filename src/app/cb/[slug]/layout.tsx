@@ -67,12 +67,12 @@ const Layout = async ({
 
                 <ToFeedButton />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6 ">
                     <ul className="flex flex-col col-span-2 space-y-6">{children}</ul>
 
                     {/* info sidebar */}
 
-                    <div className="overflow-hidden h-fit rounded-sm border-2 border-gray-600 order-first md:order-last tracking-tight">
+                    <div className="overflow-hidden h-fit rounded-sm border-2 border-gray-600 order-first md:order-last tracking-tight bg-[#242A30]">
                         <div className="md:p-4 p-3 md:border-b-2  border-gray-600 md:rounded-lg  ">
                             <div className="flex p-1 gap-2 ">
                                 <div className="font-md text-center text-lg text-zinc-400 flex">
@@ -87,7 +87,7 @@ const Layout = async ({
                                 <p className="text-sm  text-gray-400">{communityDescription}</p>
                             </div>
                         </div>
-                        <dl className=" divide-y divide-gray-100 px-6 py-4 text-sm  ">
+                        <dl className=" divide-y divide-gray-600 px-6 py-4 text-sm  ">
                             <div className="flex justify-between gap-x-4 py-3">
                                 <dt className="text-gray-500">Created</dt>
                                 <dd className="text-gray-400">

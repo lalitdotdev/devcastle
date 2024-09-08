@@ -55,7 +55,7 @@ const Post: FC<PostProps> = ({
         : false;
 
     return (
-        <div className="w-full rounded-lg md:rounded-lg tracking-tight z-0 border-b border-slate-800 border-l backdrop-blur-3xl">
+        <div className="w-full rounded-lg md:rounded-lg tracking-tight z-0  border-[#1E293B] bg-[#242A30] rounded-md overflow-hidden hover:bg-[#2C353D] transition-colors duration-300 border backdrop-blur-3xl">
             <div className="flex justify-between p-3 ">
 
                 <div className="w-0 flex-1 relative ">
@@ -93,7 +93,7 @@ const Post: FC<PostProps> = ({
                         </div>
                     </div>
                     <a href={`/cb/${communityName}/post/${post.id}`}>
-                        <h1 className="md:text-lg md:font-semibold py-2 ml-8 leading-6 text-gray-400 ">
+                        <h1 className="md:text-lg md:font-semibold py-2 ml-8 leading-6 text-white ">
                             {post.title}
                         </h1>
 
@@ -101,20 +101,17 @@ const Post: FC<PostProps> = ({
 
                         {/* attach ref to check whether post is exhausting max-h or not and show blurry effect on preview indicating post is long   */}
                         <div
-                            className="relative overflow-clip  max-h-32 md:block text-gray-200 p-2 backdrop-blur-3xl bg-gradient-to-t from-[#212329]  via-[#15202B] to-transparent rounded-2xl "
+                            className="relative overflow-clip  max-h-32 md:block text-white p-2 backdrop-blur-3xl  to-transparent rounded-2xl "
                             ref={pRef}
                         >
                             <EditorOutputContent content={post.content} />
-                            {pRef.current?.clientHeight === 160 || 96 ? (
-                                // blur bottom if content is too long
-                                <div className="absolute bottom-0 left-0  h-36 w-full bg-gradient-to-t from-[#212329]   to-transparent rounded-2xl"></div>
-                            ) : null}
+
                         </div>
                     </a>
                 </div>
             </div>
-            <Separator className="bg-gray-800" />
-            <div className="flex items-center justify-between z-20 text-sm gap-2 p-4">
+            <Separator className="bg-zinc-750" />
+            <div className="flex items-center justify-between z-20 text-sm p-2 bg-none">
                 <div className="flex items-center gap-4   ">
                     {/* <div className="bg-secondary text-secondary-foreground hover:bg-secondary/80  items-center gap-2 rounded-full p-1 bg-zinc-800"> */}
                     <PostVoteClient
