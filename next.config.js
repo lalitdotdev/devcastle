@@ -24,6 +24,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "ph-files.imgix.net",
       },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
     ],
   },
   eslint: {
