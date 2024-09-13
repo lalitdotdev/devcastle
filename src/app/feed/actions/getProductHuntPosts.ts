@@ -132,3 +132,22 @@ export async function fetchAndStoreProductHuntPosts(): Promise<FetchResult> {
     return { success: false, message: "Failed to import Product Hunt feed" };
   }
 }
+
+export async function getProductHuntPosts() {
+  try {
+    const posts = await db.productHuntPost.findMany({
+      include: {
+        topics: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 25,
+    });
+
+    return posts;
+  } catch (error) {
+    console.error("Error fetching posts from database:", error);
+    throw error;
+  }
+}
