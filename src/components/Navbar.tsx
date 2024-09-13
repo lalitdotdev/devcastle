@@ -14,7 +14,7 @@ const Navbar = async () => {
 
     return (
         <nav className="m-auto fixed h-fit top-0  -z-[10] py-2 md:py-4 align-center justify-center  bg-[#1B1F23]  left-0 w-full border-b-2 border-zinc-800 backdrop-filter backdrop-blur-2xl">
-            <div className="max-w-7xl justify-between min-w-max mx-auto flex items-center  gap-2 px-5 md:px-4 py-2 ">
+            <div className="max-w-[1800px] justify-between min-w-max mx-auto flex items-center  gap-2 px-5 md:px-4 py-2 ">
                 <Link
                     href="/"
                     className="items-center justify-center gap-2 sm:flex text-zinc-400"
