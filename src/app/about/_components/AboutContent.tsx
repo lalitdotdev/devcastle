@@ -78,7 +78,7 @@ export function AboutContent() {
                         <p className="text-xl md:text-2xl font-light leading-relaxed">
                             <strong className="font-semibold">DevCastle</strong> is more than just a platform; it&apos;s a thriving ecosystem where developers, designers, and creators converge to shape the future of technology.
                         </p>
-                        <p className="text-xl md:text-2xl font-light leading-relaxed">
+                        <p className="text-xl md:text-2xl font-semibold leading-relaxed text-zinc-200">
                             Our mission: <TypingEffect text="Cultivating Connections for Coders, Designers, and Creators." />
                         </p>
                     </div>
@@ -86,13 +86,14 @@ export function AboutContent() {
 
                 <FadeInSection delay={400}>
                     <div className="bg-white bg-opacity-10 p-8 rounded-lg shadow-xl">
-                        <h2 className="text-3xl font-semibold mb-4">What We Offer</h2>
+                        <h2 className="text-3xl font-semibold mb-6">Our Vision</h2>
                         <ul className="list-disc list-inside space-y-2 text-lg">
-                            <li>Cutting-edge project collaboration tools</li>
-                            <li>Mentorship programs for skill development</li>
-                            <li>Regular hackathons and coding challenges</li>
-                            <li>Job board for exciting tech opportunities</li>
-                            <li>Community-driven knowledge sharing</li>
+                            <li>Offer resources and opportunities for growth and learning.</li>
+                            <li>Connect like-minded individuals to collaborate and innovate.</li>
+                            <li>Foster a culture of continuous learning and improvement.</li>
+                            <li>Encourage diversity and inclusivity in the tech industry.</li>
+                            <li>Support and nurture the next generation of developers, designers, and creators.</li>
+
                         </ul>
                     </div>
                 </FadeInSection>
@@ -112,7 +113,12 @@ export function AboutContent() {
                             />
                         </div>
                         <h3 className="text-2xl font-semibold">Lalit Sharma</h3>
-                        <p className="text-blue-300 mb-4">Visionary & Lead Developer</p>
+                        <p className="text-blue-300 mb-4">Lead Developer</p>
+                        <p className="text-lg font-light leading-relaxed text-zinc-400">
+                            Hi! I&apos;m Lalit, a full-stack developer and creator of DevCastle. I&apos;m passionate about building communities and creating opportunities for developers to learn, grow, and connect with one another.
+                        </p>
+
+
                         <div className="flex space-x-4">
                             <a href="https://github.com/lalitdotdev" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 transition-colors">
                                 <GithubIcon size={24} />
@@ -131,9 +137,7 @@ export function AboutContent() {
             <FadeInSection delay={800}>
                 <div className="mt-16 text-center">
                     <h2 className="text-3xl font-semibold mb-6">Ready to Join the Castle?</h2>
-                    <p className="text-xl mb-8">
-                        Whether you&apos;re a seasoned pro or just starting your coding journey, there&apos;s a place for you at DevCastle.
-                    </p>
+
                     <Link href="/join" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full text-lg transition-colors">
                         Join Our Community
                     </Link>
