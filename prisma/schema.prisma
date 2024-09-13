@@ -284,6 +284,26 @@ model Category {
     Essays      Essay[]
 }
 
+model ProductHuntPost {
+    id           String   @id
+    name         String
+    tagline      String
+    description  String?  @db.Text
+    url          String
+    votesCount   Int
+    createdAt    DateTime
+    thumbnailUrl String?
+    website      String?
+    topics       Topic[]
+    updatedAt    DateTime @updatedAt
+}
+
+model Topic {
+    id    String            @id @default(cuid())
+    name  String            @unique
+    posts ProductHuntPost[]
+}
+
 enum UserRole {
     ADMIN
     USER
