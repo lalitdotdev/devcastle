@@ -59,11 +59,13 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 { href: "/opportunities", icon: Briefcase, label: "Opportunities / OS Programs" },
                                 { href: "/articles/publish", icon: Library, label: "Free Resources and Tools" },
                                 // { href: "/articles/categories/all", icon: Newspaper, label: "Articles" },
+                                { href: "/launchpad", icon: Rocket, label: "Creator Launchpad" },
                                 { href: "/startups/catalog/essays", icon: TrendingUp, label: "Startup Archives" },
                                 { href: "/startups/catalog/workatstartups", icon: Briefcase, label: "Work At Startups" },
                                 { href: "/startups/catalog/jobstimeline", icon: Activity, label: "Jobs Timeline" },
                                 { href: "/startups/catalog/topstories", icon: ArrowUpWideNarrow, label: "Top Stories" },
                                 { href: "/startups/catalog/phfeed", icon: Rocket, label: "Startup Launchpad" },
+
 
 
                             ].map((item, index) => (
