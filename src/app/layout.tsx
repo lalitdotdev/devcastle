@@ -1,8 +1,9 @@
 import "@/styles/globals.css";
 
+import { DM_Sans, Inter, Poppins } from "next/font/google";
+
 import Navbar from "@/components/Navbar";
 import NextTopLoader from 'nextjs-toploader';
-import { Poppins } from "next/font/google";
 import Providers from "@/components/Providers";
 import Sidebar from "@/components/sidebar/sidebar";
 import { SonnerToaster } from "@/components/ui/sonner";
@@ -18,6 +19,26 @@ export const metadata = {
 
 // Importing custom fonts
 const inter = Poppins({ subsets: ["latin"], weight: ['100', '200', '300', '400', '500', '600', '700'] });
+
+const DM_Sansfont = DM_Sans({
+    weight: '400',
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-sans',
+})
+
+const fontHeading = Inter({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-heading',
+})
+
+const fontBody = Inter({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-body',
+})
+
 
 export default async function RootLayout({
     children,
@@ -35,6 +56,9 @@ export default async function RootLayout({
             className={cn(
                 "bg-white text-slate-900 antialiased light",
                 inter.className
+                , DM_Sansfont.variable,
+                fontHeading.variable,
+                fontBody.variable
             )}
         >
             <body className="min-h-screen pt-12 bg-[#1B1F23] antialiased pb-4">
@@ -55,7 +79,7 @@ export default async function RootLayout({
                     {/* Rendering authModal alongside other components */}
                     {authModal}
 
-                    <div className="container max-w-9xl mx-auto h-full pt-12">
+                    <div className="container  mx-auto h-full pt-12">
                         {children}
                     </div>
 
