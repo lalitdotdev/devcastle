@@ -31,7 +31,7 @@ const SidebarRouteItem = ({ icon: Icon, label, href }: SidebarRouteItemProps) =>
                     <TooltipTrigger>
                         <Icon size={24} className="mr-4" />
                     </TooltipTrigger >
-                    <span className="">{label}</span>
+
                     <TooltipContent side="right" className="text-xs">
                         <span>{label}</span>
                     </TooltipContent>
