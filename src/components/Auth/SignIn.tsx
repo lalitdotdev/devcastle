@@ -16,6 +16,7 @@ import {
 import axios, { AxiosError } from "axios";
 
 import { Button } from "../ui/Button";
+import Image from "next/image";
 import { Input } from "../ui/Input";
 import { signIn } from "next-auth/react";
 // import { Icons } from "../Icons";
@@ -137,7 +138,7 @@ const UserForm = () => {
 
     return (
         <div className="container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]bg-[#262a35] text-gray-400">
-            <div className="flex flex-col space-y-2 ">
+            <div className="flex flex-col space-y-2 justify-center">
                 {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
                 {/* <h1 className="text-2xl font-semibold tracking-tight">Welcome back!</h1> */}
 
@@ -146,6 +147,7 @@ const UserForm = () => {
           Sign-in Policy, ensuring account security, responsible use, and data
           protection.
         </p> */}
+
                 {formType === "login" && (
                     <Form {...loginForm}>
                         <form
