@@ -1,6 +1,7 @@
 "use client";
 
 import CloseModal from "@/components/Auth/CloseModal";
+import Image from "next/image";
 import SignIn from "@/components/Auth/SignIn";
 import UserAuthForm from "@/components/Auth/UserAuthForm";
 
@@ -9,6 +10,13 @@ const page = ({ }) => {
         <div className="fixed inset-0 z-10 ">
             <div className="container flex items-center h-full max-w-lg mx-auto ">
                 <div className="relative bg-[#262a35] w-full py-20 px-2 h-fit rounded-lg border border-zinc-600 text-gray-400">
+                    <Image
+                        src={"/logo/logo.png"}
+                        alt="logo"
+                        width={200}
+                        height={200}
+                        className="p-10 mx-auto"
+                    />
                     <UserAuthForm />
                     <div className="inline-flex items-center justify-center w-full relative pt-4 pb-2">
                         <hr className="w-64 h-[1px] my-8  border-0 rounded bg-gray-700" />
