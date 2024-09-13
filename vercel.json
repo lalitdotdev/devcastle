@@ -2,11 +2,13 @@
   "crons": [
     {
       "path": "/api/cron/update-essays",
-      "schedule": "0 0 */14 * *"
+      "schedule": "0 0 */14 * *",
+      "method": "GET"
     },
     {
       "path": "/api/cron/update-product-hunt-posts",
-      "schedule": "0 0 * * *"
+      "schedule": "0 0 * * *",
+      "method": "POST"
     }
   ]
 }
