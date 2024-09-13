@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/update-essays",
       "schedule": "0 0 */14 * *"
+    },
+    {
+      "path": "/api/cron/update-product-hunt-posts",
+      "schedule": "0 0 * * *"
     }
   ]
 }
