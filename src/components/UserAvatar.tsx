@@ -15,19 +15,20 @@ const UserAvatar: FC<UserAvatarProps> = ({ user, ...props }) => {
         <Avatar {...props}>
             {user.image ? (
                 <div className="relative aspect-square h-full w-full">
-                    <Image
-                        fill
-                        src={user.image}
-                        alt="profile picture"
-                        referrerPolicy="no-referrer"
-                        className="rounded-full"
-                    />
+                    <AvatarFallback>
+                        <span className="sr-only">{user.name}</span>
+                        <UserAvatarFallback seed={user.name ?? 'fallback'} classNames="rounded-full" />
+                    </AvatarFallback>
+
                 </div>
             ) : (
-                <AvatarFallback>
-                    <span className="sr-only">{user.name}</span>
-                    <UserAvatarFallback seed={user.name ?? 'fallback'} classNames="rounded-full" />
-                </AvatarFallback>
+                <Image
+                    fill
+                    src={user?.image ?? '/images/avatars/default.png'}
+                    alt="profile picture"
+                    referrerPolicy="no-referrer"
+                    className="rounded-full"
+                />
             )
             }
         </Avatar >
