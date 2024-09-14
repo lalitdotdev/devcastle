@@ -8,6 +8,7 @@ import { Badge } from '../ui/badge'
 import { Button } from '../ui/Button'
 import Image from 'next/image'
 import Link from 'next/link'
+import { StatefulButton } from './Stateful-btn'
 import { motion } from 'framer-motion'
 import { toast } from 'sonner'
 
@@ -84,7 +85,7 @@ export default function ProductHuntFeed() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="flex items-center gap-2 bg-gradient-to-br from-zinc-800 to-transparent p-4 rounded-xl w-full justify-between"
+                className="flex items-center gap-2 w-full justify-between rounded-2xl max-w-7xl mx-auto bg-gradient-to-r from-zinc-700 to-slate-700 p-3 md:p-5 shadow-xl"
             >
                 <div className="flex items-center gap-2">
                     <Image
@@ -98,15 +99,18 @@ export default function ProductHuntFeed() {
                     <h1 className="font-normal text-2xl md:text-3xl text-gray-400">
                         Product Hunt Feed
                     </h1>
-                </div>
 
-                <Button
-                    onClick={handleImportFeed}
-                    disabled={isLoading || posts.length > 0}
-                    className="px-4 py-2 text-sm font-medium border border-zinc-700 hover:bg-blue-600 hover:text-white rounded-md transition-colors duration-300"
+                </div>
+                <p className='text-xs text-zinc-100'>
+                    View the latest products from Product Hunt! 🚀
+                </p>
+                <StatefulButton
+                    onClickAsync={handleImportFeed}
+                    disabled={posts.length > 0}
+                    className=" px-4 border-2  py-2 text-sm font-medium  border-lime-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 text-white min-w-fit"
                 >
-                    {isLoading ? 'Importing...' : 'Import Feed'}
-                </Button>
+                    Import feed
+                </StatefulButton>
             </motion.div>
 
             {error && (
