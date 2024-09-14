@@ -1,11 +1,12 @@
 "use client";
 
-import { Activity, ArrowUpWideNarrow, BookMarked, Briefcase, Compass, FilePlus, FolderKanban, GraduationCap, HeartHandshake, HelpingHand, Rocket, TrendingUp, UserCog, User as UserIcon } from "lucide-react";
+import { Activity, ArrowUpWideNarrow, BookMarked, Briefcase, Compass, FilePlus, FolderKanban, GraduationCap, Heart, HeartHandshake, HelpingHand, Package, Package2, Rocket, Settings, TrendingUp, UserCog, User as UserIcon } from "lucide-react";
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetTrigger } from "./ui/sheet";
 
 import { FC } from "react";
 import { Github } from "lucide-react";
+import { Icons } from "./Icons";
 import { Library } from "lucide-react";
 import Link from "next/link";
 import { Separator } from "./ui/separator";
@@ -28,7 +29,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
 
     return (
         <div className="flex-shrink-0 md:block md:flex-shrink-0 md:items-center gap-4 justify-center items-center">
-            <div className="text-gray-400 mr-4">
+            <div className="text-gray-200 mr-4">
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
                         <div className="flex items-center justify-center p-1 rounded-lg transition-all duration-300 ease-in-out cursor-pointer ">
@@ -36,12 +37,12 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 className="md:h-10 md:w-10 h-7 w-7"
                                 user={{
                                     name: user.name || null,
-                                    image: user.image || null,
+                                    image: user.image || undefined,
                                 }}
                             />
                         </div>
                     </SheetTrigger>
-                    <SheetContent className="w-[240px] md:w-[400px]  bg-[#1B1F23] text-gray-400 border border-gray-600 rounded-l-2xl p-4 text-xs md:text-sm overflow-hidden data-[state=closed]:animate-out">
+                    <SheetContent className="w-[240px] md:w-[400px]  bg-[#1B1F23] text-gray-200 border border-gray-600 rounded-l-2xl p-4 text-xs md:text-sm overflow-hidden data-[state=closed]:animate-out">
                         <div className="space-y-[2.2px] md:space-y-1">
 
 
@@ -50,13 +51,14 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 { href: `/u/${username}`, icon: UserIcon, label: "Your Profile" },
                                 { href: "/dashboard", icon: UserCog, label: "Dashboard" },
                                 { href: "/feed", icon: Activity, label: "Your Feed" },
-                                { href: "/projects/new", icon: FolderKanban, label: "Projects" },
-                                { href: "/bookmarks", icon: BookMarked, label: "Your BookMarks" },
-                                { href: "/network", icon: GraduationCap, label: "Gain Mentorship" },
+                                { href: "/launchpad/new-product", icon: Icons.rabbit, label: "Submit a Product" },
+                                { href: "/launchpad/my-products", icon: Package, label: "My Products" },
+                                { href: "/launchpad/my-upvoted", icon: Heart, label: "Your Upvoted Products" },
+                                { href: "/launchpad/settings", icon: Settings, label: "Settings" },
                                 { href: "/network", icon: HeartHandshake, label: "Professional Network" },
                                 { href: "/jobs/new", icon: FilePlus, label: "Post an Opportunity" },
                                 { href: "/opportunities", icon: Compass, label: "Browse Opportunities" },
-                                { href: "/opportunities", icon: Briefcase, label: "Opportunities / OS Programs" },
+                                // { href: "/opportunities", icon: Briefcase, label: "Opportunities / OS Programs" },
                                 { href: "/articles/publish", icon: Library, label: "Free Resources and Tools" },
                                 // { href: "/articles/categories/all", icon: Newspaper, label: "Articles" },
                                 { href: "/launchpad", icon: Rocket, label: "Creator Launchpad" },
@@ -80,10 +82,10 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                         <item.icon size={22} />
                                         <span>{item.label}</span>
                                     </Link>
-                                    {index === 1 || index === 4 || index === 6 || index === 10 ? (
+                                    {index === 2 || index === 6 || index === 9 ? (
                                         <Separator className="bg-gray-700 my-4" />
                                     ) : null}
-                                    {index === 6 || index === 10 ? (
+                                    {index === 6 || index === 9 ? (
                                         <SheetDescription className="text-xs my-2">
                                             {index === 6 ? "Professional Connections and get Mentorship" : "Catalog and Archives to get you inspired"}
                                         </SheetDescription>
