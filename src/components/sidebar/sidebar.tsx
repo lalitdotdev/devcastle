@@ -25,37 +25,33 @@ const Sidebar = () => {
             {/* Sidebar */}
             <div
                 className={`fixed inset-y-0 left-0 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
-                    } lg:translate-x-0 transition duration-200 ease-in-out z-10 w-56 border-r border-zinc-800  bg-[#1B1F23] text-gray-100 flex flex-col shadow-lg mt-24 rounded-r-md`}
+                    } lg:translate-x-0 transition duration-200 ease-in-out z-10 w-24 border-r border-zinc-800  bg-[#1B1F23] text-gray-100 flex flex-col shadow-lg mt-24 rounded-r-md`}
 
             >
                 {/* <div className="flex items-center justify-center p-2 "> */}
-                <Image
+                {/* <Image
                     src="/logo/logo.png"
                     alt="devcastle"
                     width={60}
                     height={60}
                     className='mx-auto'
-                />
+                /> */}
                 {/* <span className="text-xl ml-2">devcastle</span> */}
                 {/* </div> */}
 
                 <nav className="flex-1 overflow-y-auto py-4">
                     <SidebarRoutes />
                 </nav>
-                <div className="p-4 border-t border-gray-700">
+                <div className="mx-auto border-t border-gray-700 py-6">
                     <ul className="space-y-2">
                         <li>
-                            <a href="/settings" className="flex items-center space-x-3 hover:bg-gray-700 rounded p-2 transition-colors duration-200">
+                            <a href="/settings" className="flex items-center hover:bg-gray-700 rounded p-2 transition-colors duration-200">
                                 <Settings size={20} />
-                                <span>Settings</span>
-
                             </a>
                         </li>
                         <li>
-                            <a href="/help" className="flex items-center space-x-3 hover:bg-gray-700 rounded p-2 transition-colors duration-200">
+                            <a href="/help" className="flex items-center  hover:bg-gray-700 rounded p-2 transition-colors duration-200">
                                 <HelpCircle size={20} />
-                                <span>Help</span>
-
                             </a>
                         </li>
                     </ul>
