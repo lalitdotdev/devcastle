@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { fetchAndStoreProductHuntPosts } from "@/app/feed/actions/getProductHuntPosts";
 
-export async function POST() {
+export async function GET() {
   try {
     const result = await fetchAndStoreProductHuntPosts();
     return NextResponse.json(result);
@@ -13,7 +13,7 @@ export async function POST() {
   }
 }
 
-export async function GET() {
+export async function POST() {
   return NextResponse.json(
     { message: "This endpoint only accepts POST requests" },
     { status: 405 },
