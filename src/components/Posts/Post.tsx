@@ -4,7 +4,7 @@ import { formatTimeToNow } from "@/lib/utils";
 import { Bookmark, Post, User, Vote } from "@prisma/client";
 import { Globe2, MessageSquare, Upload } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { FC, useRef } from "react";
+import { FC, useRef, useState } from "react";
 import EditorOutputContent from "../EditorOutputContent";
 import UserAvatar from "../UserAvatar";
 import PostVoteClient from "../post-vote/PostVoteClient";
@@ -12,6 +12,8 @@ import { Button } from "../ui/Button";
 import { Separator } from "../ui/separator";
 import BookmarkButton from "./BookMarkBtn";
 import { PostData } from "@/types/types";
+
+import SharePostModal from "../modals/contents/share-post-modal-content";
 
 
 type PartialVote = Pick<Vote, "type">;
@@ -41,7 +43,13 @@ const Post: FC<PostProps> = ({
 
 }) => {
     const pRef = useRef<HTMLDivElement>(null);
+    const [shareModalVisible, setShareModalVisible] = useState(false);
     const { data: session } = useSession();
+    const handleShareClick = () => {
+        setShareModalVisible(true);
+    };
+
+
 
 
 
@@ -55,7 +63,7 @@ const Post: FC<PostProps> = ({
         : false;
 
     return (
-        <div className="w-full rounded-lg md:rounded-lg tracking-tight z-0  border-[#1E293B] bg-[#242A30] rounded-md overflow-hidden hover:bg-[#2C353D] transition-colors duration-300 border backdrop-blur-3xl">
+        <div className="w-full  md:rounded-lg tracking-tight z-0  border-[#1E293B] bg-[#242A30] rounded-md overflow-hidden hover:bg-[#2C353D] transition-colors duration-300 border backdrop-blur-3xl">
             <div className="flex justify-between p-3 ">
 
                 <div className="w-0 flex-1 relative ">
@@ -129,6 +137,7 @@ const Post: FC<PostProps> = ({
                 </div>
                 <div className="flex items-center gap-2 ">
                     <Button
+                        onClick={handleShareClick}
                         className="flex items-center gap-1 rounded-full bg-zinc-800 text-gray-400 hover:bg-zinc-800/40"
                     >
                         <Upload size={16} />
@@ -146,6 +155,12 @@ const Post: FC<PostProps> = ({
                 </div>
 
             </div>
+            <SharePostModal
+                visible={shareModalVisible}
+                setVisible={setShareModalVisible}
+                currentProduct={post}
+                postId={post.id}
+            />
         </div>
 
     );
