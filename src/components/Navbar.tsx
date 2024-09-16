@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NavbarRoutes } from "./routes/navbar-routes";
+import NotificationIcon from "./Navbar/NotificationIcon";
 import RightNavContent from "./RightNavContent";
 import SearchBar from "./SearchBar";
 import { Separator } from "./ui/separator";
@@ -15,6 +15,7 @@ const Navbar = async () => {
     return (
         <nav className="m-auto fixed h-fit top-0  -z-[10] py-2 md:py-4 align-center justify-center  bg-[#1B1F23]  left-0 w-full border-b-2 border-zinc-800 backdrop-filter backdrop-blur-2xl">
             <div className="container max-w-7xl justify-between min-w-max mx-auto flex items-center gap-2 px-5 md:px-4 py-2 ">
+
                 <Link
                     href="/"
                     className="items-center justify-center gap-2 sm:flex text-zinc-400"
@@ -27,6 +28,8 @@ const Navbar = async () => {
                     <span className="font-md hidden md:block items-center justify-center text-xl">
                         devcastle
                     </span>
+
+
                 </Link>
 
                 {/* Search-Bar */}
@@ -42,10 +45,15 @@ const Navbar = async () => {
 
                         {/* actions */}
                         {session?.user ? (
-                            <UserAccountNav
-                                user={session.user}
-                                username={session?.user?.username}
-                            />
+                            <div className="flex justify-center items-center gap-2">
+                                <NotificationIcon />
+
+                                <UserAccountNav
+                                    user={session.user}
+                                    username={session?.user?.username}
+                                />
+
+                            </div>
                         ) : (
                             <Link href="/sign-in" className={buttonVariants({
                                 size: "sm",

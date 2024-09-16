@@ -40,32 +40,116 @@ model Session {
 }
 
 model User {
-    id                    String         @id @default(cuid())
-    name                  String?
-    email                 String?        @unique
-    about                 String?
-    emailVerified         DateTime?
-    username              String?        @unique
-    image                 String?
-    hashedPassword        String?
-    role                  UserRole       @default(USER)
-    isProfileInfoSet      Boolean?       @default(false)
-    createdAt             DateTime       @default(now())
-    createdCommunities    Community[]    @relation("CreatedBy")
-    accounts              Account[]
-    sessions              Session[]
-    Post                  Post[]
-    articles              Article[]
-    Comment               Comment[]
-    Subscription          Subscription[]
-    Vote                  Vote[]
-    CommentVote           CommentVote[]
-    likes                 Like[]
-    bookmarks             Bookmark[]
-    following             Follow[]       @relation("Following")
-    followers             Follow[]       @relation("Followers")
-    receivedNotifications Notification[] @relation("Recipient")
-    issuedNotifications   Notification[] @relation("Issuer")
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    about         String?
+    emailVerified DateTime?
+
+    username           String?     @unique
+    image              String?
+    hashedPassword     String?
+    role               UserRole    @default(USER)
+    isProfileInfoSet   Boolean?    @default(false)
+    createdAt          DateTime    @default(now())
+    createdCommunities Community[] @relation("CreatedBy")
+
+    accounts     Account[]
+    sessions     Session[]
+    Post         Post[]
+    articles     Article[]
+    Comment      Comment[]
+    Subscription Subscription[]
+    Vote         Vote[]
+    CommentVote  CommentVote[]
+    likes        Like[]
+    bookmarks    Bookmark[]
+
+    isPremium        Boolean           @default(false)
+    launchPadUpvotes LaunchPadUpvote[]
+
+    products               Product[]
+    launchPadcomments      LaunchPadComment[]
+    following              Follow[]                @relation("Following")
+    followers              Follow[]                @relation("Followers")
+    receivedNotifications  Notification[]          @relation("Recipient")
+    issuedNotifications    Notification[]          @relation("Issuer")
+    launchPadNotifications LaunchPadNotification[]
+}
+
+model Product {
+    id            String                  @id @default(cuid())
+    name          String
+    slug          String                  @unique
+    headline      String
+    rank          Int
+    description   String
+    logo          String
+    releaseDate   String
+    website       String
+    twitter       String
+    discord       String
+    upvotes       LaunchPadUpvote[]
+    images        LaunchPadImage[]
+    categories    LaunchPadCategory[] // Many-to-many relation with Category
+    createdAt     DateTime                @default(now())
+    updatedAt     DateTime                @updatedAt
+    user          User                    @relation(fields: [userId], references: [id])
+    userId        String
+    status        Status                  @default(PENDING)
+    notifications LaunchPadNotification[]
+    comments      LaunchPadComment[]
+
+    @@index([userId])
+    @@index([status])
+}
+
+model LaunchPadImage {
+    id        String   @id @default(cuid())
+    productId String
+    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    url       String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([productId])
+}
+
+model LaunchPadNotification {
+    id             String                      @id @default(cuid())
+    userId         String
+    user           User                        @relation(fields: [userId], references: [id])
+    body           String?                     @db.Text
+    profilePicture String
+    productId      String
+    commentId      String?
+    product        Product                     @relation(fields: [productId], references: [id], onDelete: Cascade)
+    type           LaunchPadNotificationType
+    status         LaunchPadNotificationStatus @default(UNREAD)
+    createdAt      DateTime                    @default(now())
+    updatedAt      DateTime                    @updatedAt
+
+    @@index([userId])
+    @@index([productId])
+}
+
+model LaunchPadUpvote {
+    id        String   @id @default(cuid())
+    productId String
+    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    userId    String
+    user      User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([productId])
+    @@index([userId])
+}
+
+model LaunchPadCategory {
+    id       String    @id @default(cuid())
+    name     String    @unique
+    products Product[] // Many-to-many relation with Product
 }
 
 model Community {
@@ -159,6 +243,21 @@ model Comment {
     @@index([authorId])
     @@index([postId])
     @@index([replyToId])
+}
+
+model LaunchPadComment {
+    id             String   @id @default(cuid())
+    profilePicture String
+    productId      String
+    product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    userId         String
+    user           User     @relation(fields: [userId], references: [id])
+    body           String
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    @@index([productId])
+    @@index([userId])
 }
 
 model Like {
@@ -323,4 +422,22 @@ enum NotificationType {
     LIKE
     FOLLOW
     COMMENT
+}
+
+enum Status {
+    PENDING
+    ACTIVE
+    REJECTED
+}
+
+enum LaunchPadNotificationStatus {
+    UNREAD
+    READ
+}
+
+enum LaunchPadNotificationType {
+    UPVOTE
+    COMMENT
+    ACTIVATED
+    REJECTED
 }
