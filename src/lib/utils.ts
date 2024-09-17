@@ -1,10 +1,30 @@
 import { ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+
 import { formatDistanceToNowStrict } from "date-fns";
 import locale from "date-fns/locale/en-US";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+export function formatNumber(num: number | string): string {
+  // Ensure the input is treated as a number and remove commas
+  num = typeof num === "string" ? parseFloat(num.replace(/,/g, "")) : num;
+
+  if (isNaN(num)) {
+    return "0"; // Return '0' if the input is not a valid number
+  }
+
+  if (Math.abs(num) >= 1e6) {
+    // Show in millions with 'M'
+    return (num / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
+  } else if (Math.abs(num) >= 1e3) {
+    // Show in thousands with 'k'
+    return (num / 1e3).toFixed(1).replace(/\.0$/, "") + "k";
+  } else {
+    return num.toString(); // Show as is for numbers less than 1000
+  }
 }
 
 const formatDistanceLocale = {
