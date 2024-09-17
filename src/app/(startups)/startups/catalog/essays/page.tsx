@@ -5,17 +5,20 @@ import EssayList from "@/components/EssaysList";
 import Link from "next/link";
 import UpdateButton from "../_components/UpdateEssays";
 import { cn } from "@/lib/utils";
+import { getEntrepreneurFeed } from "@/app/feed/actions/getEntrepreneurFeed";
 import { getEssays } from "../../actions";
 import { getSimonWillisonFeed } from "@/app/feed/actions/getSimonWillisonFeed";
 
 export default async function EssaysPage() {
     let paulGrahamEssays = [] as any;
     let simonWillisonEssays = [] as any;
+    let entrepreneurEssays = [] as any;
 
     try {
-        [paulGrahamEssays, simonWillisonEssays] = await Promise.all([
+        [paulGrahamEssays, simonWillisonEssays, entrepreneurEssays] = await Promise.all([
             getEssays(),
-            getSimonWillisonFeed()
+            getSimonWillisonFeed(),
+            getEntrepreneurFeed()
         ]);
     } catch (error) {
         console.error("Error fetching essays:", error);
@@ -152,6 +155,28 @@ export default async function EssaysPage() {
                                 Working on it 🛠
                             </p>
 
+                        </section>
+                    </TabsContent>
+
+                    <TabsContent value="entrepreneur" className="p-4 bg-gray-800 rounded-lg">
+                        <section>
+                            <div className="flex flex-col gap-6 py-8">
+                                <Link
+                                    href="https://www.entrepreneur.com/"
+                                    className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                                        The latest news, expert advice, and growth strategies for small business owners.
+                                    </p>
+                                </Link>
+                            </div>
+                            {entrepreneurEssays.length > 0 ? (
+                                <EssayList essays={entrepreneurEssays} />
+                            ) : (
+                                <p className="text-gray-500">Unable to load Entrepreneur articles at this time.</p>
+                            )}
                         </section>
                     </TabsContent>
 
