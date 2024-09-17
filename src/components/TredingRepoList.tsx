@@ -26,8 +26,8 @@ export default function TrendingRepoList({ repos }: TrendingRepoListProps) {
             {repos.map((repo) => (
                 <motion.li
                     key={repo.url}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
                     className="rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 border border-gray-700 p-4 hover:bg-gradient-to-bl from-gray-700 to-gray-800"
                 >
