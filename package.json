@@ -57,7 +57,7 @@
     "@types/react-dom": "^18.2.19",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/three": "^0.161.2",
-    "@uploadthing/react": "^4.0.0",
+    "@uploadthing/react": "6.5.4",
     "@upstash/redis": "^1.21.0",
     "@vercel/blob": "^0.23.4",
     "autoprefixer": "10.4.14",
@@ -114,7 +114,7 @@
     "tailwindcss-animate": "^1.0.6",
     "three": "^0.161.0",
     "typescript": "5.0.4",
-    "uploadthing": "^4.0.0",
+    "uploadthing": "6.10.4",
     "vaul": "^0.9.3",
     "zod": "^3.23.8"
   },
