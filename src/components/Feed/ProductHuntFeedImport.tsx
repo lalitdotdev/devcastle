@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowBigUpDash, ArrowUpRight, Link as LinkIcon, MessageCircle } from 'lucide-react'
+import { ArrowBigUpDash, ArrowUpRight, Link as LinkIcon, MessageCircle, Rocket } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { fetchAndStoreProductHuntPosts, getProductHuntPosts } from '@/app/feed/actions/getProductHuntPosts'
 
@@ -8,6 +8,7 @@ import { Badge } from '../ui/badge'
 import { Button } from '../ui/Button'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Separator } from '../ui/separator'
 import { StatefulButton } from './Stateful-btn'
 import { motion } from 'framer-motion'
 import { toast } from 'sonner'
@@ -64,7 +65,7 @@ export default function ProductHuntFeed() {
                     loading: 'Fetching feed from Product Hunt...',
                     success: 'Product Hunt feed imported successfully',
                     error: 'Failed to fetch posts. Please try again.',
-                    position: 'top-right',
+
                 })
                 await fetchPosts()
             } else {
@@ -91,7 +92,7 @@ export default function ProductHuntFeed() {
                     <Image
                         src="/assets/images/product-hunt-logo.png"
                         alt="Product Hunt"
-                        sizes="(max-width: 768px) 100vw, 640px"
+
                         width={64}
                         height={64}
                         className="animate-gradient transition-all delay-200"
@@ -101,13 +102,11 @@ export default function ProductHuntFeed() {
                     </h1>
 
                 </div>
-                <p className='text-xs text-zinc-100'>
-                    View the latest products from Product Hunt! 🚀
-                </p>
+
                 <StatefulButton
                     onClickAsync={handleImportFeed}
                     disabled={posts.length > 0}
-                    className=" px-4 border-2  py-2 text-sm font-medium  border-lime-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 text-white min-w-fit"
+                    className="p-6 text-sm font-medium  text-white transition-colors duration-300 border border-slate-500 bg-[#9945FF] min-w-fit"
                 >
                     Import feed
                 </StatefulButton>
@@ -123,6 +122,13 @@ export default function ProductHuntFeed() {
                     {error}
                 </motion.p>
             )}
+
+
+            <p className='text-lg hidden md:block text-zinc-400'>
+                Discover the latest trending products and startups from Product Hunt! 🚀
+            </p>
+
+            <Separator className='bg-zinc-700 my-4' />
 
             {isFeedVisible && posts.length > 0 && (
                 <motion.ul
@@ -196,7 +202,7 @@ export default function ProductHuntFeed() {
                                     href={post.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex-shrink-0 transition-colors duration-300 relative overflow-hidden h-fit w-fit"
+                                    className="flex-shrink-0 transition-colors duration-300 relative overflow-hidden h-fit w-fit group"
                                 >
                                     <ArrowUpRight
                                         className="group-hover:-translate-y-5 group-hover:translate-x-5 duration-500 transition-transform ease-in-out-circ fill-light-gray"
@@ -205,7 +211,9 @@ export default function ProductHuntFeed() {
                                     <ArrowUpRight
                                         className="absolute top-0 group-hover:translate-x-0 duration-500 group-hover:translate-y-0 transition-all ease-in-out-circ translate-y-5 -translate-x-5 fill-light-gray"
                                         color="gray"
-                                    />
+                                    >
+                                        <Rocket className="w-4 h-4 text-yellow-400" />
+                                    </ArrowUpRight>
                                 </a>
                             </div>
                         </motion.li>
