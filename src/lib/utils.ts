@@ -46,6 +46,12 @@ const formatDistanceLocale = {
   almostXYears: "{{count}}y",
 };
 
+// Utility to truncate long text
+export const truncateText = (text: string, maxLength: number) => {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + "...";
+};
+
 function formatDistance(token: string, count: number, options?: any): string {
   options = options || {};
 
