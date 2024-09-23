@@ -33,7 +33,7 @@ const FeedItem: React.FC<FeedItemProps> = ({
     imageUrl,
 }) => {
     return (
-        <div className="bg-zinc-900 shadow-md rounded-lg p-6 mb-6">
+        <div className="border border-teal-500 shadow-md rounded-lg p-6 mb-6">
             <h2 className="text-2xl font-bold mb-2">
                 <Link href={link} className="text-lg md:font-semibold text-blue-400 hover:text-blue-300 transition-colors">
                     {title}
