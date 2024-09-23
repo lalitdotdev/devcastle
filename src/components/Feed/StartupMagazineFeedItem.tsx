@@ -33,20 +33,20 @@ const FeedItem: React.FC<FeedItemProps> = ({
     imageUrl,
 }) => {
     return (
-        <div className="bg-zinc-700 shadow-md rounded-lg p-6 mb-6">
+        <div className="bg-zinc-900 shadow-md rounded-lg p-6 mb-6">
             <h2 className="text-2xl font-bold mb-2">
-                <Link href={link} className="text-blue-600 hover:text-blue-800">
+                <Link href={link} className="text-lg md:font-semibold text-blue-400 hover:text-blue-300 transition-colors">
                     {title}
                 </Link>
             </h2>
-            <p className="text-gray-600 mb-2">
+            <p className="text-sm text-gray-400 my-2">
                 Published on {pubDate.toLocaleDateString()} by {author}
             </p>
             <div className="mb-2">
                 {categories.map((category) => (
                     <span
                         key={category.id}
-                        className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                        className="inline-block mr-2 mb-2 px-3 py-1 text-xs font-semibold text-gray-800 bg-gray-300 rounded-full"
                     >
                         {category.name}
                     </span>
@@ -59,6 +59,7 @@ const FeedItem: React.FC<FeedItemProps> = ({
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw]}
                         components={{
+                            img: () => null, // Prevent rendering of images
                             code({ className, children, ...props }: any) {
                                 const match = /language-(\w+)/.exec(className || "");
                                 return match ? (
@@ -67,10 +68,10 @@ const FeedItem: React.FC<FeedItemProps> = ({
                                         value={String(children).replace(/\n$/, "")}
                                     />
                                 ) : (
-                                    <></>
-                                    // <code className={cn("rounded-md bg-zinc-600 text-white p-1", className)} {...props}>
-                                    //     {children}
-                                    // </code>
+
+                                    <code className={cn("rounded-md bg-zinc-600 text-white p-1", className)} {...props}>
+                                        {children}
+                                    </code>
                                 );
                             },
                         }}
@@ -79,7 +80,7 @@ const FeedItem: React.FC<FeedItemProps> = ({
                     </Markdown>
                 </div>
             )}
-            <Link href={link} className="text-blue-600 hover:text-blue-800 font-semibold">
+            <Link href={link} className="text-teal-300 font-normal">
                 Read more →
             </Link>
         </div>

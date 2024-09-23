@@ -1,6 +1,6 @@
 "use client";
 
-import { Activity, ArrowUpWideNarrow, BookMarked, Briefcase, Compass, FilePlus, FolderKanban, GraduationCap, Heart, HeartHandshake, HelpingHand, Package, Package2, Rocket, Settings, TrendingUp, UserCog, User as UserIcon } from "lucide-react";
+import { Activity, ArrowUpWideNarrow, Briefcase, Compass, FilePlus, Heart, HeartHandshake, HelpingHand, Newspaper, Package, Rocket, Settings, TrendingUp, UserCog, User as UserIcon } from "lucide-react";
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetTrigger } from "./ui/sheet";
 
@@ -59,16 +59,21 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 { href: "/jobs/new", icon: FilePlus, label: "Post an Opportunity" },
                                 { href: "/opportunities", icon: Compass, label: "Browse Opportunities" },
                                 // { href: "/opportunities", icon: Briefcase, label: "Opportunities / OS Programs" },
-                                { href: "/articles/publish", icon: Library, label: "Free Resources and Tools" },
+                                { href: "/feed/blogs", icon: Library, label: "Free Resources and Tools" },
                                 // { href: "/articles/categories/all", icon: Newspaper, label: "Articles" },
                                 { href: "/launchpad", icon: Rocket, label: "Creator Launchpad" },
                                 { href: "/startups/catalog/essays", icon: TrendingUp, label: "Startup Archives" },
                                 { href: "/startups/catalog/workatstartups", icon: Briefcase, label: "Work At Startups" },
                                 { href: "/startups/catalog/jobstimeline", icon: Activity, label: "Jobs Timeline" },
+                                {
+                                    href: "/startups/catalog/crunchbase-feed",
+                                    icon: Compass,
+                                    label: "Crunchbase Feed"
+
+
+                                },
                                 { href: "/startups/catalog/topstories", icon: ArrowUpWideNarrow, label: "Top Stories" },
-                                { href: "/startups/catalog/phfeed", icon: Rocket, label: "Startup Launchpad" },
-
-
+                                { href: "/startups/catalog/phfeed", icon: Newspaper, label: "Feed Importer(Product Hunt)" },
 
                             ].map((item, index) => (
                                 <React.Fragment key={item.href}>
