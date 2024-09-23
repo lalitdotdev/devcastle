@@ -2,7 +2,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 
 import DotPattern from "@/components/ui/dotbggradient";
 import EssayList from "@/components/EssaysList";
+import FeedItem from "@/components/Feed/StartupMagazineFeedItem";
 import Link from "next/link";
+import { Metadata } from "next";
 import TrendingRepoList from "@/components/TredingRepoList";
 import UpdateButton from "../_components/UpdateEssays";
 import { cn } from "@/lib/utils";
@@ -10,19 +12,33 @@ import { fetchGithubTrending } from "@/app/feed/actions/fetchGithubTrending";
 import { getEntrepreneurFeed } from "@/app/feed/actions/getEntrepreneurFeed";
 import { getEssays } from "../../actions";
 import { getSimonWillisonFeed } from "@/app/feed/actions/getSimonWillisonFeed";
+import { getStartupMagazineFeed } from "@/app/feed/actions/getStartupMagazineFeed";
 
+export const metadata: Metadata = {
+    title: {
+        default: "Devcastle | Essay Feeds and more.",
+        template: "%s | Devcastle",
+    },
+    description: "Essays feeds and more.",
+};
 export default async function EssaysPage() {
     let paulGrahamEssays = [] as any;
     let simonWillisonEssays = [] as any;
     let entrepreneurEssays = [] as any;
     let githubTrendingRepos = [] as any;
+    let startupMagazineFeed = [] as any;
+
 
     try {
-        [paulGrahamEssays, simonWillisonEssays, entrepreneurEssays, githubTrendingRepos] = await Promise.all([
+        [paulGrahamEssays, simonWillisonEssays, entrepreneurEssays, githubTrendingRepos, startupMagazineFeed] = await Promise.all([
             getEssays(),
             getSimonWillisonFeed(),
             getEntrepreneurFeed()
-            , fetchGithubTrending()
+            , fetchGithubTrending(),
+            getStartupMagazineFeed(),
+
+
+
         ]);
     } catch (error) {
         console.error("Error fetching essays:", error);
@@ -30,6 +46,10 @@ export default async function EssaysPage() {
 
     // console.log(simonWillisonEssays)
     console.log(githubTrendingRepos)
+    console.log(startupMagazineFeed)
+
+
+
     return (
         <main className="md:px-24 mx-auto md:p-12 ">
             <DotPattern
@@ -55,6 +75,8 @@ export default async function EssaysPage() {
                         <li>TechCrunch</li>
                         <li>Entrepreneur</li>
                         <li>GitHub Trending</li>
+                        <li>The Startup Magazine</li>
+
 
 
                     </ul>
@@ -68,9 +90,12 @@ export default async function EssaysPage() {
 
                 {/* https://www.reddit.com/r/indiehackers/comments/qjkp7o/web_scraped_indiehackers_products_data_and/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button */}
 
+                {/* https://data.crunchbase.com/docs/using-the-api */}
                 {/* https://www.entrepreneur.com/latest.rss */}
 
                 {/* https://rss.feedspot.com/entrepreneur_rss_feeds/ */}
+
+                {/* https://www.techstars.com/ */}
                 <Tabs defaultValue="paulGraham" className="space-y-6 ">
                     <TabsList className="flex flex-nowrap overflow-x-scroll overflow-y-hidden bg-gray-800 rounded-lg p-2 md:p-4 scrollbar-hide ">
                         <TabsTrigger
@@ -102,6 +127,12 @@ export default async function EssaysPage() {
                             className="flex-shrink-0 px-4 py-2 text-zinc-300 rounded-md hover:scale-105"
                         >
                             GitHub Trending
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="startupMagazine"
+                            className="flex-shrink-0 px-4 py-2 text-zinc-300 rounded-md hover:scale-105"
+                        >
+                            The Startup Magazine
                         </TabsTrigger>
 
                     </TabsList>
@@ -220,6 +251,33 @@ export default async function EssaysPage() {
                         </section>
 
 
+                    </TabsContent>
+
+                    <TabsContent value="startupMagazine" className="p-4 bg-gray-800 rounded-lg">
+                        <section>
+                            <div className="flex flex-col gap-6 py-8">
+                                <Link
+                                    href="https://thestartupmag.com/"
+                                    className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                                        The latest news and insights from The Startup Magazine.
+                                    </p>
+                                </Link>
+                            </div>
+                            {startupMagazineFeed.length > 0 ? (
+                                <div className="container mx-auto px-4 py-8">
+                                    <h1 className="text-4xl font-bold mb-8">The Startup Magazine Feed</h1>
+                                    {startupMagazineFeed.map((item: any) => (
+                                        <FeedItem key={item.id} {...item} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-gray-500">Unable to load The Startup Magazine articles at this time.</p>
+                            )}
+                        </section>
                     </TabsContent>
 
 
