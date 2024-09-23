@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import { fetchAndStoreProductHuntPosts, getProductHuntPosts } from '@/app/feed/actions/getProductHuntPosts'
 
 import { Badge } from '../ui/badge'
-import { Button } from '../ui/Button'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Separator } from '../ui/separator'
@@ -49,6 +48,8 @@ export default function ProductHuntFeed() {
 
             // Store the fetched posts in localStorage for persistence
             localStorage.setItem('productHuntPosts', JSON.stringify(fetchedPosts))
+            // console.log(`Fetched ${fetchedPosts.length} posts from Product Hunt and stored in localStorage`)
+
         } catch (err) {
             setError('Failed to fetch posts. Please try again.')
             console.error(err)
@@ -63,7 +64,7 @@ export default function ProductHuntFeed() {
             if (result.success) {
                 toast.promise(fetchPosts(), {
                     loading: 'Fetching feed from Product Hunt...',
-                    success: 'Product Hunt feed imported successfully',
+                    success: 'Product Hunt feed imported successfully ',
                     error: 'Failed to fetch posts. Please try again.',
 
                 })
@@ -105,6 +106,8 @@ export default function ProductHuntFeed() {
 
                 <StatefulButton
                     onClickAsync={handleImportFeed}
+                    statusLoading='Feed importing ...'
+                    statusSuccess='Feed imported successfully!'
                     disabled={posts.length > 0}
                     className="p-6 text-sm font-medium  text-white transition-colors duration-300 border border-slate-500 bg-[#9945FF] min-w-fit"
                 >
