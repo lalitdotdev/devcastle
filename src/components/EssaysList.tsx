@@ -1,11 +1,11 @@
 "use client";
 
 import { Category, Essay } from "@prisma/client";
+import { cn, truncateText } from "@/lib/utils";
 
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { cn } from "@/lib/utils";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { motion } from "framer-motion";
 import rehypeRaw from "rehype-raw";
@@ -23,7 +23,7 @@ interface CodeBlockProps {
     value: string;
 }
 
-const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
+export const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
     return (
         <SyntaxHighlighter
             style={materialDark}
@@ -36,11 +36,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
     );
 };
 
-// Utility to truncate long text
-const truncateText = (text: string, maxLength: number) => {
-    if (text.length <= maxLength) return text;
-    return text.slice(0, maxLength) + "...";
-};
+
 
 export default function EssayList({ essays }: EssayListProps) {
     return (
