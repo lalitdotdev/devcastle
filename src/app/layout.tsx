@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "@uploadthing/react/styles.css";
 
 import { DM_Sans, Inter, Poppins } from "next/font/google";
 
