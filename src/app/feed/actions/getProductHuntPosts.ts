@@ -32,7 +32,7 @@ export async function fetchAndStoreProductHuntPosts(): Promise<FetchResult> {
 
   const query = `
     query {
-      posts(first: 25) {
+      posts(first: 50) {
         edges {
           node {
             id
@@ -142,7 +142,7 @@ export async function getProductHuntPosts() {
       orderBy: {
         createdAt: "desc",
       },
-      take: 25,
+      take: 50,
     });
 
     return posts;

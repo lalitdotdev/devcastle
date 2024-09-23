@@ -1,17 +1,21 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, CheckCircle, XCircle } from 'lucide-react';
 import { Button, ButtonProps } from '@/components/ui/Button';
+import { CheckCircle, XCircle } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
 type StatefulButtonProps = ButtonProps & {
     onClickAsync: () => Promise<void>;
+    statusLoading?: string;
+    statusSuccess?: string;
 };
 
 export const StatefulButton: React.FC<StatefulButtonProps> = ({
     children,
     onClickAsync,
+    statusLoading,
+    statusSuccess,
     className,
     ...rest
 }) => {
@@ -42,13 +46,13 @@ export const StatefulButton: React.FC<StatefulButtonProps> = ({
             variant={status === 'error' ? 'destructive' : rest.variant}
             className={cn('w-40 rounded-lg overflow-hidden gap-2', className)}
         >
-            <span key="label">
+            <span key="label" className=''>
                 {status === 'idle'
                     ? children
                     : status === 'loading'
-                        ? 'Feed importing...'
+                        ? statusLoading
                         : status === 'success'
-                            ? 'Feed imported successfully!'
+                            ? statusSuccess
                             : 'Error'}
             </span>
             <AnimatePresence mode="wait">
@@ -60,7 +64,7 @@ export const StatefulButton: React.FC<StatefulButtonProps> = ({
                         animate="show"
                         exit="hidden"
                     >
-                        <ArrowUpRight className="h-4 w-4" />
+                        <span className='text-lg'>🚀</span>
                     </motion.span>
                 ) : status === 'loading' ? (
                     <motion.span
@@ -70,7 +74,7 @@ export const StatefulButton: React.FC<StatefulButtonProps> = ({
                         animate="show"
                         exit="hidden"
                     >
-                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                        <div className="h-4 w-4 animate-spin rounded-full border-2  border-t-transparent" />
                     </motion.span>
                 ) : (
                     <motion.span
@@ -80,7 +84,7 @@ export const StatefulButton: React.FC<StatefulButtonProps> = ({
                         animate="show"
                         exit="hidden"
                     >
-                        {status === 'success' && <CheckCircle className="h-4 w-4" />}
+                        {status === 'success' && <CheckCircle className="h-4 w-4 text-white" />}
                         {status === 'error' && <XCircle className="h-4 w-4" />}
                     </motion.span>
                 )}
