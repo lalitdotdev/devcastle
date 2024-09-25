@@ -90,14 +90,14 @@ const NotificationIcon: React.FC<NotificationIconProps> = ({
                 </SheetTrigger>
                 <SheetContent className="border-l border-zinc-700">
                     <SheetHeader>
-                        <SheetTitle>Notifications</SheetTitle>
+                        <SheetTitle className="text-teal-500">Notifications</SheetTitle>
                         <SheetDescription>
                             View all your notifications here
                         </SheetDescription>
                     </SheetHeader>
                     {unreadNotifications === 0 ? (
                         <>
-                            <div className="flex items-center py-6">
+                            <div className="flex items-center py-16">
                                 <h1 className="text-sm text-gray-500">No new notifications</h1>
                             </div>
                         </>
