@@ -1,13 +1,12 @@
 "use client";
 
-import { Activity, ArrowUpWideNarrow, Briefcase, Compass, FilePlus, Heart, HeartHandshake, HelpingHand, Newspaper, Package, Rocket, Settings, TrendingUp, UserCog, User as UserIcon } from "lucide-react";
+import { Activity, ArrowUpWideNarrow, BookOpen, Briefcase, Compass, FilePlus, Heart, HeartHandshake, HelpingHand, Newspaper, Package, Rocket, Settings, UserCog, User as UserIcon } from "lucide-react";
+import { Github, Library } from "lucide-react";
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetTrigger } from "./ui/sheet";
 
 import { FC } from "react";
-import { Github } from "lucide-react";
 import { Icons } from "./Icons";
-import { Library } from "lucide-react";
 import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { User } from "next-auth";
@@ -28,7 +27,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
     };
 
     return (
-        <div className="flex-shrink-0 md:block md:flex-shrink-0 md:items-center gap-4 justify-center items-center">
+        <div className="flex-shrink-0 md:block md:flex-shrink-0 md:items-center gap-4 justify-center items-center ml-4">
             <div className="text-gray-200 mr-4">
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
@@ -62,7 +61,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 { href: "/feed/blogs", icon: Library, label: "Free Resources and Tools" },
                                 // { href: "/articles/categories/all", icon: Newspaper, label: "Articles" },
                                 { href: "/launchpad", icon: Rocket, label: "Creator Launchpad" },
-                                { href: "/startups/catalog/essays", icon: TrendingUp, label: "Startup Archives" },
+                                { href: "/startups/catalog/essays", icon: BookOpen, label: "Feed Reader / startup catalog" },
                                 { href: "/startups/catalog/workatstartups", icon: Briefcase, label: "Work At Startups" },
                                 { href: "/startups/catalog/jobstimeline", icon: Activity, label: "Jobs Timeline" },
                                 {

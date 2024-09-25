@@ -15,7 +15,7 @@ const SonnerToaster = ({ ...props }: ToasterProps) => {
             toastOptions={{
                 classNames: {
                     toast:
-                        "group toast group-[.toaster]:bg-[#212329] group-[.toaster]:text-blue-600 group-[.toaster]:border-slate-700 group-[.toaster]:shadow-lg group-[.toaster]:backdrop-blur-2xl group-[.toaster]:rounded-xl group-[.toaster]:text-indigo-600",
+                        "group toast group-[.toaster]:bg-[#212329] group-[.toaster]:text-blue-600 group-[.toaster]:border-slate-700 group-[.toaster]:shadow-lg group-[.toaster]:backdrop-blur-2xl group-[.toaster]:rounded-xl group-[.toaster]:text-blue-400",
                     description: "group-[.toast]:text-blue-600",
                     actionButton:
                         "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
