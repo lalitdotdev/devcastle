@@ -1,8 +1,12 @@
+import { ArrowUpCircle, BarChart, Github, Lightbulb, Rss } from "lucide-react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 
+import AddFeedDialog from "@/components/Feed/UrlFeedFormDialog";
 import DotPattern from "@/components/ui/dotbggradient";
 import EssayList from "@/components/EssaysList";
 import FeedItem from "@/components/Feed/StartupMagazineFeedItem";
+import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import TrendingRepoList from "@/components/TredingRepoList";
@@ -13,10 +17,11 @@ import { getEntrepreneurFeed } from "@/app/feed/actions/getEntrepreneurFeed";
 import { getEssays } from "../../actions";
 import { getSimonWillisonFeed } from "@/app/feed/actions/getSimonWillisonFeed";
 import { getStartupMagazineFeed } from "@/app/feed/actions/getStartupMagazineFeed";
+import { getTechCrunchFeed } from "@/app/feed/actions/getTechcrunchFeed";
 
 export const metadata: Metadata = {
     title: {
-        default: "Devcastle | Essay Feeds and more.",
+        default: "Feed Reader | Devcastle",
         template: "%s | Devcastle",
     },
     description: "Essays feeds and more.",
@@ -27,15 +32,17 @@ export default async function EssaysPage() {
     let entrepreneurEssays = [] as any;
     let githubTrendingRepos = [] as any;
     let startupMagazineFeed = [] as any;
+    let techCrunchFeed = [] as any;
 
 
     try {
-        [paulGrahamEssays, simonWillisonEssays, entrepreneurEssays, githubTrendingRepos, startupMagazineFeed] = await Promise.all([
+        [paulGrahamEssays, simonWillisonEssays, entrepreneurEssays, githubTrendingRepos, startupMagazineFeed, techCrunchFeed] = await Promise.all([
             getEssays(),
             getSimonWillisonFeed(),
             getEntrepreneurFeed()
             , fetchGithubTrending(),
             getStartupMagazineFeed(),
+            getTechCrunchFeed()
 
 
 
@@ -47,11 +54,12 @@ export default async function EssaysPage() {
     // console.log(simonWillisonEssays)
     console.log(githubTrendingRepos)
     console.log(startupMagazineFeed)
+    console.log(techCrunchFeed)
 
 
 
     return (
-        <main className="md:px-24 mx-auto md:p-12 ">
+        <main className="mx-auto md:p-12 ">
             <DotPattern
                 width={20}
                 height={20}
@@ -64,8 +72,9 @@ export default async function EssaysPage() {
             />
             <div className="space-y-8">
                 <h1 className="md:text-6xl text-4xl font-bold my-4 rounded-xl gradient-text animate-gradient">
-                    Essays and Blogs <span className="text-gray-400">📰</span>
+                    Feed Reader <span className="text-gray-400">📰</span>
                 </h1>
+
 
                 {/* I want to add a list of sources here and should show list style */}
                 <div className="text-gray-400 text-sm ">
@@ -77,12 +86,9 @@ export default async function EssaysPage() {
                         <li>GitHub Trending</li>
                         <li>The Startup Magazine</li>
 
-
-
                     </ul>
                     <br />
-                    View the latest essays and blogs from various sources to stay up-to-date with the latest trends and insights in the tech industry.
-                    <br />
+
                     <div className="text-zinc-300 border border-teal-600 p-3 max-w-fit mt-5 ">Feel free to add or suggest more sources to this list by creating a PR on the GitHub repository.</div>
                     <br />
                 </div>
@@ -93,51 +99,64 @@ export default async function EssaysPage() {
                 {/* https://data.crunchbase.com/docs/using-the-api */}
                 {/* https://www.entrepreneur.com/latest.rss */}
 
-                {/* https://rss.feedspot.com/entrepreneur_rss_feeds/ */}
+                {/* https://rss.feedspot.com/entrepreneur_rssbun_feeds/ */}
 
                 {/* https://www.techstars.com/ */}
-                <Tabs defaultValue="paulGraham" className="space-y-6 ">
-                    <TabsList className="flex flex-nowrap overflow-x-scroll overflow-y-hidden bg-gray-800 rounded-lg p-2 md:p-4 scrollbar-hide ">
-                        <TabsTrigger
-                            value="paulGraham"
-                            className="flex-shrink-0 px-4 py-2 text-zinc-300 rounded-md hover:scale-105"
-                        >
-                            Paul Graham Essays
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="simonWillison"
-                            className="flex-shrink-0 px-4 py-2 text-zinc-300 rounded-md hover:scale-105"
-                        >
-                            Simon Willison&apos;s Blog
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="techCrunch"
-                            className="flex-shrink-0 px-4 py-2 text-zinc-300 rounded-md hover:scale-105"
-                        >
-                            TechCrunch
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="entrepreneur"
-                            className="flex-shrink-0 px-4 py-2 text-zinc-300 rounded-md hover:scale-105"
-                        >
-                            Entrepreneur(latest)
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="githubTrending"
-                            className="flex-shrink-0 px-4 py-2 text-zinc-300 rounded-md hover:scale-105"
-                        >
-                            GitHub Trending
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="startupMagazine"
-                            className="flex-shrink-0 px-4 py-2 text-zinc-300 rounded-md hover:scale-105"
-                        >
-                            The Startup Magazine
-                        </TabsTrigger>
+                <Tabs defaultValue="paulGraham" className="w-full">
+                    <ScrollArea className="w-full whitespace-nowrap rounded-md ">
+                        <TabsList className="inline-flex h-12 items-center justify-center rounded-none bg-gray-800 ">
+                            <TabsTrigger
+                                value="techCrunch"
+                                className=" inline-flex"
+                            >
+                                <Image src="/logo/tc.svg" width={20} height={20} alt="TechCrunch" className="mr-2" />
+                                TechCrunch
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="entrepreneur"
+                                className=" inline-flex"
+                            >
+                                <Lightbulb className="mr-2 h-4 w-4 text-lime-300" />
+                                Entrepreneur(latest)
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="startupMagazine"
+                                className=" inline-flex"
+                            >
+                                <BarChart className="mr-2 h-4 w-4 text-teal-400" />
+                                The Startup Magazine
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="paulGraham"
+                                className=" inline-flex"
+                            >
+                                <Rss className="mr-2 h-4 w-4 text-zinc-100" />
+                                Paul Graham Essays
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="simonWillison"
+                                className=" inline-flex"
+                            >
+                                Simon Willison&apos;s Blog
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="githubTrending"
+                                className=" inline-flex"
+                            >
+                                <Image src="/logo/github.svg" width={18} height={18} alt="GitHub" className="mr-2" />
+                                GitHub Trending
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="addFeed"
+                                className=" inline-flex"
+                            >
+                                <AddFeedDialog />
+                            </TabsTrigger>
+                        </TabsList>
+                        <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
 
-                    </TabsList>
-
-                    <TabsContent value="paulGraham" className="p-4 bg-gray-800 rounded-lg max-w-7xl mx-auto">
+                    <TabsContent value="paulGraham" className="p-4 bg-gray-800 rounded-lg  mx-auto">
                         <section>
                             <div className="flex flex-col gap-6 py-8">
                                 <Link
@@ -197,13 +216,15 @@ export default async function EssaysPage() {
                                     </p>
                                 </Link>
                             </div>
-                            <p className="text-gray-500 ml-1">
-                                Coming soon 👀 ! Stay tuned for updates on TechCrunch&apos;s latest technology news and information on startups.
-                                <br />
-                                <br />
-                                Working on it 🛠
-                            </p>
-
+                            {techCrunchFeed.length > 0 ? (
+                                <div className="container mx-auto px-4 py-8">
+                                    {techCrunchFeed.map((item: any) => (
+                                        <FeedItem key={item.id} {...item} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-gray-500">Unable to load The Startup Magazine articles at this time.</p>
+                            )}
                         </section>
                     </TabsContent>
 
@@ -278,6 +299,15 @@ export default async function EssaysPage() {
                             )}
                         </section>
                     </TabsContent>
+
+                    {/* TODO: Add the tab for the feed URL */}
+
+
+
+
+
+
+
 
 
                 </Tabs>
