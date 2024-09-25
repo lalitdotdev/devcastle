@@ -7,16 +7,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Rss } from 'lucide-react';
-import React, { useState } from 'react';
 
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Label } from "../ui/Label";
-import { XMLParser } from "fast-xml-parser";
+import { Rss } from 'lucide-react';
 import { getUrlFeedParser } from "@/app/feed/actions/getUrlFeedParser";
 import { toast } from "sonner";
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
