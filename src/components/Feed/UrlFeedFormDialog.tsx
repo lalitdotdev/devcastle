@@ -22,6 +22,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 // Define the form schema
 const formSchema = z.object({
     url: z.string().url("Please enter a valid URL"),
+    name: z.string().min(3, "Name must be at least 3 characters long"),
 });
 
 // Define the type for our form
@@ -34,6 +35,7 @@ async function addFeed(data: FormData) {
     try {
         const response = await getUrlFeedParser(data.url);
         console.log(response);
+        return { success: true, data: response }; // Return response data
     } catch (error) {
         console.error("Failed to fetch or parse feed:", error);
         return { success: false, error: "Failed to fetch or parse feed" };
@@ -41,7 +43,7 @@ async function addFeed(data: FormData) {
 }
 
 
-export default function AddFeedDialog() {
+export default function AddFeedDialog({ onFeedAdded }: { onFeedAdded: (feedData: any) => void }) {
     const [open, setOpen] = useState(false);
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
@@ -54,7 +56,9 @@ export default function AddFeedDialog() {
             if (result?.success) {
                 toast.success("Feed imported successfully");
                 reset();
+                onFeedAdded(result.data); // Pass the feed data back to the parent
                 setOpen(false);
+
             } else {
                 toast.error('Failed to import feed', {
                     description: result?.error,
@@ -90,7 +94,7 @@ export default function AddFeedDialog() {
                     </div>
                 </DialogHeader>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    {/* <div className="grid w-full items-center gap-1.5">
+                    <div className="grid w-full items-center gap-1.5">
                         <Label htmlFor="name">Feed Name</Label>
                         <Input
                             id="name"
@@ -99,7 +103,7 @@ export default function AddFeedDialog() {
                             className="border-none"
                         />
                         {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
-                    </div> */}
+                    </div>
                     <div className="grid w-full items-center gap-1.5">
                         <Label htmlFor="url">RSS Feed URL</Label>
                         <Input
