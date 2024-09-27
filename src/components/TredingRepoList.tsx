@@ -2,19 +2,13 @@
 
 // Assuming your `Github` interface is stored in types
 
+import { Github } from "@/app/feed/actions/fetchGithubTrending";
 import Link from "next/link";
 import React from "react";
 import { Star } from "lucide-react";
 // import { formatNumber } from "@/lib/utils";
 // Utility function to format stars
 import { motion } from "framer-motion";
-
-interface Github {
-    title: string;
-    description: string;
-    url: string;
-    stars: string;
-}
 
 interface TrendingRepoListProps {
     repos: Github[];

@@ -15,7 +15,7 @@ interface Category {
 
 export interface FeedItemProps {
     title: string;
-    link: string;
+    link?: string;
     pubDate: Date;
     contentSnippet: string;
     categories: Category[];
@@ -35,15 +35,19 @@ const FeedItem: React.FC<FeedItemProps> = ({
     return (
         <div className="transition-shadow duration-300 border border-gray-700 p-4 hover:bg-gradient-to-bl from-gray-700 to-gray-800  shadow-md rounded-lg  mb-6">
             <h2 className="text-2xl font-bold mb-2">
-                <Link href={link} className="text-lg md:font-semibold text-blue-400 hover:text-blue-300 transition-colors">
-                    {title}
-                </Link>
+
+                {
+                    link && <Link href={link} className="text-lg md:font-semibold text-blue-400 hover:text-blue-300 transition-colors">
+                        {title}
+                    </Link>
+                }
+
             </h2>
             <p className="text-sm text-gray-400 my-2">
-                Published on {pubDate.toLocaleDateString()} by {author}
+                Published on {pubDate?.toLocaleDateString()} by {author}
             </p>
             <div className="mb-2">
-                {categories.map((category) => (
+                {categories?.map((category) => (
                     <span
                         key={category.id}
                         className="inline-block mr-2 mb-2 px-3 py-1 text-xs font-semibold text-gray-800 bg-gray-300 rounded-full"
@@ -80,9 +84,12 @@ const FeedItem: React.FC<FeedItemProps> = ({
                     </Markdown>
                 </div>
             )}
-            <Link href={link} className="text-teal-300 font-normal">
-                Read more →
-            </Link>
+            {
+                link && <Link href={link} className="text-teal-300 font-normal">
+                    Read more →
+                </Link>
+            }
+
         </div>
     );
 };

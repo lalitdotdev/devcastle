@@ -7,7 +7,7 @@ export default async function BlogPosts() {
     const blogPosts = await scrapeArpitBhayaniBlogPosts();
 
     return (
-        <div className="container min-h-screen bg-gradient-to-br  text-gray-100 min-w-7xl">
+        <div className="container min-h-screen bg-gradient-to-br  text-gray-100 mx-auto border-l border-zinc-700 mt-8 rounded-t-lg  ">
             <div className="py-16  sm:px-6 lg:px-8 w-full">
                 <h1 className="text-3xl md:text-4xl font-bold mb-6 py-6 text-slate-300">
                     Arpit Bhayani&apos;s Blog Posts
@@ -21,8 +21,8 @@ export default async function BlogPosts() {
 
                 <div className="space-y-3">
                     {blogPosts.map((post, index) => (
-                        <div key={index} className="bg-gray-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl  flex flex-col">
-                            <div className="p-3 md:p-6 flex-grow">
+                        <div key={index} className="rounded-xl overflow-hidden  flex flex-col md:border border-zinc-800 md:p-1">
+                            <div className="flex-grow p-1 ">
                                 <div className="flex items-center text-gray-400 text-sm mb-4">
                                     <Calendar size={16} className="mr-2" />
                                     <span>{post.date}</span>
