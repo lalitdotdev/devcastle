@@ -1,3 +1,5 @@
+"use server";
+
 import * as cheerio from "cheerio";
 
 import { formatNumber } from "@/lib/utils";
