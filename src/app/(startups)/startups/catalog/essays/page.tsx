@@ -1,6 +1,10 @@
-import { ArrowUpCircle, BarChart, Github, Lightbulb, Rss } from "lucide-react";
+"use client";
+
+import { BarChart, Lightbulb, Rss } from "lucide-react";
+import { Github, fetchGithubTrending } from "@/app/feed/actions/fetchGithubTrending";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
+import { useEffect, useState } from 'react';
 
 import AddFeedDialog from "@/components/Feed/UrlFeedFormDialog";
 import DotPattern from "@/components/ui/dotbggradient";
@@ -8,55 +12,69 @@ import EssayList from "@/components/EssaysList";
 import FeedItem from "@/components/Feed/StartupMagazineFeedItem";
 import Image from "next/image";
 import Link from "next/link";
-import { Metadata } from "next";
 import TrendingRepoList from "@/components/TredingRepoList";
+import UniversalFeedItem from "@/components/Feed/FeedItem";
 import UpdateButton from "../_components/UpdateEssays";
 import { cn } from "@/lib/utils";
-import { fetchGithubTrending } from "@/app/feed/actions/fetchGithubTrending";
 import { getEntrepreneurFeed } from "@/app/feed/actions/getEntrepreneurFeed";
 import { getEssays } from "../../actions";
 import { getSimonWillisonFeed } from "@/app/feed/actions/getSimonWillisonFeed";
 import { getStartupMagazineFeed } from "@/app/feed/actions/getStartupMagazineFeed";
 import { getTechCrunchFeed } from "@/app/feed/actions/getTechcrunchFeed";
 
-export const metadata: Metadata = {
-    title: {
-        default: "Feed Reader | Devcastle",
-        template: "%s | Devcastle",
-    },
-    description: "Essays feeds and more.",
-};
-export default async function EssaysPage() {
-    let paulGrahamEssays = [] as any;
-    let simonWillisonEssays = [] as any;
-    let entrepreneurEssays = [] as any;
-    let githubTrendingRepos = [] as any;
-    let startupMagazineFeed = [] as any;
-    let techCrunchFeed = [] as any;
+export interface FeedItem {
+    id: string; // Unique identifier for the feed item, either guid or link
+    title: string; // Title of the feed item
+    link?: string; // URL link to the feed item
+    pubDate: Date; // Publication date
+    contentSnippet: string; // Snippet or summary of the content
+    categories: { id: string; name: string }[]; // Array of categories
+    content: string; // Full content, if available
+    author?: string; // Author of the feed item, if applicable
+    imageUrl?: string; // Image URL, if available
+}
+export default function EssaysPage() {
 
+    const [urlCustomfeeds, setUrlCustomfeeds] = useState<FeedItem[]>([]);// Manage feeds state
+    const [paulGrahamEssays, setPaulGrahamEssays] = useState([]);
+    const [simonWillisonEssays, setSimonWillisonEssays] = useState([]);
+    const [entrepreneurEssays, setEntrepreneurEssays] = useState([]);
+    const [githubTrendingRepos, setGithubTrendingRepos] = useState<Github[]>([]);
 
-    try {
-        [paulGrahamEssays, simonWillisonEssays, entrepreneurEssays, githubTrendingRepos, startupMagazineFeed, techCrunchFeed] = await Promise.all([
-            getEssays(),
-            getSimonWillisonFeed(),
-            getEntrepreneurFeed()
-            , fetchGithubTrending(),
-            getStartupMagazineFeed(),
-            getTechCrunchFeed()
+    const [startupMagazineFeed, setStartupMagazineFeed] = useState([]);
+    const [techCrunchFeed, setTechCrunchFeed] = useState([]);
 
+    // Fetch all the essay data when the component mounts
+    useEffect(() => {
+        const fetchData = async () => {
+            const essaysData = await getEssays();
+            const simonData = await getSimonWillisonFeed();
+            const entrepreneurData = await getEntrepreneurFeed();
+            const githubData = await fetchGithubTrending();
+            const startupData = await getStartupMagazineFeed();
+            const techCrunchData = await getTechCrunchFeed();
 
+            setPaulGrahamEssays(essaysData as any);
+            setSimonWillisonEssays(simonData);
+            setEntrepreneurEssays(entrepreneurData);
+            setGithubTrendingRepos(githubData);
+            setStartupMagazineFeed(startupData);
+            setTechCrunchFeed(techCrunchData);
+        };
 
-        ]);
-    } catch (error) {
-        console.error("Error fetching essays:", error);
-    }
+        fetchData();
+    }, []);
 
     // console.log(simonWillisonEssays)
     console.log(githubTrendingRepos)
-    console.log(startupMagazineFeed)
-    console.log(techCrunchFeed)
+    // console.log(startupMagazineFeed)
+    // console.log(techCrunchFeed)
+    // console.log(urlCustomfeeds)
 
-
+    // Function to handle adding a new feed
+    const handleFeedAdded = (newFeed: FeedItem) => {
+        setUrlCustomfeeds((prevFeeds) => [...prevFeeds, newFeed]);
+    };
 
     return (
         <main className="mx-auto md:p-12 ">
@@ -147,10 +165,10 @@ export default async function EssaysPage() {
                                 GitHub Trending
                             </TabsTrigger>
                             <TabsTrigger
-                                value="addFeed"
+                                value="urlFeed"
                                 className=" inline-flex"
                             >
-                                <AddFeedDialog />
+                                <AddFeedDialog onFeedAdded={handleFeedAdded} />
                             </TabsTrigger>
                         </TabsList>
                         <ScrollBar orientation="horizontal" />
@@ -300,14 +318,24 @@ export default async function EssaysPage() {
                         </section>
                     </TabsContent>
 
+                    <TabsContent value="urlFeed" className="p-4 bg-gray-800 rounded-lg">
+                        <section>
+                            {urlCustomfeeds.length > 0 ? (
+                                <div className="container mx-auto px-4 py-8">
+                                    {urlCustomfeeds.map((item: any) => (
+                                        <UniversalFeedItem key={item.id} {...item} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-gray-500">Unable to load the feed at this time.</p>
+                            )
+
+                            }
+
+                        </section>
+                    </TabsContent>
+
                     {/* TODO: Add the tab for the feed URL */}
-
-
-
-
-
-
-
 
 
                 </Tabs>
