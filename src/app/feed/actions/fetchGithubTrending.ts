@@ -1,12 +1,10 @@
 import * as cheerio from "cheerio";
 
-// Adjust the path if necessary
-import fixtures from "./githubRepoFixtures";
 import { formatNumber } from "@/lib/utils";
 
 const GITHUB_TRENDING_BASE_URL = "https://github.com/trending";
 
-interface Github {
+export interface Github {
   title: string;
   description: string;
   url: string;
@@ -17,7 +15,7 @@ interface Github {
 // Server action function to fetch GitHub trending repositories
 export async function fetchGithubTrending(
   lang: string = "all",
-  since: string = "monthly",
+  since: string = "daily ",
 ): Promise<Github[]> {
   try {
     if (lang === "all") {
