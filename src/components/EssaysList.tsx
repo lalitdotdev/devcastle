@@ -61,6 +61,7 @@ export default function EssayList({ essays }: EssayListProps) {
                                     remarkPlugins={[remarkGfm]}
                                     rehypePlugins={[rehypeRaw]}
                                     components={{
+                                        img: () => null,
                                         code({ className, children, ...props }: any) {
                                             const match = /language-(\w+)/.exec(className || "");
                                             return match ? (
@@ -80,6 +81,8 @@ export default function EssayList({ essays }: EssayListProps) {
                                 </Markdown>
                             </div>
                         )}
+
+
 
                         {essay.pubDate && (
                             <p className="text-sm text-gray-400 mt-2">
