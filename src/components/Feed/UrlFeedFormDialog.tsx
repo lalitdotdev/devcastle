@@ -31,11 +31,14 @@ type FormData = z.infer<typeof formSchema>;
 // Server action to add feed and fetch its contents
 async function addFeed(data: FormData) {
 
-
     try {
         const response = await getUrlFeedParser(data.url);
-        console.log(response);
-        return { success: true, data: response }; // Return response data
+        // console.log("Response from server:", response);
+        // Store the fetched posts in localStorage for persistence
+        localStorage.setItem('urlCustomFeedItems', JSON.stringify(response))
+        localStorage.setItem('urlCustomFeedName', data.name)
+
+        return { success: true, data: response, }; // Return response data
     } catch (error) {
         console.error("Failed to fetch or parse feed:", error);
         return { success: false, error: "Failed to fetch or parse feed" };
@@ -43,8 +46,9 @@ async function addFeed(data: FormData) {
 }
 
 
-export default function AddFeedDialog({ onFeedAdded }: { onFeedAdded: (feedData: any) => void }) {
+export default function AddFeedDialog({ onFeedAdded }: { onFeedAdded: (feedData: any, feedName: string) => void }) {
     const [open, setOpen] = useState(false);
+
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
         resolver: zodResolver(formSchema)
@@ -56,8 +60,12 @@ export default function AddFeedDialog({ onFeedAdded }: { onFeedAdded: (feedData:
             if (result?.success) {
                 toast.success("Feed imported successfully");
                 reset();
-                onFeedAdded(result.data); // Pass the feed data back to the parent
+
+                onFeedAdded(result.data, data.name); // Pass the feed data back to the parent
                 setOpen(false);
+
+                window.location.reload();
+
 
             } else {
                 toast.error('Failed to import feed', {
