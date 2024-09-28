@@ -12,11 +12,9 @@ import EssayList from "@/components/EssaysList";
 import FeedItem from "@/components/Feed/StartupMagazineFeedItem";
 import Image from "next/image";
 import Link from "next/link";
-import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Skeleton from "@/components/ui/skeleton";
 import TrendingRepoList from "@/components/TredingRepoList";
 import UniversalFeedItem from "@/components/Feed/FeedItem";
-import UpdateButton from "../_components/UpdateEssays";
 import { cn } from "@/lib/utils";
 import { getEntrepreneurFeed } from "@/app/feed/actions/getEntrepreneurFeed";
 import { getEssays } from "../../actions";
@@ -39,7 +37,15 @@ export interface FeedItem {
 }
 
 export default function EssaysPage() {
-    const [urlCustomfeeds, setUrlCustomfeeds] = useState<FeedItem[]>([]); // Manage feeds state
+    const [urlCustomfeeds, setUrlCustomfeeds] = useState<FeedItem[]>(() => {
+        const storedFeeds = localStorage.getItem('urlCustomFeedItems');
+        return storedFeeds ? JSON.parse(storedFeeds) : [];
+    });
+
+    const [customFeedName, setCustomFeedName] = useState<string>(() => {
+        return localStorage.getItem('urlCustomFeedName') || 'Custom Feed';
+    });
+
     const [paulGrahamEssays, setPaulGrahamEssays] = useState([]);
     const [simonWillisonEssays, setSimonWillisonEssays] = useState([]);
     const [entrepreneurEssays, setEntrepreneurEssays] = useState([]);
@@ -68,40 +74,28 @@ export default function EssaysPage() {
             setGithubTrendingRepos(githubData);
             setStartupMagazineFeed(startupData);
             setTechCrunchFeed(techCrunchData);
+
+            const storedFeeds = localStorage.getItem('urlCustomFeedItems');
+            if (storedFeeds) {
+                setUrlCustomfeeds(JSON.parse(storedFeeds));
+            }
+
+            // Fetch custom feed name from localStorage
+            const storedName = localStorage.getItem('urlCustomFeedName');
+            if (storedName) {
+                setCustomFeedName(storedName);
+            }
             setIsLoading(false); // Set loading state to false
         };
 
         fetchData();
     }, []);
-
-    console.log(urlCustomfeeds)
-
-
-    // Function to handle adding a new feed
-    const handleFeedAdded = (newFeed: any) => {
-        setUrlCustomfeeds((prevFeeds) => {
-            // Ensure newFeed.items exists and is an array
-            const feedItems = Array.isArray(newFeed.items) ? newFeed.items : [];
-
-            const formattedItems = feedItems.map((item: any) => ({
-                id: item.guid || item.link,
-                title: item.title,
-                link: item.link,
-                pubDate: new Date(item.pubDate),
-                contentSnippet: item.contentSnippet || item.description,
-                categories: item.categories ? item.categories.map((cat: string) => ({ id: cat, name: cat })) : [],
-                content: item.content,
-                author: item.author,
-                imageUrl: item.enclosure?.url || '',
-            }));
-
-            const updatedFeeds = [...prevFeeds, ...formattedItems];
-            console.log(updatedFeeds); // Log the updated feeds
-            return updatedFeeds;
-        });
+    const handleFeedAdded = (newFeed: any, feedName: string) => {
+        console.log(newFeed, feedName);
     };
+    // console.log(">>>>> urlCustomfeeds", urlCustomfeeds);
 
-    console.log(urlCustomfeeds)
+
 
     return (
         <main className="mx-auto md:p-12 ">
@@ -130,7 +124,7 @@ export default function EssaysPage() {
                         <li>The Startup Magazine</li>
                     </ul>
                     <br />
-                    <div className="text-zinc-300 border border-teal-600 p-3 max-w-fit mt-5 ">Feel free to add or suggest more sources to this list by creating a PR on the GitHub repository.</div>
+
                     <br />
                 </div>
 
@@ -180,9 +174,15 @@ export default function EssaysPage() {
                             </TabsTrigger>
                             <TabsTrigger
                                 value="urlFeed"
-                                className=" inline-flex"
+                                className={`inline-flex ${urlCustomfeeds?.length > 0 ? "bg-blue-800 text-white " : "bg-gray-700 text-zinc-100"}`}
                             >
-                                <AddFeedDialog onFeedAdded={handleFeedAdded} />
+                                {
+                                    urlCustomfeeds?.length > 0 ?
+                                        <div className="flex items-center gap-2">
+                                            {customFeedName}
+                                        </div> : (<AddFeedDialog onFeedAdded={(newFeed, feedName) => handleFeedAdded(newFeed, feedName)} />)
+                                }
+
                             </TabsTrigger>
                         </TabsList>
                         <ScrollBar orientation="horizontal" />
@@ -364,6 +364,15 @@ export default function EssaysPage() {
 
                     <TabsContent value="urlFeed" className="p-4 bg-gray-800 rounded-lg">
                         <section>
+                            {/* <h1>Fetched {urlCustomfeeds?.length} RSS Feeds from {customFeedName}</h1> */}
+                            <div className="flex p-2  bg-gray-600 text-white rounded-lg my-4 justify-between mx-auto text-lg">
+                                <Rss className="h-6 w-6" />
+                                {customFeedName}
+                            </div>
+
+
+
+
                             {isLoading ? ( // Check if loading
                                 Array(10).fill(0).map((_, index) => (
                                     <li key={index} className="rounded-lg shadow-md p-4">
@@ -371,18 +380,38 @@ export default function EssaysPage() {
                                         <Skeleton className="h-3 w-1/2" />
                                     </li>
                                 )) // Display the loading skeleton
-                            ) : urlCustomfeeds.length > 0 ? (
-                                // map over each feed item and display using the FeedItem component from the Feed folder
-                                urlCustomfeeds.map((feed) => (
-                                    <UniversalFeedItem key={feed.id} {...feed} />
-                                ))
                             ) : (
-                                <p className="text-gray-500">Unable to load feed.</p>
+                                <>
+                                    {urlCustomfeeds?.length > 0 ? (
+
+                                        // Map over each feed item and display using the FeedItem component from the Feed folder
+                                        urlCustomfeeds.map((feed) => (
+                                            <UniversalFeedItem
+                                                key={feed.id} // Assuming the ID is the permalink
+                                                title={feed.title}
+                                                link={feed.link}
+                                                pubDate={new Date(feed.pubDate)} // Convert to Date object
+                                                contentSnippet={feed.contentSnippet}
+                                                categories={feed.categories || []} // Provide a default empty array if categories are undefined
+                                                author={feed.author} // Extracting author name correctly
+                                                imageUrl={feed.imageUrl}
+                                                content={feed.content}
+                                            />
+                                        ))
+
+                                    ) : (
+                                        <p className="text-gray-500">Publication or Blog(Beta)</p>
+
+
+                                    )}
+                                </>
                             )}
                         </section>
                     </TabsContent>
+
                 </Tabs>
             </div>
-        </main>
+            <div className="text-white p-2 max-w-fit mt-5 bg-gray-600 rounded-full ">Feel free to add or suggest more sources to this list by creating a PR on the GitHub repository or by filling the form below.</div>
+        </main >
     );
 }
