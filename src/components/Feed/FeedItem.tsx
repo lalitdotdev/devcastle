@@ -1,10 +1,10 @@
-import { cn, truncateText } from '@/lib/utils';
+import { getAuthorName, truncateText } from '@/lib/utils';
 
-import { CodeBlock } from '../EssaysList';
-import Image from 'next/image';
+import CustomLinkRenderer from '../renderers/CustomLinkRenderer';
 import Link from 'next/link';
 import Markdown from 'react-markdown';
 import React from 'react';
+import { motion } from 'framer-motion';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 
@@ -21,7 +21,7 @@ export interface UniversalFeedItemProps {
     categories?: Category[];
     author?: string;
     imageUrl?: string;
-    content?: string; // Optional full content
+    content?: string;
 }
 
 const UniversalFeedItem: React.FC<UniversalFeedItemProps> = ({
@@ -34,66 +34,72 @@ const UniversalFeedItem: React.FC<UniversalFeedItemProps> = ({
     imageUrl,
     content,
 }) => {
+
+
     return (
-        <div className="transition-shadow duration-300 border border-gray-700 p-4 hover:bg-gradient-to-bl from-gray-700 to-gray-800 shadow-md rounded-lg mb-6">
-            <h2 className="text-2xl font-bold mb-2">
-                {link ? (
-                    <Link href={link} className="text-lg md:font-semibold text-blue-400 hover:text-blue-300 transition-colors">
-                        {title}
-                    </Link>
-                ) : (
-                    title
-                )}
-            </h2>
-            <p className="text-sm text-gray-400 my-2">
-                Published on {pubDate?.toLocaleDateString()} {author && `by ${author}`}
-            </p>
-            {imageUrl && (
-                <div className="mb-4">
-                    <Image src={imageUrl} alt={title} className="w-full rounded-md" width={600} height={400} />
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 border border-gray-700 mb-4  "
+        >
+            <div className="p-6 flex flex-col md:flex-row gap-6">
+
+                <div className="md:w-3/4">
+                    <h2 className="text-2xl font-bold mb-3 text-gray-100">
+                        {link ? (
+                            <Link href={link} className="text-lg md:font-semibold text-white hover:text-blue-300 transition-colors">
+                                {title}
+                            </Link>
+                        ) : (
+                            title
+                        )}
+                    </h2>
+                    <p className="text-sm text-gray-400 mb-4">
+                        Published on {pubDate?.toLocaleDateString()} {getAuthorName(author) && `by ${getAuthorName(author)}`}
+                    </p>
+                    {content ? (
+                        <div className="mb-4">
+                            <Markdown
+                                className="prose prose-sm max-w-none text-zinc-200 text-sm "
+                                remarkPlugins={[remarkGfm]}
+                                rehypePlugins={[rehypeRaw]}
+                                components={{
+                                    img: () => null,
+                                    a: CustomLinkRenderer, // Use our custom link component
+                                }}
+                            >
+                                {truncateText(content, 700)}
+                            </Markdown>
+                        </div>
+                    ) : <div className="mb-4">
+                        <Markdown
+                            className="prose prose-sm max-w-none text-zinc-200"
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeRaw]}
+                            components={{
+                                img: () => null,
+                                a: CustomLinkRenderer, // Use our custom link component
+                            }}
+                        >
+                            {truncateText(contentSnippet, 700)}
+                        </Markdown>
+                    </div>}
+                    {categories.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-4">
+                            {categories.map((category) => (
+                                <span
+                                    key={category.id}
+                                    className="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full transition-colors duration-200 hover:bg-blue-700"
+                                >
+                                    {category.name}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
-            )}
-            <div className="mb-2">
-                {categories.map((category) => (
-                    <span
-                        key={category.id}
-                        className="inline-block mr-2 mb-2 px-3 py-1 text-xs font-semibold text-gray-800 bg-gray-300 rounded-full"
-                    >
-                        {category.name}
-                    </span>
-                ))}
             </div>
-            {contentSnippet && (
-                <div className="text-sm text-gray-400 mt-2">
-                    <Markdown
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}
-                        components={{
-                            code({ className, children, ...props }: any) {
-                                const match = /language-(\w+)/.exec(className || "");
-                                return match ? (
-                                    <CodeBlock
-                                        language={match[1]}
-                                        value={String(children).replace(/\n$/, "")}
-                                    />
-                                ) : (
-                                    <code className={cn("rounded-md bg-zinc-600 text-white p-1", className)} {...props}>
-                                        {children}
-                                    </code>
-                                );
-                            },
-                        }}
-                    >
-                        {truncateText(contentSnippet, 600)}
-                    </Markdown>
-                </div>
-            )}
-            {link && (
-                <Link href={link} className="text-teal-300 font-normal">
-                    Read more →
-                </Link>
-            )}
-        </div>
+        </motion.div>
     );
 };
 

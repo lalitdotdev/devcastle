@@ -48,8 +48,16 @@ const formatDistanceLocale = {
 
 // Utility to truncate long text
 export const truncateText = (text: string, maxLength: number) => {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + "...";
+  if (text?.length <= maxLength) return text;
+  return text?.slice(0, maxLength) + "...";
+};
+
+// utils/feedUtils.ts
+
+export const getAuthorName = (author: any): string => {
+  return author && typeof author === "object" && "#text" in author
+    ? author["#text"]
+    : "";
 };
 
 function formatDistance(token: string, count: number, options?: any): string {

@@ -2,8 +2,21 @@
 "use server";
 
 import { XMLParser } from "fast-xml-parser";
+import { revalidatePath } from "next/cache";
 
-export async function getUrlFeedParser(url: string) {
+interface FeedEntry {
+  id: string;
+  title: string;
+  link: string;
+  pubDate: Date;
+  contentSnippet: string;
+  categories: { id: string; name: string }[];
+  content: string;
+  author: string | undefined;
+  imageUrl: string;
+}
+
+export async function getUrlFeedParser(url: string): Promise<FeedEntry[]> {
   try {
     const response = await fetch(url);
 
@@ -19,7 +32,9 @@ export async function getUrlFeedParser(url: string) {
     });
     const result = parser.parse(xml);
 
-    const entries = result.rss.channel.item.map((item: any) => ({
+    const items = result.rss?.channel?.item || [];
+
+    const entries: FeedEntry[] = items.map((item: any) => ({
       id: item.guid || item.link,
       title: item.title,
       link: item.link,
@@ -38,7 +53,7 @@ export async function getUrlFeedParser(url: string) {
     return entries;
   } catch (error) {
     console.error("Failed to fetch or parse feed:", error);
-    return [];
+    throw error; // Rethrow the error for the calling component to handle
   }
 }
 
