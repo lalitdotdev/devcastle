@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 const RightNavContent = () => {
     return (
         <div className="flex-shrink-0 md:block md:flex-shrink-0 md:items-center gap-4">
-            <div className="text-gray-400 mr-4">
+            <div className="text-gray-400 ">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <div className="relative flex items-center justify-center p-1 md:p-2 rounded-md transition-transform duration-300 ease-in-out gap-2 border border-zinc-700 cursor-pointer mt-1 md:mt-2 hover:bg-gray-800 hover:border-gray-600 transform hover:scale-105">

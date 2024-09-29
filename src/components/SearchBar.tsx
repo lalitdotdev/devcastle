@@ -63,7 +63,7 @@ const SearchBar: FC<SearchBarProps> = ({ }) => {
     return (
         <Command
             ref={commandRef}
-            className="relative w-[10rem] md:w-[20rem] max-w-[22rem] overflow-visible bg-transparent border focus-within:ring-1 focus-within:ring-opacity-50 rounded-lg p-1 border-zinc-700"
+            className="relative w-[6rem] md:w-[20rem] max-w-[22rem] overflow-visible bg-transparent border focus-within:ring-1 focus-within:ring-opacity-50 rounded-lg p-1 border-zinc-700"
             style={{ zIndex: 50 }} // Ensure the search bar itself is on top
         >
             <CommandInput
