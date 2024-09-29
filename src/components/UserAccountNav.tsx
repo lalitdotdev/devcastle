@@ -27,7 +27,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
     };
 
     return (
-        <div className="flex-shrink-0 md:block md:flex-shrink-0 md:items-center gap-4 justify-center items-center ml-4">
+        <div className="flex-shrink-0 md:block md:flex-shrink-0 md:items-center gap-4 justify-center items-center ml-2">
             <div className="text-gray-200 mr-4">
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
@@ -86,9 +86,19 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                         <item.icon size={22} />
                                         <span>{item.label}</span>
                                     </Link>
+
+
                                     {index === 2 || index === 6 || index === 9 ? (
                                         <Separator className="bg-gray-700 my-4" />
+
                                     ) : null}
+                                    {
+                                        index === 2 && (
+                                            <SheetDescription className="text-xs my-2">
+                                                Launchpad Section
+                                            </SheetDescription>
+                                        )
+                                    }
                                     {index === 6 || index === 9 ? (
                                         <SheetDescription className="text-xs my-2">
                                             {index === 6 ? "Professional Connections and get Mentorship" : "Catalog and Archives to get you inspired"}
