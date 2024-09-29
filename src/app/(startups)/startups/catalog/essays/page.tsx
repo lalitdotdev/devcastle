@@ -149,7 +149,7 @@ export default function EssaysPage() {
 
     return (
         <main className="min-h-screen ">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="max-w-7xl mx-auto py-16">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -199,12 +199,13 @@ export default function EssaysPage() {
                         {isTabListFixed && <div style={{ height: `${tabListHeight}px` }} />}
 
 
-                        <ScrollArea className="whitespace-nowrap border-zinc-700 border rounded-full">
-                            <div
-                                ref={tabListRef}
-                                className={`bg-[#1B1F23] py-2 ${isTabListFixed ? 'fixed top-28 left-0 right-0 z-10 max-w-fit mx-auto' : ''}`}
-                            >
-                                <TabsList className="inline-flex h-16 items-center justify-center bg-gray-700 p-2 rounded-full">
+
+                        <div
+                            ref={tabListRef}
+                            className={`bg-[#1B1F23] py-2 ${isTabListFixed ? 'fixed left-0 right-0 z-10 max-w-fit mx-auto' : ''} ${isTabListFixed ? 'md:top-20 bottom-2 md:bottom-auto' : ''}`}
+                        >
+                            <ScrollArea className="whitespace-nowrap border-zinc-700 border rounded-full">
+                                <TabsList className="inline-flex h-10 md:h-12 items-center justify-center bg-gray-700 p-2 rounded-full">
                                     {tabItems.map(({ value, icon, label }) => (
                                         <TabsTrigger
                                             key={value}
@@ -226,19 +227,19 @@ export default function EssaysPage() {
                                         value="urlFeed"
                                         className={`inline-flex ${urlCustomfeeds?.length > 0 ? "bg-gray-800 text-white rounded-full " : "bg-gray-700 text-zinc-100"}`}
                                     >
-                                        {
-                                            urlCustomfeeds?.length > 0 ?
-                                                <div className="flex items-center gap-2">
-                                                    {customFeedName}
-                                                </div> : (<AddFeedDialog onFeedAdded={(newFeed, feedName) => handleFeedAdded(newFeed, feedName)} />)
-                                        }
-
+                                        {urlCustomfeeds?.length > 0 ?
+                                            <div className="flex items-center gap-2">
+                                                {customFeedName}
+                                            </div> : (
+                                                <AddFeedDialog onFeedAdded={(newFeed, feedName) => handleFeedAdded(newFeed, feedName)} />
+                                            )}
                                     </TabsTrigger>
-
                                 </TabsList>
                                 <ScrollBar orientation="horizontal" />
-                            </div>
-                        </ScrollArea>
+                            </ScrollArea>
+                        </div>
+
+
 
 
                         <TabsContent value="paulGraham" className="p-4 bg-gray-800 rounded-lg mx-auto">
