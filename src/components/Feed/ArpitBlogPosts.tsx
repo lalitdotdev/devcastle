@@ -7,7 +7,7 @@ export default async function BlogPosts() {
     const blogPosts = await scrapeArpitBhayaniBlogPosts();
 
     return (
-        <div className="container min-h-screen bg-gradient-to-br  text-gray-100 mx-auto border-l border-zinc-700 mt-8 rounded-t-lg  ">
+        <div className="max-w-7xl min-h-screen bg-gradient-to-br  text-gray-100 mx-auto border-l border-zinc-700 mt-8 rounded-t-lg  ">
             <div className="py-16  sm:px-6 lg:px-8 w-full">
                 <h1 className="text-3xl md:text-4xl font-bold mb-6 py-6 text-slate-300">
                     Arpit Bhayani&apos;s Blog Posts

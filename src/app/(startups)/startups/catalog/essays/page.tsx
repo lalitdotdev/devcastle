@@ -1,10 +1,11 @@
 "use client";
 
-import { BarChart, Lightbulb, Rss } from "lucide-react";
+import { BarChart, Lightbulb, LucideIcon, Rss } from "lucide-react";
 import { Github, fetchGithubTrending } from "@/app/feed/actions/fetchGithubTrending";
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
-import { useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from "framer-motion";
 
 import AddFeedDialog from "@/components/Feed/UrlFeedFormDialog";
 import DotPattern from "@/components/ui/dotbggradient";
@@ -23,6 +24,11 @@ import { getStartupMagazineFeed } from "@/app/feed/actions/getStartupMagazineFee
 import { getTechCrunchFeed } from "@/app/feed/actions/getTechcrunchFeed";
 
 // Import the loading skeleton
+interface TabItem {
+    value: string;
+    icon?: string | LucideIcon;
+    label: string;
+}
 
 export interface FeedItem {
     id: string; // Unique identifier for the feed item, either guid or link
@@ -35,6 +41,8 @@ export interface FeedItem {
     author?: string; // Author of the feed item, if applicable
     imageUrl?: string; // Image URL, if available
 }
+
+
 
 export default function EssaysPage() {
     const [urlCustomfeeds, setUrlCustomfeeds] = useState<FeedItem[]>(() => {
@@ -56,7 +64,15 @@ export default function EssaysPage() {
 
     // Loading state
     const [isLoading, setIsLoading] = useState(true);
+    const tabItems: TabItem[] = [
+        { value: "techCrunch", icon: "/logo/tc.svg", label: "TechCrunch" },
+        { value: "entrepreneur", icon: Lightbulb, label: "Entrepreneur" },
+        { value: "startupMagazine", icon: BarChart, label: "The Startup Magazine" },
+        { value: "paulGraham", icon: Rss, label: "Paul Graham Essays" },
+        { value: "simonWillison", label: "Simon Willison's Blog" },
+        { value: "githubTrending", icon: "/logo/github.svg", label: "GitHub Trending" },
 
+    ];
     // Fetch all the essay data when the component mounts
     useEffect(() => {
         const fetchData = async () => {
@@ -94,324 +110,363 @@ export default function EssaysPage() {
         console.log(newFeed, feedName);
     };
     // console.log(">>>>> urlCustomfeeds", urlCustomfeeds);
+    const fadeInUp = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+    };
 
 
+    const tabListRef = useRef<HTMLDivElement | null>(null); // Explicitly type the ref
+    const [isTabListFixed, setIsTabListFixed] = useState(false);
+    const [tabListHeight, setTabListHeight] = useState<number | null>(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (tabListRef.current) {
+                const tabListTop = tabListRef.current.offsetTop;
+                const scrollPosition = window.scrollY;
+                setIsTabListFixed(scrollPosition > tabListTop);
+            }
+        };
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                setTabListHeight(entry.contentRect.height);
+            }
+        });
+
+        if (tabListRef.current) {
+            resizeObserver.observe(tabListRef.current);
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            resizeObserver.disconnect();
+        };
+    }, []);
 
     return (
-        <main className="mx-auto md:p-12 ">
-            <DotPattern
-                width={20}
-                height={20}
-                cx={1}
-                cy={1}
-                cr={1}
-                className={cn(
-                    '[mask-image:radial-gradient(200px_circle_at_center,zinc-300,transparent)]',
-                )}
-            />
-            <div className="space-y-8">
-                <h1 className="md:text-6xl text-4xl font-bold my-4 rounded-xl gradient-text animate-gradient">
-                    Feed Reader <span className="text-gray-400">📰</span>
-                </h1>
+        <main className="min-h-screen ">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="space-y-12"
+                >
+                    <header className="">
+                        <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent gradient-text animate-gradient">
+                            Feed Reader
+                        </h1>
+                        <p className="text-lg text-zinc-500 max-w-2xl ">
+                            Your gateway to curated content from the tech and startup world
+                        </p>
+                    </header>
 
-                <div className="text-gray-400 text-sm ">
-                    <ul className="list-disc ml-6 flex md:flex-row flex-col md:space-x-10">
-                        <li>Paul Graham Essays</li>
-                        <li>Simon Willison&apos;s Blog</li>
-                        <li>TechCrunch</li>
-                        <li>Entrepreneur</li>
-                        <li>GitHub Trending</li>
-                        <li>The Startup Magazine</li>
-                    </ul>
-                    <br />
 
-                    <br />
-                </div>
-
-                <Tabs defaultValue="paulGraham" className="w-full">
-                    <ScrollArea className="w-full whitespace-nowrap rounded-md ">
-                        <TabsList className="inline-flex h-12 items-center justify-center rounded-none bg-gray-800 ">
-                            <TabsTrigger
-                                value="techCrunch"
-                                className=" inline-flex"
+                    <motion.div
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-sm"
+                        variants={{
+                            hidden: { opacity: 0 },
+                            show: {
+                                opacity: 1,
+                                transition: {
+                                    staggerChildren: 0.1,
+                                },
+                            },
+                        }}
+                        initial="hidden"
+                        animate="show"
+                    >
+                        {['Paul Graham Essays', 'Simon Willison\'s Blog', 'TechCrunch', 'Entrepreneur', 'GitHub Trending', 'The Startup Magazine'].map((item) => (
+                            <motion.div
+                                key={item}
+                                variants={{
+                                    hidden: { opacity: 0, y: 20 },
+                                    show: { opacity: 1, y: 0 },
+                                }}
+                                className="border bg-gradient text-black rounded-lg p-2 hover:bg-gray-600 hover:text-white transition-colors duration-300"
                             >
-                                <Image src="/logo/tc.svg" width={20} height={20} alt="TechCrunch" className="mr-2" />
-                                TechCrunch
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="entrepreneur"
-                                className=" inline-flex"
+                                {item}
+                            </motion.div>
+                        ))}
+                    </motion.div>
+
+                    <Tabs defaultValue="paulGraham" className="w-full">
+                        {/* Placeholder div to prevent content jump when tabList is fixed */}
+                        {isTabListFixed && <div style={{ height: `${tabListHeight}px` }} />}
+
+
+                        <ScrollArea className="whitespace-nowrap border-zinc-700 border rounded-full">
+                            <div
+                                ref={tabListRef}
+                                className={`bg-[#1B1F23] py-2 ${isTabListFixed ? 'fixed top-28 left-0 right-0 z-10 max-w-fit mx-auto' : ''}`}
                             >
-                                <Lightbulb className="mr-2 h-4 w-4 text-lime-300" />
-                                Entrepreneur(latest)
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="startupMagazine"
-                                className=" inline-flex"
-                            >
-                                <BarChart className="mr-2 h-4 w-4 text-teal-400" />
-                                The Startup Magazine
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="paulGraham"
-                                className=" inline-flex"
-                            >
-                                <Rss className="mr-2 h-4 w-4 text-zinc-100" />
-                                Paul Graham Essays
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="simonWillison"
-                                className=" inline-flex"
-                            >
-                                Simon Willison&apos;s Blog
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="githubTrending"
-                                className=" inline-flex"
-                            >
-                                <Image src="/logo/github.svg" width={18} height={18} alt="GitHub" className="mr-2" />
-                                GitHub Trending
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="urlFeed"
-                                className={`inline-flex ${urlCustomfeeds?.length > 0 ? "bg-blue-800 text-white " : "bg-gray-700 text-zinc-100"}`}
-                            >
-                                {
-                                    urlCustomfeeds?.length > 0 ?
-                                        <div className="flex items-center gap-2">
-                                            {customFeedName}
-                                        </div> : (<AddFeedDialog onFeedAdded={(newFeed, feedName) => handleFeedAdded(newFeed, feedName)} />)
-                                }
+                                <TabsList className="inline-flex h-16 items-center justify-center bg-gray-700 p-2 rounded-full">
+                                    {tabItems.map(({ value, icon, label }) => (
+                                        <TabsTrigger
+                                            key={value}
+                                            value={value}
+                                            className="inline-flex items-center px-4 py-2 rounded-full transition-all duration-300 hover:bg-purple-600 hover:text-white"
+                                        >
+                                            {icon && (
+                                                typeof icon === 'string' ? (
+                                                    <Image src={icon} width={20} height={20} alt={label} className="mr-2" />
+                                                ) : (
+                                                    React.createElement(icon as React.ComponentType<{ className: string }>, { className: "mr-2 h-5 w-5" })
+                                                )
+                                            )}
+                                            {label}
+                                        </TabsTrigger>
+                                    ))}
 
-                            </TabsTrigger>
-                        </TabsList>
-                        <ScrollBar orientation="horizontal" />
-                    </ScrollArea>
+                                    <TabsTrigger
+                                        value="urlFeed"
+                                        className={`inline-flex ${urlCustomfeeds?.length > 0 ? "bg-gray-800 text-white rounded-full " : "bg-gray-700 text-zinc-100"}`}
+                                    >
+                                        {
+                                            urlCustomfeeds?.length > 0 ?
+                                                <div className="flex items-center gap-2">
+                                                    {customFeedName}
+                                                </div> : (<AddFeedDialog onFeedAdded={(newFeed, feedName) => handleFeedAdded(newFeed, feedName)} />)
+                                        }
 
-                    <TabsContent value="paulGraham" className="p-4 bg-gray-800 rounded-lg mx-auto">
-                        <section>
-                            <div className="flex flex-col gap-6 py-8">
-                                <Link
-                                    href="https://www.paulgraham.com/bio.html"
-                                    className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                                        © 1985-2022 by Paul Graham. All rights reserved.
-                                    </p>
-                                </Link>
+                                    </TabsTrigger>
+
+                                </TabsList>
+                                <ScrollBar orientation="horizontal" />
                             </div>
-                            {isLoading ? ( // Check if loading
-                                Array(10).fill(0).map((_, index) => (
-                                    <li key={index} className="rounded-lg shadow-md p-4">
-                                        <Skeleton className="h-4 w-3/4 mb-2" />
-                                        <Skeleton className="h-3 w-1/2" />
-                                    </li>
-                                )) // Display the loading skeleton
-                            ) : paulGrahamEssays.length > 0 ? (
-                                <EssayList essays={paulGrahamEssays} />
-                            ) : (
-                                <p className="text-gray-500">Unable to load Paul Graham essays at this time.</p>
-                            )}
-                        </section>
-                    </TabsContent>
-
-                    <TabsContent value="simonWillison" className="p-4 bg-gray-800 rounded-lg">
-                        <section>
-                            <div className="flex flex-col gap-6 py-8">
-                                <Link
-                                    href="https://simonwillison.net/"
-                                    className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                                        Recent entries from Simon Willison&apos;s weblog.
-                                    </p>
-                                </Link>
-                            </div>
-                            {isLoading ? ( // Check if loading
-                                Array(10).fill(0).map((_, index) => (
-                                    <li key={index} className="rounded-lg shadow-md p-4">
-                                        <Skeleton className="h-4 w-3/4 mb-2" />
-                                        <Skeleton className="h-3 w-1/2" />
-                                    </li>
-                                )) // Display the loading skeleton
-                            ) : simonWillisonEssays.length > 0 ? (
-                                <EssayList essays={simonWillisonEssays} />
-                            ) : (
-                                <p className="text-gray-500">Unable to load Simon Willison essays at this time.</p>
-                            )}
-                        </section>
-                    </TabsContent>
-
-                    <TabsContent value="entrepreneur" className="p-4 bg-gray-800 rounded-lg">
-                        <section>
-                            <div className="flex flex-col gap-6 py-8">
-                                <Link
-                                    href="https://www.entrepreneur.com/"
-                                    className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                                        Latest articles from Entrepreneur.
-                                    </p>
-                                </Link>
-                            </div>
-                            {isLoading ? ( // Check if loading
-                                Array(10).fill(0).map((_, index) => (
-                                    <li key={index} className="rounded-lg shadow-md p-4">
-                                        <Skeleton className="h-4 w-3/4 mb-2" />
-                                        <Skeleton className="h-3 w-1/2" />
-                                    </li>
-                                )) // Display the loading skeleton
-                            ) : entrepreneurEssays.length > 0 ? (
-                                <EssayList essays={entrepreneurEssays} />
-                            ) : (
-                                <p className="text-gray-500">Unable to load Entrepreneur articles at this time.</p>
-                            )}
-                        </section>
-                    </TabsContent>
-
-                    <TabsContent value="techCrunch" className="p-4 bg-gray-800 rounded-lg">
-                        <section>
-                            <div className="flex flex-col gap-6 py-8">
-                                <Link
-                                    href="https://techcrunch.com/"
-                                    className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                                        Latest news from TechCrunch.
-                                    </p>
-                                </Link>
-                            </div>
-                            {isLoading ? ( // Check if loading
-                                Array(10).fill(0).map((_, index) => (
-                                    <li key={index} className="rounded-lg shadow-md p-4">
-                                        <Skeleton className="h-4 w-3/4 mb-2" />
-                                        <Skeleton className="h-3 w-1/2" />
-                                    </li>
-                                )) // Display the loading skeleton
-                            ) : techCrunchFeed.length > 0 ? (
-                                <EssayList essays={techCrunchFeed} />
-                            ) : (
-                                <p className="text-gray-500">Unable to load TechCrunch articles at this time.</p>
-                            )}
-                        </section>
-                    </TabsContent>
-
-                    <TabsContent value="startupMagazine" className="p-4 bg-gray-800 rounded-lg">
-                        <section>
-                            <div className="flex flex-col gap-6 py-8">
-                                <Link
-                                    href="https://thestartupmagazine.com/"
-                                    className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                                        Articles from The Startup Magazine.
-                                    </p>
-                                </Link>
-                            </div>
-                            {isLoading ? ( // Check if loading
-                                Array(10).fill(0).map((_, index) => (
-                                    <li key={index} className="rounded-lg shadow-md p-4">
-                                        <Skeleton className="h-4 w-3/4 mb-2" />
-                                        <Skeleton className="h-3 w-1/2" />
-                                    </li>
-                                )) // Display the loading skeleton
-                            ) : startupMagazineFeed.length > 0 ? (
-                                <EssayList essays={startupMagazineFeed} />
-                            ) : (
-                                <p className="text-gray-500">Unable to load Startup Magazine articles at this time.</p>
-                            )}
-                        </section>
-                    </TabsContent>
-
-                    <TabsContent value="githubTrending" className="p-4 bg-gray-800 rounded-lg">
-                        <section>
-                            <div className="flex flex-col gap-6 py-8">
-                                <Link
-                                    href="https://github.com/trending"
-                                    className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                                        Trending repositories on GitHub.
-                                    </p>
-                                </Link>
-                            </div>
-                            {isLoading ? ( // Check if loading
-                                Array(10).fill(0).map((_, index) => (
-                                    <li key={index} className="rounded-lg shadow-md p-4">
-                                        <Skeleton className="h-4 w-3/4 mb-2" />
-                                        <Skeleton className="h-3 w-1/2" />
-                                    </li>
-                                )) // Display the loading skeleton
-                            ) : githubTrendingRepos.length > 0 ? (
-                                <TrendingRepoList repos={githubTrendingRepos} />
-                            ) : (
-                                <p className="text-gray-500">Unable to load GitHub trending repositories at this time.</p>
-                            )}
-                        </section>
-                    </TabsContent>
-
-                    <TabsContent value="urlFeed" className="p-4 bg-gray-800 rounded-lg">
-                        <section>
-                            {/* <h1>Fetched {urlCustomfeeds?.length} RSS Feeds from {customFeedName}</h1> */}
-                            <div className="flex p-2  bg-gray-600 text-white rounded-lg my-4 justify-between mx-auto text-lg">
-                                <Rss className="h-6 w-6" />
-                                {customFeedName}
-                            </div>
+                        </ScrollArea>
 
 
+                        <TabsContent value="paulGraham" className="p-4 bg-gray-800 rounded-lg mx-auto">
+                            <section>
+                                <div className="flex flex-col gap-6 py-8">
+                                    <Link
+                                        href="https://www.paulgraham.com/bio.html"
+                                        className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                                            © 1985-2022 by Paul Graham. All rights reserved.
+                                        </p>
+                                    </Link>
+                                </div>
+                                {isLoading ? ( // Check if loading
+                                    Array(10).fill(0).map((_, index) => (
+                                        <li key={index} className="rounded-lg shadow-md p-4">
+                                            <Skeleton className="h-4 w-3/4 mb-2" />
+                                            <Skeleton className="h-3 w-1/2" />
+                                        </li>
+                                    )) // Display the loading skeleton
+                                ) : paulGrahamEssays.length > 0 ? (
+                                    <EssayList essays={paulGrahamEssays} />
+                                ) : (
+                                    <p className="text-gray-500">Unable to load Paul Graham essays at this time.</p>
+                                )}
+                            </section>
+                        </TabsContent>
+
+                        <TabsContent value="simonWillison" className="p-4 bg-gray-800 rounded-lg">
+                            <section>
+                                <div className="flex flex-col gap-6 py-8">
+                                    <Link
+                                        href="https://simonwillison.net/"
+                                        className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                                            Recent entries from Simon Willison&apos;s weblog.
+                                        </p>
+                                    </Link>
+                                </div>
+                                {isLoading ? ( // Check if loading
+                                    Array(10).fill(0).map((_, index) => (
+                                        <li key={index} className="rounded-lg shadow-md p-4">
+                                            <Skeleton className="h-4 w-3/4 mb-2" />
+                                            <Skeleton className="h-3 w-1/2" />
+                                        </li>
+                                    )) // Display the loading skeleton
+                                ) : simonWillisonEssays.length > 0 ? (
+                                    <EssayList essays={simonWillisonEssays} />
+                                ) : (
+                                    <p className="text-gray-500">Unable to load Simon Willison essays at this time.</p>
+                                )}
+                            </section>
+                        </TabsContent>
+
+                        <TabsContent value="entrepreneur" className="p-4 bg-gray-800 rounded-lg">
+                            <section>
+                                <div className="flex flex-col gap-6 py-8">
+                                    <Link
+                                        href="https://www.entrepreneur.com/"
+                                        className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                                            Latest articles from Entrepreneur.
+                                        </p>
+                                    </Link>
+                                </div>
+                                {isLoading ? ( // Check if loading
+                                    Array(10).fill(0).map((_, index) => (
+                                        <li key={index} className="rounded-lg shadow-md p-4">
+                                            <Skeleton className="h-4 w-3/4 mb-2" />
+                                            <Skeleton className="h-3 w-1/2" />
+                                        </li>
+                                    )) // Display the loading skeleton
+                                ) : entrepreneurEssays.length > 0 ? (
+                                    <EssayList essays={entrepreneurEssays} />
+                                ) : (
+                                    <p className="text-gray-500">Unable to load Entrepreneur articles at this time.</p>
+                                )}
+                            </section>
+                        </TabsContent>
+
+                        <TabsContent value="techCrunch" className="p-4 bg-gray-800 rounded-lg">
+                            <section>
+                                <div className="flex flex-col gap-6 py-8">
+                                    <Link
+                                        href="https://techcrunch.com/"
+                                        className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                                            Latest news from TechCrunch.
+                                        </p>
+                                    </Link>
+                                </div>
+                                {isLoading ? ( // Check if loading
+                                    Array(10).fill(0).map((_, index) => (
+                                        <li key={index} className="rounded-lg shadow-md p-4">
+                                            <Skeleton className="h-4 w-3/4 mb-2" />
+                                            <Skeleton className="h-3 w-1/2" />
+                                        </li>
+                                    )) // Display the loading skeleton
+                                ) : techCrunchFeed.length > 0 ? (
+                                    <EssayList essays={techCrunchFeed} />
+                                ) : (
+                                    <p className="text-gray-500">Unable to load TechCrunch articles at this time.</p>
+                                )}
+                            </section>
+                        </TabsContent>
+
+                        <TabsContent value="startupMagazine" className="p-4 bg-gray-800 rounded-lg">
+                            <section>
+                                <div className="flex flex-col gap-6 py-8">
+                                    <Link
+                                        href="https://thestartupmagazine.com/"
+                                        className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                                            Articles from The Startup Magazine.
+                                        </p>
+                                    </Link>
+                                </div>
+                                {isLoading ? ( // Check if loading
+                                    Array(10).fill(0).map((_, index) => (
+                                        <li key={index} className="rounded-lg shadow-md p-4">
+                                            <Skeleton className="h-4 w-3/4 mb-2" />
+                                            <Skeleton className="h-3 w-1/2" />
+                                        </li>
+                                    )) // Display the loading skeleton
+                                ) : startupMagazineFeed.length > 0 ? (
+                                    <EssayList essays={startupMagazineFeed} />
+                                ) : (
+                                    <p className="text-gray-500">Unable to load Startup Magazine articles at this time.</p>
+                                )}
+                            </section>
+                        </TabsContent>
+
+                        <TabsContent value="githubTrending" className="p-4 bg-gray-800 rounded-lg">
+                            <section>
+                                <div className="flex flex-col gap-6 py-8">
+                                    <Link
+                                        href="https://github.com/trending"
+                                        className="group p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                                            Trending repositories on GitHub.
+                                        </p>
+                                    </Link>
+                                </div>
+                                {isLoading ? ( // Check if loading
+                                    Array(10).fill(0).map((_, index) => (
+                                        <ul key={index} className="list-none">
+                                            <li className="rounded-lg shadow-md p-4 ">
+                                                <Skeleton className="h-4 w-3/4 mb-2" />
+                                                <Skeleton className="h-3 w-1/2" />
+                                            </li>
+                                        </ul>
+                                    )) // Display the loading skeleton
+                                ) : githubTrendingRepos.length > 0 ? (
+                                    <TrendingRepoList repos={githubTrendingRepos} />
+                                ) : (
+                                    <p className="text-gray-500">Unable to load GitHub trending repositories at this time.</p>
+                                )}
+                            </section>
+                        </TabsContent>
+
+                        <TabsContent value="urlFeed" className="p-4 bg-gray-800 rounded-lg">
+                            <section>
+                                {/* <h1>Fetched {urlCustomfeeds?.length} RSS Feeds from {customFeedName}</h1> */}
+                                <div className="flex p-2  bg-gray-600 text-white rounded-lg my-4 justify-between mx-auto text-lg">
+                                    <Rss className="h-6 w-6" />
+                                    {customFeedName}
+                                </div>
 
 
-                            {isLoading ? ( // Check if loading
-                                Array(10).fill(0).map((_, index) => (
-                                    <li key={index} className="rounded-lg shadow-md p-4">
-                                        <Skeleton className="h-4 w-3/4 mb-2" />
-                                        <Skeleton className="h-3 w-1/2" />
-                                    </li>
-                                )) // Display the loading skeleton
-                            ) : (
-                                <>
-                                    {urlCustomfeeds?.length > 0 ? (
-
-                                        // Map over each feed item and display using the FeedItem component from the Feed folder
-                                        urlCustomfeeds.map((feed) => (
-                                            <UniversalFeedItem
-                                                key={feed.id} // Assuming the ID is the permalink
-                                                title={feed.title}
-                                                link={feed.link}
-                                                pubDate={new Date(feed.pubDate)} // Convert to Date object
-                                                contentSnippet={feed.contentSnippet}
-                                                categories={feed.categories || []} // Provide a default empty array if categories are undefined
-                                                author={feed.author} // Extracting author name correctly
-                                                imageUrl={feed.imageUrl}
-                                                content={feed.content}
-                                            />
-                                        ))
-
-                                    ) : (
-                                        <p className="text-gray-500">Publication or Blog(Beta)</p>
 
 
-                                    )}
-                                </>
-                            )}
-                        </section>
-                    </TabsContent>
+                                {isLoading ? ( // Check if loading
+                                    Array(10).fill(0).map((_, index) => (
+                                        <li key={index} className="rounded-lg shadow-md p-4">
+                                            <Skeleton className="h-4 w-3/4 mb-2" />
+                                            <Skeleton className="h-3 w-1/2" />
+                                        </li>
+                                    )) // Display the loading skeleton
+                                ) : (
+                                    <>
+                                        {urlCustomfeeds?.length > 0 ? (
 
-                </Tabs>
-            </div>
-            <div className="text-white p-2 max-w-fit mt-5 bg-gray-600 rounded-full ">Feel free to add or suggest more sources to this list by creating a PR on the GitHub repository or by filling the form below.</div>
+                                            // Map over each feed item and display using the FeedItem component from the Feed folder
+                                            urlCustomfeeds.map((feed) => (
+                                                <UniversalFeedItem
+                                                    key={feed.id} // Assuming the ID is the permalink
+                                                    title={feed.title}
+                                                    link={feed.link}
+                                                    pubDate={new Date(feed.pubDate)} // Convert to Date object
+                                                    contentSnippet={feed.contentSnippet}
+                                                    categories={feed.categories || []} // Provide a default empty array if categories are undefined
+                                                    author={feed.author} // Extracting author name correctly
+                                                    imageUrl={feed.imageUrl}
+                                                    content={feed.content}
+                                                />
+                                            ))
+
+                                        ) : (
+                                            <p className="text-gray-500">Publication or Blog(Beta)</p>
+
+
+                                        )}
+                                    </>
+                                )}
+                            </section>
+                        </TabsContent>
+
+                    </Tabs>
+                </motion.div>
+            </div >
         </main >
     );
 }
