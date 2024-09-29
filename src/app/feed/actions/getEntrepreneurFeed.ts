@@ -54,7 +54,7 @@ export async function getEntrepreneurFeed(): Promise<FeedEntry[]> {
     }));
 
     // Revalidate the path after fetching new data
-    revalidatePath("/startups/catalog/essays");
+    revalidatePath("/startups/catalog/feeds");
 
     return entries;
   } catch (error) {
