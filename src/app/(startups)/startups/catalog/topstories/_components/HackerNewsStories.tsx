@@ -41,7 +41,7 @@ const HackerNewsStories: React.FC = () => {
     }, []);
 
     return (
-        <div className="max-w-5xl mx-auto mt-12 p-1 md:p-4">
+        <div className="max-w-7xl mx-auto mt-12 p-1 md:p-4">
             <h1 className="text-3xl md:text-4xl font-bold mb-6 py-6 text-slate-300">Top Hacker News Stories</h1>
             <p className="text-sm text-gray-500 mb-4 py-6">
                 These are the top stories from the Hacker News section. You can find more stories on the <a href="https://news.ycombinator.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors duration-300">Hacker News</a> website.
@@ -58,7 +58,7 @@ const HackerNewsStories: React.FC = () => {
                     stories.map((story, index) => (
                         <motion.li
                             key={story.id}
-                            className=" rounded-lg shadow-sm p-2 md:p-4 hover:shadow-md transition-shadow duration-300 border-l border-gray-700"
+                            className=" rounded-lg shadow-sm p-2 md:p-4 hover:shadow-md transition-shadow duration-300 border border-gray-800"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
