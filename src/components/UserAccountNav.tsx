@@ -61,7 +61,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 { href: "/feed/blogs", icon: Library, label: "Free Resources and Tools" },
                                 // { href: "/articles/categories/all", icon: Newspaper, label: "Articles" },
                                 { href: "/launchpad", icon: Rocket, label: "Creator Launchpad" },
-                                { href: "/startups/catalog/essays", icon: BookOpen, label: "Feed Reader / startup catalog" },
+                                { href: "/startups/catalog/feeds", icon: BookOpen, label: "Feed Reader / startup catalog" },
                                 { href: "/startups/catalog/workatstartups", icon: Briefcase, label: "Work At Startups" },
                                 { href: "/startups/catalog/jobstimeline", icon: Activity, label: "Jobs Timeline" },
                                 {
