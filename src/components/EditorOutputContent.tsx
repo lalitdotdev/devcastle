@@ -12,6 +12,8 @@ import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 // Dynamically import custom renderers to avoid SSR issues
 const CustomCodeRenderer = dynamic(() => import("./renderers/CustomCodeRenderer"), { ssr: false });
 const CustomImageRenderer = dynamic(() => import("./renderers/CustomImageRenderer"), { ssr: false });
+const CustomLinkRenderer = dynamic(() => import("./renderers/EditorCustomLink"), { ssr: false });
+const CustomAlertRenderer = dynamic(() => import("./renderers/CustomAlertRenderer"), { ssr: false });
 
 const Output = dynamic(
     async () => (await import("editorjs-react-renderer")).default,
@@ -25,17 +27,19 @@ interface EditorOutputContentProps {
 const renderers = {
     image: CustomImageRenderer,
     code: CustomCodeRenderer,
+    alert: CustomAlertRenderer,
+    linkTool: CustomLinkRenderer,
 };
 
 const style = {
     paragraph: {
-        fontSize: "0.885rem",
+        fontSize: "0.95rem",
         lineHeight: "1.25rem",
-        color: "#79bdd8",
+        color: "#BFC3CAFF",
         fontWeight: 400,
         fontFamily: "Arial, sans-serif",
         letterSpacing: "-0.01em",
-        marginTop: "1.5rem",
+        marginTop: "1rem",
         marginBottom: "1rem",
     },
 };
@@ -61,7 +65,8 @@ const MarkdownRenderer: FC<{ content: string }> = ({ content }) => (
                         {children}
                     </code>
                 )
-            }
+            },
+            a: ({ href, children }) => <CustomLinkRenderer href={href || ''}>{children}</CustomLinkRenderer>,
         }}
         className="text-sm"
     >
@@ -92,6 +97,9 @@ const EditorOutputContent: FC<EditorOutputContentProps> = ({ content }) => {
             renderers={{
                 ...renderers,
                 markdown: ({ data }: { data: { content: string } }) => <MarkdownRenderer content={data.content} />,
+                linkTool: ({ data }: { data: any }) => <CustomLinkRenderer href={data.link}>{data.meta?.title || data.link}</CustomLinkRenderer>,
+                alert: ({ data }: { data: any }) => <CustomAlertRenderer type={data.type} message={data.message} />,
+
             }}
         />
     );
