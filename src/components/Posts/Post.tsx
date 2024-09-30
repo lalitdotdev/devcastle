@@ -109,7 +109,7 @@ const Post: FC<PostProps> = ({
 
                         {/* attach ref to check whether post is exhausting max-h or not and show blurry effect on preview indicating post is long   */}
                         <div
-                            className="relative overflow-clip  max-h-32 md:block text-white p-2 backdrop-blur-3xl  to-transparent rounded-2xl "
+                            className="relative overflow-clip  max-h-32 md:block text-zinc-200 p-2 backdrop-blur-3xl  to-transparent rounded-2xl "
                             ref={pRef}
                         >
                             <EditorOutputContent content={post.content} />
