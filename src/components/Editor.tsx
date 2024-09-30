@@ -9,7 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import type EditorJS from "@editorjs/editorjs";
 import TextareaAutosize from "react-textarea-autosize";
 import axios from "axios";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { uploadFiles } from "@/lib/uploadthing";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -70,10 +70,9 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
         // handling error
 
         onError: () => {
-            return toast({
-                title: "Something went wrong",
+            return toast.error('Something went wrong!', {
                 description: "Your post was not published. Please try again.",
-                variant: "destructive",
+
             });
         },
 
@@ -87,8 +86,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
             router.push(newPathname);
             router.refresh();
 
-            return toast({
-                title: "Your post has been published",
+            return toast.success("Your post has been published", {
                 description: "You can view it in the community page.",
             });
         },
@@ -108,9 +106,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
         const Marker = (await import("@editorjs/marker")).default;
         const CheckList = (await import("@editorjs/checklist")).default;
         const CodeBox = (await import("@bomdi/codebox")).default;
-        const LinkAutocomplete = (await import("@editorjs/link-autocomplete"))
-            .default;
-
+        const Alert = (await import("editorjs-alert")).default;
 
 
 
@@ -158,18 +154,20 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
                         class: LinkTool,
                         config: {
                             endpoint: "/api/link",
-
                         },
 
                     },
-                    link: {
-                        class: LinkAutocomplete,
+                    alert: {
+                        class: Alert,
+                        inlineToolbar: true,
+                        shortcut: 'CMD+SHIFT+A',
                         config: {
-                            endpoint: "https://techcrunch.com/",
-                            queryParam: "search",
-
+                            alertTypes: ['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'light', 'dark'],
+                            defaultType: 'primary',
+                            messagePlaceholder: 'Enter something',
                         },
                     },
+
 
                     image: {
                         class: ImageTool,
@@ -208,10 +206,9 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
     useEffect(() => {
         if (Object.keys(errors).length) {
             for (const [_key, value] of Object.entries(errors)) {
-                toast({
-                    title: "Something went wrong",
+                toast.error("Something went wrong", {
                     description: (value as { message: string }).message,
-                    variant: "destructive",
+
                 });
             }
         }
