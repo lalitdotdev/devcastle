@@ -138,16 +138,15 @@ export default function ToolbarExpandable() {
 
     return (
         <MotionConfig transition={transition}>
-            <div className='w-3/4 bg-[#212329] rounded-3xl border border-slate-600   hidden md:flex mt-20' ref={ref}>
-                <div className='h-full w-full  '>
-
-                    <div className='flex space-x-4 p-2 flex-col md:flex-row' ref={menuRef}>
+            <div className='w-full bg-[#212329] rounded-t-3xl border border-slate-600 md:static fixed bottom-0 left-0 right-0 md:rounded-3xl md:rounded-b-3xl' ref={ref}>
+                <div className='h-full w-full'>
+                    <div className='flex space-x-4 p-2 md:space-x-0 gap-2 justify-end md:justify-start' ref={menuRef}>
                         {ITEMS.map((item) => (
                             <button
                                 key={item.id}
                                 aria-label={item.label}
                                 className={cn(
-                                    'relative flex h-9 w-9 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98]',
+                                    'relative h-9 w-9 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98] flex',
                                     active === item.id ? 'bg-zinc-100 text-zinc-800' : ''
                                 )}
                                 type='button'
@@ -158,7 +157,6 @@ export default function ToolbarExpandable() {
                                         setActive(null);
                                         return;
                                     }
-
                                     setActive(item.id);
                                 }}
                             >
@@ -166,22 +164,27 @@ export default function ToolbarExpandable() {
                             </button>
                         ))}
                     </div>
-                    <div className=''>
+                    <div className='md:static absolute bottom-full left-0 right-0'>
                         <AnimatePresence initial={false} mode='sync'>
-                            {isOpen ? (
+                            {isOpen && (
                                 <motion.div
                                     key='content'
-                                    initial={{ height: 0 }}
-                                    animate={{ height: heightContent || 0 }}
-                                    exit={{ height: 0 }}
-                                    style={{
-                                        width: maxWidth,
-                                    }}
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                    className='bg-[#212329] md:rounded-3xl rounded-t-3xl border border-slate-600 md:border-t-0 overflow-hidden'
                                 >
-                                    <div ref={contentRef} className='p-2'>
+                                    <motion.div
+                                        ref={contentRef}
+                                        className='p-2 md:max-h-none max-h-[60vh] overflow-y-auto'
+                                        initial={{ y: '100%' }}
+                                        animate={{ y: 0 }}
+                                        exit={{ y: '100%' }}
+                                        transition={{ duration: 0.3 }}
+                                    >
                                         {ITEMS.map((item) => {
                                             const isSelected = active === item.id;
-
                                             return (
                                                 <motion.div
                                                     key={item.id}
@@ -200,9 +203,9 @@ export default function ToolbarExpandable() {
                                                 </motion.div>
                                             );
                                         })}
-                                    </div>
+                                    </motion.div>
                                 </motion.div>
-                            ) : null}
+                            )}
                         </AnimatePresence>
                     </div>
                 </div>
