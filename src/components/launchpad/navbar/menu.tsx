@@ -37,14 +37,14 @@ const Menu = () => {
 
                 <div className="hover:text-zinc-100 py-4">Advertise</div>
 
-                <div
+                {/* <div
                     onMouseEnter={() => setShowAboutMenu(true)}
                     onMouseLeave={() => setShowAboutMenu(false)}
                     className="hover:text-zinc-100 py-4"
 
                 >
                     About {showAboutMenu && <AboutMenu />}
-                </div>
+                </div> */}
             </div>
         </div>
     );

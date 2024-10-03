@@ -23,12 +23,12 @@ const items = [
 
 const LaunchesMenu = () => {
     return (
-        <div className="border rounded-sm shadow-md bg-white absolute top-full text-gray-600">
+        <div className="border-2 border-white shadow-md bg-teal-500 absolute top-full text-black rounded-md">
             <div className="flex cursor-pointer p-4">
                 <div className="flex flex-col items-start space-y-3">
                     {items.map((item, index) => (
                         <div key={index} className="flex items-center gap-4">
-                            <div className="bg-white p-1 rounded-sm shadow-sm">
+                            <div className="bg-teal-400 p-1 rounded-sm shadow-sm">
                                 {item.icon}
                             </div>
                             <div>
