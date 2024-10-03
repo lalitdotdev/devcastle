@@ -1,9 +1,7 @@
 "use server";
 
-import Parser from "rss-parser";
+import { XMLParser } from "fast-xml-parser";
 import { db } from "@/lib/db";
-
-const parser = new Parser();
 
 export const getEssays = async () => {
   const essays = await db.essay.findMany({
@@ -14,48 +12,36 @@ export const getEssays = async () => {
   return essays;
 };
 
-export async function updateEssays() {
-  try {
-    const feed = await parser.parseURL(
-      "http://www.aaronsw.com/2002/feeds/pgessays.rss",
-    );
+export async function fetchEssays() {
+  const response = await fetch(
+    "http://www.aaronsw.com/2002/feeds/pgessays.rss",
+  );
+  const xmlData = await response.text();
 
-    for (const item of feed.items) {
-      await db.essay.upsert({
-        where: { link: item.link as string },
-        update: {
-          title: item.title as string,
-          pubDate: item.pubDate,
-          contentSnippet: item.contentSnippet,
-          description: item.summary,
-          updatedAt: new Date(), // Update the updatedAt field
-          categories: {
-            connectOrCreate:
-              item.categories?.map((categoryName) => ({
-                where: { name: categoryName },
-                create: { name: categoryName },
-              })) || [],
-          },
-        },
-        create: {
-          title: item.title as string,
-          link: item.link as string,
-          pubDate: new Date(),
-          description: item.contentSnippet,
-          categories: {
-            connectOrCreate:
-              item.categories?.map((categoryName) => ({
-                where: { name: categoryName },
-                create: { name: categoryName },
-              })) || [],
-          },
-        },
-      });
-    }
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: "@_",
+  });
+  const result = parser.parse(xmlData);
 
-    return { message: "Essays updated successfully" };
-  } catch (error) {
-    console.error("Error updating essays:", error);
-    throw new Error("Error updating essays");
+  const items = result.rss.channel.item;
+
+  for (const item of items) {
+    await db.essay.upsert({
+      where: { link: item.link },
+      update: {
+        title: item.title,
+        description: item.description,
+        pubDate: new Date(item.pubDate),
+      },
+      create: {
+        title: item.title,
+        link: item.link,
+        description: item.description,
+        pubDate: new Date(item.pubDate),
+      },
+    });
   }
+
+  return { message: "Essays fetched and stored successfully" };
 }
