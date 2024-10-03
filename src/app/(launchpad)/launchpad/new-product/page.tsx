@@ -317,6 +317,28 @@ const NewProductPage = () => {
     };
 
 
+    const prevStep = useCallback(() => {
+        setStep(step - 1);
+    }, [step]);
+
+    const handleGoToProducts = () => {
+        window.location.href = "/launchpad/my-products";
+    };
+
+    const submitAnotherProduct = () => {
+        setStep(1);
+        setName("");
+        setSlug("");
+        setHeadline("");
+        setShortDescription("");
+        setDate(new Date());
+        setWebsite("");
+        setTwitter("");
+        setDiscord("");
+        setSelectedCategories([]);
+        setUploadedProductImages([]);
+        setUploadedLogoUrl("");
+    };
     return (
         <div className="flex items-center justify-center py-8 md:py-20 min-h-[70vh] bg-[#262a35]">
             <div className="px-8 md:w-3/5 md:mx-auto">
