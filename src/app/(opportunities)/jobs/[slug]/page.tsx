@@ -1,5 +1,4 @@
 import ApplyNowButton from "../_components/ApplyNowBtn";
-import { Button } from "@/components/ui/Button";
 import JobDetailsPageComponent from "@/components/Jobboard/JobDetailsPageComponent";
 import { Metadata } from "next";
 import React from 'react';
@@ -69,8 +68,8 @@ export default async function JobDetailsPage({ params: { slug } }: PageProps) {
     }
 
     return (
-        <main className="m-auto my-10 flex max-w-5xl flex-col items-center gap-5 px-3  md:items-start">
-            <div className="w-full md:w-3/4">
+        <main className="m-auto my-10 flex max-w-7xl flex-col items-center gap-5 px-3  md:items-start">
+            <div className="w-full ">
                 <JobDetailsPageComponent job={job} />
             </div>
             <aside className="w-full md:w-1/4 sticky top-5">

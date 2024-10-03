@@ -125,7 +125,7 @@ function Footer() {
                         DevCastle <span className="text-green-600">.</span>{" "}
                     </H1>
                     <p className="text-sm text-muted-foreground">
-                        Castles of developers , creators , makers and designers.
+                        A community of developers, designers, and creators.
                     </p>
                 </div>
 

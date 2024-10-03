@@ -16,10 +16,8 @@ import {
 import axios, { AxiosError } from "axios";
 
 import { Button } from "../ui/Button";
-import Image from "next/image";
 import { Input } from "../ui/Input";
 import { signIn } from "next-auth/react";
-// import { Icons } from "../Icons";
 import { toast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -278,7 +276,7 @@ const UserForm = () => {
                     {formType == "login" ? (
                         <>
                             <p className="text-indigo-500 cursor-pointer">
-                                New to CampusBuddy?{" "}
+                                New to Devcastle?{" "}
                             </p>
                             <div
                                 className="hover:text-indigo-600 text-sm underline underline-offset-4 cursor-pointer"
