@@ -82,3 +82,21 @@ export const createProduct = async ({
     return null;
   }
 };
+
+export const getOwnerProducts = async () => {
+  const authenticatedUser = await getServerSession(authOptions);
+
+  if (!authenticatedUser) {
+    return [];
+  }
+
+  const userId = authenticatedUser.user?.id;
+
+  const products = await db.product.findMany({
+    where: {
+      userId,
+    },
+  });
+
+  return products;
+};
