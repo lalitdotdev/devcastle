@@ -73,7 +73,7 @@
     "draft-js": "^0.11.7",
     "editorjs-alert": "^1.1.4",
     "editorjs-react-renderer": "^3.5.1",
-    "embla-carousel-react": "^8.0.0-rc22",
+    "embla-carousel-react": "^8.3.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.1.0",
     "eslint-config-prettier": "^9.1.0",

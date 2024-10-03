@@ -1,5 +1,4 @@
-import { ArrowBigDown, ArrowBigUp, Loader2, Upload } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/Button";
+import { ArrowBigDown, ArrowBigUp, Loader2 } from "lucide-react";
 import { Post, User, Vote } from "@prisma/client";
 
 import { CachedPost } from "../../../../../types/redis";
@@ -8,6 +7,7 @@ import EditorOutputContent from "@/components/EditorOutputContent";
 import { Metadata } from "next";
 import PostVoteServer from "@/components/post-vote/PostVoteServer";
 import { Suspense } from "react";
+import { buttonVariants } from "@/components/ui/Button";
 import { db } from "@/lib/db";
 import { formatTimeToNow } from "@/lib/utils";
 import { notFound } from "next/navigation";
@@ -94,12 +94,7 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                             />
                         </Suspense>
 
-                        <Button
-                            className="flex items-center gap-1 rounded-full bg-zinc-800 text-gray-400 hover:bg-zinc-800/40"
-                        >
-                            <Upload />
-                            Share
-                        </Button>
+
                     </div>
 
                     <Suspense

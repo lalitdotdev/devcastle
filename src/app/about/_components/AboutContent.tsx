@@ -72,17 +72,7 @@ export function AboutContent() {
                 </h1>
             </FadeInSection>
 
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-                <FadeInSection delay={200}>
-                    <div className="space-y-6">
-                        <p className="text-xl md:text-2xl font-light leading-relaxed">
-                            <strong className="font-semibold">DevCastle</strong> is more than just a platform; it&apos;s a thriving ecosystem where developers, designers, and creators converge to shape the future of technology.
-                        </p>
-                        <p className="text-xl md:text-2xl font-semibold leading-relaxed text-zinc-200">
-                            Our mission: <TypingEffect text="Cultivating Connections for Coders, Designers, and Creators." />
-                        </p>
-                    </div>
-                </FadeInSection>
+            <div className=" gap-12 items-center">
 
                 <FadeInSection delay={400}>
                     <div className="bg-white bg-opacity-10 p-8 rounded-lg shadow-xl">
