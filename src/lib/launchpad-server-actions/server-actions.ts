@@ -100,3 +100,31 @@ export const getOwnerProducts = async () => {
 
   return products;
 };
+
+export const isUserPremium = async () => {
+  const authenticatedUser = await getServerSession(authOptions);
+
+  if (
+    !authenticatedUser ||
+    !authenticatedUser.user ||
+    !authenticatedUser.user.id
+  ) {
+    throw new Error("User ID is missing or invalid");
+  }
+
+  const userId = authenticatedUser.user.id;
+
+  // get the user
+
+  const user = await db.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return user.isPremium;
+};
