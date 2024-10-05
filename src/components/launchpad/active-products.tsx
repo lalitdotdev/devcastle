@@ -1,3 +1,4 @@
+import { Pin } from "lucide-react";
 import ProductItem from "./product-item";
 import { getAuthSession } from "@/lib/auth";
 
@@ -86,11 +87,24 @@ const ActiveProducts = async ({
 
     return (
         <div className="w-full">
+            <div className="w-full rounded-md p-8 bg-emerald-200   mt-10 md:flex items-center gap-x-4 sm:mb-8">
+                <Pin className="text-5xl text-green-600 mb-4 md:mb-0" size={40} />
+                <div className="">
+                    <h1 className="text-2xl font-medium text-gray-800">
+                        Welcome to the LaunchPad 🚀
+                    </h1>
+                    <p className="text-gray-700 text-sm">
+                        Place where you find products that people are building in tech ecosystem.
+                    </p>
+
+
+                </div>
+            </div>
             <div className="flex items-center border-b border-gray-800 pb-3">
                 <h1 className="text-2xl font-medium">All Products</h1>
             </div>
 
-            <div className="space-y-2 py-6 flex flex-col">
+            <div className="space-y-3 py-6 flex flex-col">
                 {formattedActiveProducts?.map((product: any) => (
                     <ProductItem
                         key={product.id}
