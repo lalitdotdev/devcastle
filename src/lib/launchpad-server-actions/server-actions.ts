@@ -19,6 +19,7 @@ interface ProductData {
   categories: string[];
 }
 
+// ==================================== User Actions ====================================
 export const createProduct = async ({
   name,
   slug,
@@ -217,6 +218,76 @@ export const rejectProduct = async (productId: string, reason: string) => {
     });
   } catch (error) {
     console.error("Error rejecting product:", error);
+    throw error;
+  }
+};
+
+// ==================================== Product Actions ====================================
+
+export const upvoteProduct = async (productId: string) => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.id
+    ) {
+      throw new Error("User ID is missing or invalid");
+    }
+
+    const userId = authenticatedUser.user.id;
+
+    const upvote = await db.productUpvote.findFirst({
+      where: {
+        productId,
+        userId,
+      },
+    });
+
+    const profilePicture = authenticatedUser.user.image || ""; // Use an empty string if profile picture is undefined
+
+    if (upvote) {
+      await db.productUpvote.delete({
+        where: {
+          id: upvote.id,
+        },
+      });
+    } else {
+      await db.productUpvote.create({
+        data: {
+          productId,
+          userId,
+        },
+      });
+
+      const productOwner = await db.product.findUnique({
+        where: {
+          id: productId,
+        },
+        select: {
+          userId: true,
+        },
+      });
+
+      // notify the product owner about the upvote
+
+      if (productOwner && productOwner.userId !== userId) {
+        await db.launchPadNotification.create({
+          data: {
+            userId: productOwner.userId,
+            body: `Upvoted your product`,
+            profilePicture: profilePicture,
+            productId: productId,
+            type: "UPVOTE",
+            status: "UNREAD",
+          },
+        });
+      }
+    }
+    return true;
+  } catch (error) {
+    console.error("Error upvoting product:", error);
     throw error;
   }
 };
