@@ -65,10 +65,10 @@ model User {
     likes        Like[]
     bookmarks    Bookmark[]
 
-    isPremium        Boolean           @default(false)
-    launchPadUpvotes LaunchPadUpvote[]
+    isPremium Boolean @default(false)
 
     products               Product[]
+    productsUpvotes        ProductUpvote[]
     launchPadcomments      LaunchPadComment[]
     following              Follow[]                @relation("Following")
     followers              Follow[]                @relation("Followers")
@@ -89,7 +89,7 @@ model Product {
     website       String
     twitter       String
     discord       String
-    upvotes       LaunchPadUpvote[]
+    upvotes       ProductUpvote[]
     images        LaunchPadImage[]
     categories    LaunchPadCategory[] // Many-to-many relation with Category
     createdAt     DateTime                @default(now())
@@ -131,19 +131,6 @@ model LaunchPadNotification {
 
     @@index([userId])
     @@index([productId])
-}
-
-model LaunchPadUpvote {
-    id        String   @id @default(cuid())
-    productId String
-    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-    userId    String
-    user      User     @relation(fields: [userId], references: [id])
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([productId])
-    @@index([userId])
 }
 
 model LaunchPadCategory {
@@ -293,6 +280,19 @@ model CommentVote {
     @@id([userId, commentId])
     @@index([commentId])
     @@index([userId])
+}
+
+model ProductUpvote {
+    id        String   @id @default(cuid())
+    productId String
+    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    userId    String
+    user      User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([userId, productId])
+    @@index([productId])
 }
 
 model Bookmark {
