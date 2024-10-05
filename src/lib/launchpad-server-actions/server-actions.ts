@@ -189,6 +189,40 @@ export const updateProduct = async (
   return product;
 };
 
+export const deleteProduct = async (productId: string) => {
+  const authenticatedUser = await getServerSession(authOptions);
+
+  if (
+    !authenticatedUser ||
+    !authenticatedUser.user ||
+    !authenticatedUser.user.id
+  ) {
+    throw new Error("User ID is missing or invalid");
+  }
+
+  const userId = authenticatedUser.user.id;
+
+  const product = await db.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!product || product.userId !== userId) {
+    throw new Error("Product not found or not authorized");
+  }
+
+  await db.product.delete({
+    where: {
+      id: productId,
+    },
+    include: {
+      images: true,
+    },
+  });
+  return true;
+};
+
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
