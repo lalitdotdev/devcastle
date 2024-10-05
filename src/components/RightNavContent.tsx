@@ -29,7 +29,7 @@ const RightNavContent = () => {
                     <DropdownMenuContent className="w-56 bg-gray-800 text-gray-400 border border-gray-600 rounded-xl p-2 transition-transform duration-300 ease-in-out shadow-lg">
                         <DropdownMenuItem className="flex items-center gap-2 p-2 rounded-md transition-colors duration-300 hover:bg-gray-700 hover:text-gray-100" asChild>
                             <Link href="/cb/create" className={cn("flex items-center gap-2")}>
-                                <Plus size={20} className="text-gray-300" />
+                                <Plus size={20} className="text-lime-500" />
                                 <span>New Castle</span>
                                 <DropdownMenuShortcut>Ctrl+N</DropdownMenuShortcut>
                             </Link>
@@ -37,14 +37,14 @@ const RightNavContent = () => {
                         <DropdownMenuSeparator className="bg-gray-700" />
                         <DropdownMenuItem className="flex items-center gap-2 p-2 rounded-md transition-colors duration-300 hover:bg-gray-700 hover:text-gray-100" asChild>
                             <Link href="/courses/new" className={cn("flex items-center gap-2")}>
-                                <BrainCog size={22} className="text-gray-300" />
+                                <BrainCog size={22} className="text-lime-500" />
                                 <span>New thought?</span>
                                 <DropdownMenuShortcut>Ctrl+T</DropdownMenuShortcut>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="flex items-center gap-2 p-2 rounded-md transition-colors duration-300 hover:bg-gray-700 hover:text-gray-100" asChild>
                             <Link href="/articles/publish" className={cn("flex items-center gap-2")}>
-                                <Feather size={22} className="text-gray-300" />
+                                <Feather size={22} className="text-lime-500" />
                                 New Article
                                 <DropdownMenuShortcut>Ctrl+E</DropdownMenuShortcut>
                             </Link>
@@ -52,14 +52,14 @@ const RightNavContent = () => {
                         <DropdownMenuSeparator className="bg-gray-700" />
                         <DropdownMenuItem className="flex items-center gap-2 p-2 rounded-md transition-colors duration-300 hover:bg-gray-700 hover:text-gray-100" asChild>
                             <Link href="/launchpad/new-product" className={cn("flex items-center gap-2")}>
-                                <Rocket size={22} className="text-gray-300" />
+                                <Rocket size={22} className="text-lime-500" />
                                 <span>New Product</span>
                                 <DropdownMenuShortcut>Ctrl+P</DropdownMenuShortcut>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="flex items-center gap-2 p-2 rounded-md transition-colors duration-300 hover:bg-gray-700 hover:text-gray-100" asChild>
                             <Link href="/jobs/new" className={cn("flex items-center gap-2")}>
-                                <Backpack size={22} className="text-gray-300" />
+                                <Backpack size={22} className="text-lime-500" />
                                 Post a Job
                                 <DropdownMenuShortcut>Ctrl+J</DropdownMenuShortcut>
                             </Link>
