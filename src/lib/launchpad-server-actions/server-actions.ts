@@ -130,6 +130,65 @@ export const isUserPremium = async () => {
   return user.isPremium;
 };
 
+export const updateProduct = async (
+  productId: string,
+  {
+    name,
+    slug,
+    headline,
+    description,
+    logo,
+    releaseDate,
+    website,
+    twitter,
+    discord,
+    images,
+  }: ProductData,
+) => {
+  const authenticatedUser = await getServerSession(authOptions);
+
+  if (!authenticatedUser) {
+    throw new Error("You must be signed in to update a product");
+  }
+
+  const product = await db.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
+  await db.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      name,
+      slug,
+      headline,
+      description,
+      logo,
+      releaseDate,
+      website,
+      twitter,
+      discord,
+      images: {
+        deleteMany: {
+          productId,
+        },
+        createMany: {
+          data: images.map((image) => ({ url: image })),
+        },
+      },
+      status: "PENDING",
+    },
+  });
+  return product;
+};
+
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
