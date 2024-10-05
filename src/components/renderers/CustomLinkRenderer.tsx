@@ -13,7 +13,7 @@ const CustomLinkRenderer: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>
             href={href}
             target={isExternal ? '_blank' : undefined}
             rel={isExternal ? 'noopener noreferrer' : undefined}
-            className="inline-flex items-center px-3 py-1 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 font-medium text-xs hover:text-white"
+            className="inline-flex items-center px-3 py-1 bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 font-medium text-xs hover:text-white overflow-hidden md:max-w-max max-w-sm overflow-x-clip"
             {...props}
         >
             {children}

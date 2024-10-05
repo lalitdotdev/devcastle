@@ -138,7 +138,7 @@ export default function ToolbarExpandable() {
 
     return (
         <MotionConfig transition={transition}>
-            <div className='w-full bg-[#212329] rounded-t-3xl border border-slate-600 md:static fixed bottom-0 left-0 right-0 md:rounded-3xl md:rounded-b-3xl' ref={ref}>
+            <div className='w-full bg-[#212329] rounded-t-3xl border border-slate-600 md:static fixed bottom-0 left-0 right-0 md:rounded-3xl md:rounded-b-3xl sm:max-w-md' ref={ref}>
                 <div className='h-full w-full'>
                     <div className='flex space-x-4 p-2 md:space-x-0 gap-2 justify-end md:justify-start' ref={menuRef}>
                         {ITEMS.map((item) => (
@@ -147,7 +147,7 @@ export default function ToolbarExpandable() {
                                 aria-label={item.label}
                                 className={cn(
                                     'relative h-9 w-9 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98] flex',
-                                    active === item.id ? 'bg-zinc-100 text-zinc-800' : ''
+                                    active === item.id ? 'bg-emerald-200 text-zinc-800' : ''
                                 )}
                                 type='button'
                                 onClick={() => {

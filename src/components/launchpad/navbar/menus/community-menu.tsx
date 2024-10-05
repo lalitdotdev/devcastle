@@ -32,12 +32,12 @@ const CommunityMenu = () => {
 
         "
         >
-            <div className="flex cursor-pointer">
-                <div className="p-4 flex ">
-                    <div className="flex flex-col items-start space-y-3 ">
+            <div className="flex cursor-pointer ">
+                <div className="border-2 border-white rounded-md p-4 flex bg-teal-500  text-black -ml-12 ">
+                    <div className="flex flex-col items-start space-y-3  ">
                         {items.map((item, index) => (
                             <div key={index} className="flex items-center gap-4">
-                                <div className="bg-white p-1 rounded-sm shadow-sm">
+                                <div className="bg-teal-400 p-1 rounded-sm shadow-sm">
                                     {item.icon}
                                 </div>
                                 <div>

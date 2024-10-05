@@ -123,6 +123,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 >
                                     Sign Out
                                 </div>
+
                                 <div className="flex gap-2">
                                     <Link
                                         href="https://github.com/lalitdotdev/devcastle"

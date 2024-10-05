@@ -4,7 +4,6 @@ import Parser from "rss-parser";
 import { db } from "@/lib/db";
 
 const parser = new Parser();
-
 export const getEssays = async () => {
   const essays = await db.essay.findMany({
     orderBy: { pubDate: "desc" },

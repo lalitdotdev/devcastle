@@ -108,11 +108,13 @@ export default function JobDetailsPageComponent({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.3 }}
-                className="bg-[#252A34] p-1 md:p-2 rounded-lg shadow-inner"
+                className="bg-[#252A34] p-1 md:p-2 rounded-lg shadow-inner "
             >
                 {description && (
-                    <div className="prose prose-invert max-w-none">
-                        <Markdown>{description}</Markdown>
+                    <div className="">
+                        <Markdown
+
+                        >{description}</Markdown>
                     </div>
                 )}
             </motion.div>

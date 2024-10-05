@@ -8,7 +8,6 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/Command";
-import { Community, Prisma } from "@prisma/client";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -20,7 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 
 interface SearchBarProps { }
 
-const SearchBar: FC<SearchBarProps> = ({ }) => {
+const SearchBar: FC<SearchBarProps> = () => {
     const [input, setInput] = useState<string>("");
     const pathname = usePathname();
     const commandRef = useRef<HTMLDivElement>(null);
@@ -30,15 +29,6 @@ const SearchBar: FC<SearchBarProps> = ({ }) => {
         setInput("");
     });
 
-    const request = debounce(async () => {
-        refetch();
-    }, 300);
-
-    const debounceRequest = useCallback(() => {
-        request();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const {
         isFetching,
         data: queryResults,
@@ -46,60 +36,88 @@ const SearchBar: FC<SearchBarProps> = ({ }) => {
         isFetched,
     } = useQuery({
         queryFn: async () => {
-            if (!input) return [];
+            if (!input.trim()) return []; // Always return an empty array for empty input
             const { data } = await axios.get(`/api/search?q=${input}`);
-            return data as (Community & {
-                _count: Prisma.CommunityCountOutputType;
-            })[];
+            return Array.isArray(data) ? data : [];
         },
         queryKey: ["search-query"],
-        enabled: false,
+        enabled: false, // Initially disabled; only fetch on valid input
     });
 
+    // Debounced request function to avoid excessive API calls
+    const request = useCallback(
+        debounce(() => {
+            if (input.trim() !== "") {
+                refetch();
+            }
+        }, 300),
+        [input, refetch]
+    );
+
+    const handleInputChange = (text: string) => {
+        setInput(text);
+        // Only request if the input is not empty
+        if (text.trim() !== "") {
+            request();
+        }
+    };
+
     useEffect(() => {
-        setInput("");
+        setInput(""); // Clear input on path change
     }, [pathname]);
+
+    const safeQueryResults = Array.isArray(queryResults) ? queryResults : [];
+    // Add this console log just before the return statement
+    console.log("Rendering SearchBar with:", { input, isFetching, isFetched, safeQueryResults });
+
 
     return (
         <Command
             ref={commandRef}
-            className="relative w-[6rem] md:w-[20rem] max-w-[22rem] overflow-visible bg-transparent border focus-within:ring-1 focus-within:ring-opacity-50 rounded-lg p-1 border-zinc-700"
-            style={{ zIndex: 50 }} // Ensure the search bar itself is on top
+            className="relative w-[6rem] md:w-[20rem] max-w-[26rem] overflow-visible bg-transparent border focus-within:ring-1 focus-within:ring-opacity-50 rounded-lg border-zinc-700"
         >
             <CommandInput
                 isLoading={isFetching}
-                onValueChange={(text) => {
-                    setInput(text);
-                    debounceRequest();
-                }}
+                onValueChange={handleInputChange}
                 value={input}
-                className="outline-none border-none focus:border-none focus:outline-none ring-0"
+                className="h-full w-full bg-transparent text-[0.9rem] focus:outline-none text-white [&:not(:placeholder-shown)~button]:visible [&:not(:placeholder-shown)~button]:opacity-100"
                 placeholder="Search communities to join..."
             />
 
-            {input.length > 0 && (
+            {input.trim().length > 0 && (
                 <CommandList className="absolute border border-zinc-600 top-full inset-x-0 shadow rounded-md text-gray-300 z-9999">
-                    {isFetched && <CommandEmpty>No results found.</CommandEmpty>}
-                    {(queryResults?.length ?? 0) > 0 ? (
+                    {isFetched && safeQueryResults.length === 0 && (
+                        <CommandEmpty>No results found.</CommandEmpty>
+                    )}
+                    {safeQueryResults.length > 0 && (
                         <CommandGroup heading="Unlock the gateway to a pulsating online realm!" className="z-50">
-                            {queryResults?.map((Community) => (
+                            {safeQueryResults.map((community) => (
                                 <CommandItem
-                                    onSelect={(e) => {
-                                        router.push(`/cb/${e}`);
+                                    onSelect={() => {
+                                        router.push(`/cb/${community.name}`);
                                         router.refresh();
                                     }}
-                                    key={Community.id}
-                                    value={Community.name}
-                                    className="cursor-pointer hover:bg-zinc-600"
+                                    key={community.id}
+                                    value={community.name}
+                                    className="cursor-pointer hover:bg-zinc-600 justify-between"
                                 >
-                                    <Globe className="mr-2 h-4 w-4 text-zinc-400" />
-                                    <a className="hover:text-gray-00 text-gray-300 cursor-pointer " href={`/cb/${Community.name}`}>
-                                        cb/{Community.name}
-                                    </a>
+                                    <div className="flex items-center justify-center">
+                                        <Globe className="mr-2 h-4 w-4 text-zinc-400" />
+                                        <a className="hover:text-gray-00 text-gray-300 cursor-pointer" href={`/cb/${community.name}`}>
+                                            cb/{community.name}
+                                        </a>
+                                    </div>
+
+                                    <span className="text-gray-400 text-xs ml-1">
+                                        {community._count?.posts} posts
+                                    </span>
+                                    <span className="text-gray-400 text-xs items-start">
+                                        {community._count?.subscribers} members
+                                    </span>
                                 </CommandItem>
                             ))}
                         </CommandGroup>
-                    ) : null}
+                    )}
                 </CommandList>
             )}
         </Command>

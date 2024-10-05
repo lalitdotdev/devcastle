@@ -21,14 +21,14 @@ const AboutMenu = () => {
         <div
             className="
       w-32
-      border
-      border-gray-200
-    rounded-sm
+      border-2
+      border-white
+    rounded-md
       shadow-md
-      bg-white
+      bg-teal-500
       absolute
-      text-gray-600
-
+      text-black
+      -ml-14
       top-full"
         >
             <ul className="flex flex-col items-start p-4 space-y-2 cursor-pointer">

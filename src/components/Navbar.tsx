@@ -22,8 +22,8 @@ const Navbar = async () => {
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 text-zinc-400">
                     <TerminalSquare
-                        size={30} // Smaller size for small screens
-                        className="text-indigo-600"
+                        size={32} // Smaller size for small screens
+                        className="text-indigo-600 animate-pulse"
                     />
                     <span className="hidden md:block text-xl">devcastle</span> {/* Only show on medium screens and above */}
                 </Link>
@@ -43,6 +43,8 @@ const Navbar = async () => {
                         <div className="hidden md:flex items-center mx-1">
                             <RightNavContent />
                             <KeyboardShortcuts />
+
+
                         </div>
                     )}
 

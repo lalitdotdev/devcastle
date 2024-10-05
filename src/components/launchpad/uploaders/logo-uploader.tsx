@@ -1,24 +1,22 @@
-'use client'
+"use client";
 
 import { UploadDropzone } from "@/lib/uploadthing";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { toast } from "sonner";
 
-interface ImagesUploaderProps {
-    onChange: (urls: string[]) => void;
+interface LogoUploaderProps {
+    onChange: (url?: string) => void;
     endpoint: keyof typeof ourFileRouter;
 }
 
-export const ImagesUploader = ({ onChange, endpoint }: ImagesUploaderProps) => {
-    const handleUploadComplete = (res: { url: string }[]) => {
-        const urls = res.map((item) => item.url);
-        onChange(urls);
-    };
-
+export const LogoUploader = ({ onChange, endpoint }: LogoUploaderProps) => {
     return (
         <UploadDropzone
             endpoint={endpoint}
-            onClientUploadComplete={handleUploadComplete}
+            onClientUploadComplete={(res) => {
+                onChange(res?.[0].url);
+                toast.success("Logo uploaded successfully!", { position: "top-right" });
+            }}
             onUploadError={(error: Error) => {
                 toast(error.message, { position: "top-center" });
             }}

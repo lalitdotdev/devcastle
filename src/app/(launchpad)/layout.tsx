@@ -1,11 +1,28 @@
 import DotPattern from '@/components/ui/dotbggradient'
 import LaunchPadNavbar from '@/components/launchpad/navbar/launchpad-nav'
+import { Metadata } from "next";
 import React from 'react'
+import { authOptions } from '@/lib/auth'
 import { cn } from '@/lib/utils'
+import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation';
 
-const LaunchPadLayout = ({ children }: { children: React.ReactNode }) => {
+// metadata
+
+export const metadata: Metadata = {
+    title: "LaunchPad 🚀",
+    description: "LaunchPad",
+};
+
+const LaunchPadLayout = async ({ children }: { children: React.ReactNode }) => {
+    const session = await getServerSession(authOptions);
+    // console.log(session)
+    if (!session?.user) {
+        return redirect('/auth/signin')
+    }
+
     return (
-        <div className='relative size-full w-full items-center justify-center overflow-hidden rounded-lg border border-zinc-600  text-white'>
+        <div className='relative size-full w-full items-center justify-center overflow-hidden rounded-lg  text-white mt-10 min-h-[60vh]'>
             <DotPattern
                 width={20}
                 height={20}

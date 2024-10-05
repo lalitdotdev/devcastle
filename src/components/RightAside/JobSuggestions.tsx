@@ -19,14 +19,14 @@ const JobSuggestions = async () => {
 
     return (
 
-        <div className="hidden lg:block w-full  ">
-            <div className=" top-0 overflow-y-scroll h-3/4">
+        <div className="hidden lg:block w-full  flex-grow ">
+            <div className=" overflow-y-auto h-auto flex-grow ">
                 <div className=" rounded-lg p-4 mb-4  shadow-sm ">
                     {/* Want to giv background image in below div */}
 
                     <Separator className=' bg-gray-700 my-4' />
 
-                    <ul className="flex flex-col space-y-4">
+                    <ul className="flex flex-col space-y-4 ">
                         {newJobPostings.map((job) => (
                             <li key={job.id} className="mb-4 flex justify-between  text-sm text-gray-100 ">
                                 <Link href={`/jobs/${job.slug}`}>

@@ -1,11 +1,11 @@
 "use client"
 
-import { HelpCircle, Home, Menu, PanelRightClose, PanelRightOpen, Settings, X } from 'lucide-react';
+import { HelpCircle, PanelRightClose, PanelRightOpen, PersonStanding, Settings, X } from 'lucide-react';
 import React, { useState } from 'react';
 
-import Image from 'next/image';
-import { Separator } from '../ui/separator';
+import Link from 'next/link';
 import { SidebarRoutes } from './sidebar-routes';
+import { cn } from '@/lib/utils';
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -49,6 +49,12 @@ const Sidebar = () => {
                                 <Settings size={20} />
                             </a>
                         </li>
+                        <Link
+                            href="/admin"
+                            className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2 hover:bg-gray-700")}
+                        >
+                            <PersonStanding size={24} />
+                        </Link>
                         <li>
                             <a href="/help" className="flex items-center  hover:bg-gray-700 rounded p-2 transition-colors duration-200">
                                 <HelpCircle size={20} />

@@ -24,9 +24,7 @@ const LaunchPadNavbar: React.FC<NavbarProps> = ({
                 <div className="flex items-center z-[999] absolute left-0">
                     <Search />
                 </div>
-                <div className="absolute right-0 transform z-10 ">
-                    <Menu />
-                </div>
+
 
             </div>
             <Separator className="bg-zinc-600 my-8 rounded-lg" />

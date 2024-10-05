@@ -72,7 +72,7 @@ export default async function RootLayout({
 
                     {/* Sidebar only for auth user */}
                     {session?.user && (
-                        <div className="fixed inset-y-0 left-0 z-50 w-64">
+                        <div className="fixed inset-y-0 left-0 z-[100] w-fit">
                             <Sidebar />
                         </div>
                     )}
