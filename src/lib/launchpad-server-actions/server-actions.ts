@@ -144,3 +144,42 @@ export const getPendingProducts = async () => {
 
   return products;
 };
+
+export const activateProduct = async (productId: string) => {
+  try {
+    const product = await db.product.findUnique({
+      where: {
+        id: productId,
+      },
+    });
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    await db.product.update({
+      where: {
+        id: productId,
+      },
+      data: {
+        status: "ACTIVE",
+      },
+    });
+
+    await db.launchPadNotification.create({
+      data: {
+        userId: product.userId,
+        body: `Your product ${product.name} has been activated`,
+        type: "ACTIVATED",
+        status: "UNREAD",
+        profilePicture: product.logo,
+        productId: product.id,
+      },
+    });
+
+    return product;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
