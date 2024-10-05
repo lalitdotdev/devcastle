@@ -128,3 +128,19 @@ export const isUserPremium = async () => {
 
   return user.isPremium;
 };
+
+// ==================================== Admin Actions ====================================
+
+export const getPendingProducts = async () => {
+  const products = await db.product.findMany({
+    where: {
+      status: "PENDING",
+    },
+    include: {
+      categories: true,
+      images: true,
+    },
+  });
+
+  return products;
+};
