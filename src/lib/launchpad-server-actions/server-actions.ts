@@ -222,6 +222,35 @@ export const rejectProduct = async (productId: string, reason: string) => {
   }
 };
 
+export const getActiveProducts = async () => {
+  const products = await db.product.findMany({
+    where: {
+      status: "ACTIVE",
+    },
+    include: {
+      categories: true,
+      images: true,
+      comments: {
+        include: {
+          user: true,
+        },
+      },
+      upvotes: {
+        include: {
+          user: true,
+        },
+      },
+    },
+    orderBy: {
+      upvotes: {
+        _count: "desc",
+      },
+    },
+  });
+
+  return products;
+};
+
 // ==================================== Product Actions ====================================
 
 export const upvoteProduct = async (productId: string) => {
