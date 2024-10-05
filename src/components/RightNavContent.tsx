@@ -1,6 +1,6 @@
 "use client";
 
-import { Backpack, BrainCog, Feather, Plus, Terminal, TerminalSquare } from "lucide-react";
+import { Backpack, BrainCog, Feather, Plus, Rocket, Terminal, TerminalSquare } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -51,9 +51,9 @@ const RightNavContent = () => {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator className="bg-gray-700" />
                         <DropdownMenuItem className="flex items-center gap-2 p-2 rounded-md transition-colors duration-300 hover:bg-gray-700 hover:text-gray-100" asChild>
-                            <Link href="/projects/new" className={cn("flex items-center gap-2")}>
-                                <TerminalSquare size={22} className="text-gray-300" />
-                                <span>New Project</span>
+                            <Link href="/launchpad/new-product" className={cn("flex items-center gap-2")}>
+                                <Rocket size={22} className="text-gray-300" />
+                                <span>New Product</span>
                                 <DropdownMenuShortcut>Ctrl+P</DropdownMenuShortcut>
                             </Link>
                         </DropdownMenuItem>
