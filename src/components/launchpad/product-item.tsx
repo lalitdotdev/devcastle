@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowBigUp, CornerUpRight, MessageCircle } from "lucide-react";
+import { ArrowBigUp, CornerUpRight, MessageCircle, Triangle } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -64,7 +64,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
     return (
         <motion.div
             onClick={handleProductItemClick}
-            className="w-full cursor-pointer p-4 rounded-md  text-white shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out sm:border-l-4 border-emerald-400"
+            className="w-full cursor-pointer text-white shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out sm:border-l-2 py-3 sm:pl-4 border border-gray-700 bg-gray-800 rounded-lg hover:bg-[#2C353D]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -85,8 +85,8 @@ const ProductItem: React.FC<ProductItemProps> = ({
                         />
                     </motion.div>
                     <div>
-                        <h1 className="text-lg font-bold text-emerald-200">{product.name}</h1>
-                        <p className="text-sm text-gray-300">{product.headline}</p>
+                        <h1 className="text-lg  text-emerald-200">{product.name}</h1>
+                        <p className="text-xs text-gray-300">{product.headline}</p>
                         <div className="flex items-center space-x-2 mt-2">
                             <div className="text-xs text-gray-400 flex items-center space-x-1">
                                 <MessageCircle size={12} />
@@ -106,7 +106,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center gap-2">
                     <motion.div
                         onClick={handleArrowClick}
                         className="cursor-pointer text-emerald-400 hover:text-emerald-300 transition-colors duration-200"
@@ -117,14 +117,14 @@ const ProductItem: React.FC<ProductItemProps> = ({
                     </motion.div>
                     <motion.div
                         onClick={handleUpvoteClick}
-                        className={`px-3 py-2 rounded-md flex flex-col items-center ${hasUpvoted
+                        className={`px-3 py-2 rounded-md flex flex-col items-center mr-8  ${hasUpvoted
                             ? "bg-gradient-to-bl from-[#ff6154] to-[#ff4582] border-[#ff6154]"
                             : "bg-gray-700 hover:bg-gray-600"
                             } transition-colors duration-200`}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                     >
-                        <ArrowBigUp className={`text-xl ${hasUpvoted ? " text-white fill-current" : "text-emerald-200"}`} />
+                        <Triangle className={`text-xl ${hasUpvoted ? " text-white fill-current" : "text-emerald-200"}`} />
                         <span className={`text-sm font-bold ${hasUpvoted ? "text-white" : "text-emerald-200"}`}>
                             {totalUpvotes}
                         </span>
