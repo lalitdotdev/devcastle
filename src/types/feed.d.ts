@@ -72,12 +72,11 @@ declare interface Hackernews {
   url: string;
   domain: string;
 }
-
-declare interface Github {
+export interface Github {
   title: string;
   description: string;
   url: string;
-  stars: string;
+  stars: string | number;
 }
 
 declare interface Dribbble {
