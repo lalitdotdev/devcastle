@@ -349,3 +349,45 @@ export const getProductById = async (productId: string) => {
     return null;
   }
 };
+
+export const getRankById = async (): Promise<
+  {
+    id: string;
+    name: string;
+    upvotes: { id: string }[];
+    rank: number;
+  }[]
+> => {
+  // Fetch products along with their upvote counts from the database
+  const rankedProducts = await db.product.findMany({
+    where: {
+      status: "ACTIVE",
+    },
+    select: {
+      id: true,
+      name: true,
+      upvotes: {
+        select: {
+          id: true,
+        },
+      },
+    },
+    orderBy: {
+      upvotes: {
+        _count: "desc", // Order by upvotes count in descending order
+      },
+    },
+  });
+
+  // Find the maximum number of upvotes among all products
+  const maxUpvotes =
+    rankedProducts.length > 0 ? rankedProducts[0].upvotes.length : 0;
+
+  // Assign ranks to each product based on their number of upvotes
+  const productsWithRanks = rankedProducts.map((product, index) => ({
+    ...product,
+    rank: product.upvotes.length === maxUpvotes ? 1 : index + 2,
+  }));
+
+  return productsWithRanks;
+};
