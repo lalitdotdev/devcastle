@@ -320,3 +320,32 @@ export const upvoteProduct = async (productId: string) => {
     throw error;
   }
 };
+
+export const getProductById = async (productId: string) => {
+  try {
+    const product = await db.product.findUnique({
+      where: {
+        id: productId,
+      },
+      include: {
+        categories: true,
+        images: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+        upvotes: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    return product;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
