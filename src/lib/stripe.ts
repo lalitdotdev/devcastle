@@ -30,3 +30,47 @@ export const createCheckoutSession = async ({ email }: { email: string }) => {
     throw new Error("Failed to create checkout session");
   }
 };
+
+// Create a function to get customer portal link
+export const createCustomerLink = async () => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.email
+    ) {
+      throw new Error("User not authenticated");
+    }
+
+    const email = authenticatedUser.user.email;
+
+    console.log(email, "email");
+
+    const customers = await stripe.customers.list({
+      email: email,
+    });
+
+    if (!customers || customers.data.length == 0) {
+      throw new Error("Customer not found");
+    }
+
+    const customer = customers.data[0];
+
+    if (!customer || !customer.id) {
+      throw new Error("Customer not found");
+    }
+
+    const portal = await stripe.billingPortal.sessions.create({
+      customer: customer.id,
+      return_url: `http://localhost:3000/launchpad/my-products`,
+    });
+
+    return portal.url;
+  } catch (error) {
+    console.error("Stripe error:", error);
+
+    throw new Error("Customer not found");
+  }
+};
