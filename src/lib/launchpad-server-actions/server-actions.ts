@@ -409,6 +409,34 @@ export const getNotifications = async () => {
   }
 };
 
+export const markAllNotificationsAsRead = async () => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.id
+    ) {
+      throw new Error("User ID is missing or invalid");
+    }
+
+    const userId = authenticatedUser?.user.id;
+
+    await db.launchPadNotification.updateMany({
+      where: {
+        userId,
+      },
+      data: {
+        status: "READ",
+      },
+    });
+  } catch (error) {
+    console.error("Error marking all notifications as read:", error);
+    throw error;
+  }
+};
+
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
