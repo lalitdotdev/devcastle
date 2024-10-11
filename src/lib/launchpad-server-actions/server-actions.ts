@@ -360,6 +360,21 @@ export const commentOnProduct = async (
   }
 };
 
+export const deleteProductComment = async (commentId: string) => {
+  try {
+    await db.launchPadComment.delete({
+      where: {
+        id: commentId,
+      },
+    });
+    revalidatePath(`/launchpad`);
+    return true;
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    throw error;
+  }
+};
+
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
