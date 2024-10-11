@@ -1,7 +1,8 @@
 "use client";
 
-import { ArrowBigUp, CornerUpRight, MessageCircle, Triangle } from "lucide-react";
+import { CornerUpRight, MessageCircle, Triangle } from "lucide-react";
 
+import { Badge } from "../ui/badge";
 import Image from "next/image";
 import Link from "next/link";
 import ProductModal from "../modals/launchpad/product-modal";
@@ -95,11 +96,17 @@ const ProductItem: React.FC<ProductItemProps> = ({
                             {product.categories.map((category: string) => (
                                 <Link
                                     key={category}
-                                    href={`/category/${category.toLowerCase()}`}
+                                    href={`launchpad/category/${category.toLowerCase()}`}
                                     className="text-xs text-emerald-300 hover:text-emerald-500 transition-colors duration-200 "
                                     onClick={handleCategoryClick}
                                 >
-                                    #{category}
+                                    <Badge
+                                        key={category}
+                                        variant="secondary"
+                                        className="bg-transparent border border-zinc-700 text-zinc-400 hover:bg-gray-800 hover:text-white text-[0.6rem]"
+                                    >
+                                        {category}
+                                    </Badge>
                                 </Link>
                             ))}
                             <div className="text-xs text-gray-400">{displayReleaseDate}</div>
