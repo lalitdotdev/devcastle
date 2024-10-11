@@ -1,4 +1,3 @@
-import LoadingSkeleton from "@/components/LoadingSkeleton";
 import NextTopLoader from 'nextjs-toploader';
 
 export default function Loading() {
