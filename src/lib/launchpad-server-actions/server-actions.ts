@@ -375,6 +375,40 @@ export const deleteProductComment = async (commentId: string) => {
   }
 };
 
+export const getNotifications = async () => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.id
+    ) {
+      throw new Error("User ID is missing or invalid");
+    }
+
+    const userId = authenticatedUser.user.id;
+
+    const notifications = await db.launchPadNotification.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (notifications.length === 0) {
+      return null;
+    }
+
+    return notifications;
+  } catch (error) {
+    console.error("Error getting notifications:", error);
+    return [];
+  }
+};
+
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
