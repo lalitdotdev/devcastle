@@ -450,6 +450,15 @@ export const searchProducts = async (query: string) => {
   return products;
 };
 
+export const getProductsByUserId = async (userId: string) => {
+  const products = await db.product.findMany({
+    where: {
+      userId,
+    },
+  });
+
+  return products;
+};
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
