@@ -74,3 +74,68 @@ export const createCustomerLink = async () => {
     throw new Error("Customer not found");
   }
 };
+
+export const getNextPaymentDetails = async () => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.email
+    ) {
+      throw new Error("User not authenticated");
+    }
+
+    const email = authenticatedUser.user.email;
+
+    const customers = await stripe.customers.list({
+      email: email,
+    });
+
+    if (!customers || customers.data.length === 0) {
+      throw new Error("Customer not found");
+    }
+
+    const customer = customers.data[0];
+
+    const subscriptions = await stripe.subscriptions.list({
+      customer: customer.id,
+      status: "active",
+    });
+
+    if (!subscriptions || subscriptions.data.length === 0) {
+      throw new Error("No active subscriptions found for customer");
+    }
+
+    const subscription = subscriptions.data[0];
+
+    const nextPaymentDate = new Date(subscription.current_period_end * 1000); // Convert timestamp to Date
+
+    // Format date to MM/DD/YYYY
+    const formattedNextPaymentDate = nextPaymentDate.toLocaleDateString(
+      "en-US",
+      {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+      },
+    );
+
+    const priceId = subscription.items.data[0].price.id;
+    const price = await stripe.prices.retrieve(priceId);
+
+    if (!price || !price.unit_amount || !price.currency) {
+      throw new Error("Price not found");
+    }
+
+    return {
+      nextPaymentDate: formattedNextPaymentDate,
+      amount: price.unit_amount / 100, // Assuming the amount is in cents, convert to dollars
+      currency: price.currency,
+    };
+  } catch (error) {
+    console.error("Error fetching payment details:", error);
+    return null;
+  }
+};
