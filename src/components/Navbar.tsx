@@ -16,10 +16,17 @@ import { getServerSession } from "next-auth";
 
 const Navbar = async () => {
     const session = await getServerSession(authOptions);
-    const notifications = await getNotifications();
-    const products = await getProductsByUserId(session?.user?.id || "");
-    const isPremium = await isUserPremium();
 
+    let notifications: any[] = [];
+    let products: any[] = [];
+    let isPremium: any = false;
+
+    if (session?.user?.id) {
+        // Only fetch data if the user is logged in
+        notifications = await getNotifications() ?? [];
+        products = await getProductsByUserId(session.user.id) ?? [];
+        isPremium = await isUserPremium();
+    }
 
     return (
         <nav className="fixed top-0 w-full z-10 bg-[#1B1F23] border-b-2 border-zinc-800 backdrop-blur-lg">
