@@ -11,8 +11,8 @@ const ActiveProducts = async ({
 }: ActiveProductsProps) => {
     const authenticatedUser = await getAuthSession();
 
-    console.log(authenticatedUser)
-    console.log(activeProducts, 'activeProducts')
+    // console.log(authenticatedUser)
+    // console.log(activeProducts, 'activeProducts')
 
 
     const formattedActiveProducts = activeProducts?.map((product: any) => {
@@ -43,6 +43,7 @@ const ActiveProducts = async ({
         const categoryNames = categories.map((category: any) => category.name); // Get the names of the categories from the categories array
         const commentsCount = comments ? comments.length : 0; // Get the number of comments for the product
 
+        // Format the comments data to include only the necessary fields for the UI
         const commentText = comments ? comments.map((comment: any) => ({
             id: comment.id,
             profile: comment.profilePicture,
@@ -55,9 +56,11 @@ const ActiveProducts = async ({
         })) : [];
 
 
-        const upvotesCount = upvotes ? upvotes.length : 0;
-        const upvotesData = upvotes.map((upvote: any) => upvote.user.id)
 
+        const upvotesCount = upvotes ? upvotes.length : 0; // Get the number of upvotes for the product
+        const upvotesData = upvotes.map((upvote: any) => upvote.user.id) // Get the user IDs of the upvoters
+
+        // Return the formatted product data object with the necessary fields.
         return {
             id,
             name,
