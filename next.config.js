@@ -2,6 +2,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: "buildNext",
   images: {
     remotePatterns: [
       {
@@ -36,7 +37,22 @@ const nextConfig = {
         protocol: "https",
         hostname: "thestartupmag.com",
       },
+      {
+        protocol: "https",
+        hostname: "techcrunch.com",
+      },
+      {
+        protocol: "https",
+        hostname: "img-cdn.publive.online",
+      },
     ],
+  },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.json$/,
+      type: "json",
+    });
+    return config;
   },
   eslint: {
     ignoreDuringBuilds: true,
