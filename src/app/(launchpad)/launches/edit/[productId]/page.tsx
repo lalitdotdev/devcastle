@@ -53,7 +53,7 @@ const ProductIDPage = async ({ params }: { params: IParams }) => {
                             <Badge className="bg-orange-400">Pending</Badge>
                         )}
                         {product.status === "ACTIVE" && (
-                            <Badge className="bg-green-400">ACTIVE</Badge>
+                            <Badge className="bg-green-700">ACTIVE</Badge>
                         )}
                         {product.status === "REJECTED" && (
                             <Badge className="bg-red-400">REJECTED</Badge>
@@ -75,10 +75,6 @@ const ProductIDPage = async ({ params }: { params: IParams }) => {
                     >
                         <CardTitle>Current Rank</CardTitle> 🏅
                     </CardHeader>
-
-
-
-
 
                     <CardContent>
                         <div className="text-2xl">
@@ -123,7 +119,7 @@ const ProductIDPage = async ({ params }: { params: IParams }) => {
             {product.comments.length > 0 ? (
                 <div className="mt-4 space-y-4">
                     {product.comments.map((comment: any) => (
-                        <div key={comment.id} className="border p-4 rounded-lg">
+                        <div key={comment.id} className="border p-4 rounded-lg border-gray-700">
                             <div className="flex gap-x-4 items-center">
                                 <Image
                                     src={comment.user.image}
