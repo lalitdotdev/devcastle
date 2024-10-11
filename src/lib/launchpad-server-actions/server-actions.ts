@@ -437,6 +437,19 @@ export const markAllNotificationsAsRead = async () => {
   }
 };
 
+export const searchProducts = async (query: string) => {
+  const products = await db.product.findMany({
+    where: {
+      name: {
+        contains: query,
+      },
+      status: "ACTIVE",
+    },
+  });
+
+  return products;
+};
+
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
