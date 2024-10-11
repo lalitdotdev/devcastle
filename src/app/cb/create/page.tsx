@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { CreateCommunityPayload } from "@/lib/validators/community";
 import H1 from "@/components/h1";
 import { Input } from "@/components/ui/Input";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useCustomToast } from "@/hooks/use-custom-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -41,10 +41,8 @@ const Page = () => {
         onError: (err) => {
             if (err instanceof AxiosError) {
                 if (err.response?.status === 409) {
-                    return toast({
-                        title: "Community already exists.",
+                    return toast.error("Community already exists.", {
                         description: "Please choose a different community name.",
-                        variant: "destructive",
                     });
                 }
 
@@ -52,10 +50,9 @@ const Page = () => {
                     return loginToast();
                 }
             }
-            toast({
-                title: "An error occurred.",
+            toast.error("An error occurred.", {
                 description: "Could not create community.",
-                variant: "destructive",
+
             });
         },
         onSuccess: (data) => {
