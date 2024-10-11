@@ -1,3 +1,5 @@
+import { getNotifications, getProductsByUserId, isUserPremium } from "@/lib/launchpad-server-actions/server-actions";
+
 import { Badge } from "./ui/badge";
 import KeyboardShortcuts from "@/lib/hotkeys";
 import Link from "next/link";
@@ -14,6 +16,10 @@ import { getServerSession } from "next-auth";
 
 const Navbar = async () => {
     const session = await getServerSession(authOptions);
+    const notifications = await getNotifications();
+    const products = await getProductsByUserId(session?.user?.id || "");
+    const isPremium = await isUserPremium();
+
 
     return (
         <nav className="fixed top-0 w-full z-10 bg-[#1B1F23] border-b-2 border-zinc-800 backdrop-blur-lg">
@@ -40,8 +46,8 @@ const Navbar = async () => {
 
                     {/* Right Side Content */}
                     {session?.user?.email && (
-                        <div className="hidden md:flex items-center mx-1">
-                            <RightNavContent />
+                        <div className="items-center mx-1">
+                            <RightNavContent products={products} authenticatedUser={session} />
                             <KeyboardShortcuts />
 
 
@@ -58,7 +64,7 @@ const Navbar = async () => {
                             </Link>
                             <Badge
                                 variant="outline"
-                                className="absolute -top-2 -right-2 px-1 py-0.5 text-[0.6rem] bg-teal-300 text-yellow-800 border-yellow-300"
+                                className="absolute -top-2 -right-2 px-1 py-0.5 text-[0.6rem] bg-teal-300 text-yellow-800 border-yellow-300 "
                             >
                                 WIP
                             </Badge>
@@ -67,14 +73,14 @@ const Navbar = async () => {
 
                     {/* Notification Icon */}
                     {session?.user?.email && (
-                        <NotificationIcon />
+                        <NotificationIcon notifications={notifications} />
                     )}
 
 
                     {/* User Account or Sign-in */}
                     <div className="flex items-center gap-4">
                         {session?.user ? (
-                            <UserAccountNav user={session.user} username={session?.user?.username} />
+                            <UserAccountNav user={session.user} username={session?.user?.username} isUserPremium={isPremium} />
                         ) : (
                             <Link href="/sign-in" className={buttonVariants({
                                 size: "sm",
