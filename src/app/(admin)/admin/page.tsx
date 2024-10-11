@@ -1,14 +1,17 @@
 import { Bell, Pin, Settings2, TerminalSquare } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
+import { authOptions, getAuthSession } from "@/lib/auth";
+import { getActiveProducts, getAdminData, getPendingProducts, getRejectedProducts, getTotalUpvotes, getUsers } from "@/lib/launchpad-server-actions/server-actions";
 
 import H1 from "@/components/h1";
 import JobListItem from "@/components/Jobboard/JobListItem";
 import Link from "next/link";
+import OverviewChart from "./launchpad/_components/overview-chart";
 import PendingProducts from "./launchpad/_components/pending-products";
+import RecentActivity from "./launchpad/_components/recent-activity";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/lib/db";
-import { getAuthSession } from "@/lib/auth";
-import { getPendingProducts } from "@/lib/launchpad-server-actions/server-actions";
+import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
 export default async function page() {
@@ -17,13 +20,27 @@ export default async function page() {
         where: { approved: false },
     });
 
+
+    const users = await getUsers();
     const pendingProducts = await getPendingProducts();
+    const authenticatedUser = await getServerSession(authOptions);
+    const activeProducts = await getActiveProducts();
+    const rejectedProducts = await getRejectedProducts();
+    const totalUpvotes = await getTotalUpvotes();
+    const data = await getAdminData();
+
+
+    console.log(data)
+    const premiumUsers = users.filter((user: any) => user.isPremium);
+
+
+
 
     if (session?.user.role !== "ADMIN") {
         return notFound();
     } else {
         return (
-            <main className="m-auto my-10 max-w-5xl space-y-10 px-3">
+            <main className="m-auto my-10 max-w-7xl space-y-10 px-3">
 
                 <H1 className="text-center animate-gradient gradient-text">Admin Dashboard</H1>
                 <div className="w-full rounded-md p-8  bg-emerald-200  mt-10 md:flex items-center gap-x-4">
@@ -38,14 +55,7 @@ export default async function page() {
                     <div className="flex justify-between items-center">
                         <div className="flex gap-x-6 items-center py-10">
                             <Link href={"/"} className="">
-                                {/* <Image
-                                    src={"/logo/logo.png"}
-                                    alt="logo"
-                                    width={500}
-                                    height={500}
-                                    className="w-20 h-20 md:w-40
-                         md:h-40 border border-zinc-600 rounded-md cursor-pointer"
-                                /> */}
+
                                 <TerminalSquare className="text-5xl text-purple-600" size={52} />
                             </Link>
 
@@ -68,7 +78,7 @@ export default async function page() {
                                 <CardTitle className="text-md font-bold">Users</CardTitle>👤
                             </CardHeader>
                             <CardContent>
-                                {50}
+                                {users.length}
                             </CardContent>
                         </Card>
 
@@ -78,7 +88,7 @@ export default async function page() {
                                 💰
                             </CardHeader>
                             <CardContent>
-                                {10}
+                                {premiumUsers.length}
                             </CardContent>
                         </Card>
 
@@ -90,7 +100,7 @@ export default async function page() {
                                 📦
                             </CardHeader>
                             <CardContent>
-                                {10}
+                                {activeProducts.length}
                             </CardContent>
                         </Card>
 
@@ -102,7 +112,7 @@ export default async function page() {
                                 🕒
                             </CardHeader>
                             <CardContent>
-                                {2}
+                                {pendingProducts.length}
                             </CardContent>
                         </Card>
 
@@ -114,7 +124,7 @@ export default async function page() {
                                 👤
                             </CardHeader>
                             <CardContent>
-                                {1}
+                                {rejectedProducts.length}
                             </CardContent>
                         </Card>
 
@@ -123,7 +133,7 @@ export default async function page() {
                                 <CardTitle className="text-md font-bold">Upvotes</CardTitle> 🔺
                             </CardHeader>
                             <CardContent>
-                                {100}
+                                {totalUpvotes}
                             </CardContent>
                         </Card>
                     </div>
@@ -135,8 +145,8 @@ export default async function page() {
                                 <CardTitle className="pb-10 text-zinc-700">Overview</CardTitle>
                             </CardHeader>
                             <CardContent className="pl-2">
-                                {/* <OverviewChart data={data} /> */}
-                                Overview chart here
+                                <OverviewChart data={data} />
+
                             </CardContent>
                         </Card>
 
@@ -147,8 +157,8 @@ export default async function page() {
 
                             </CardHeader>
                             <CardContent>
-                                {/* <RecentActivity users={users} /> */}
-                                Recent Activity here
+                                <RecentActivity users={users} />
+
                             </CardContent>
                         </Card>
 
