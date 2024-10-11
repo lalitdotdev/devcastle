@@ -295,6 +295,71 @@ export const getCategories = async () => {
   return categories;
 };
 
+export const commentOnProduct = async (
+  productId: string,
+  commentText: string,
+) => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.id
+    ) {
+      throw new Error("User ID is missing or invalid");
+    }
+
+    const userId = authenticatedUser.user.id;
+
+    // Check if authenticated user has a profile picture
+    const profilePicture = authenticatedUser.user.image || ""; // Use an empty string if profile picture is undefined
+
+    await db.launchPadComment.create({
+      data: {
+        createdAt: new Date(),
+        productId,
+        userId,
+        body: commentText,
+        profilePicture: profilePicture,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    const productDetails = await db.product.findUnique({
+      where: {
+        id: productId,
+      },
+      select: {
+        userId: true,
+        name: true, // Include the product name in the query
+      },
+    });
+
+    // Check if the commenter is not the owner of the product
+    if (productDetails && productDetails.userId !== userId) {
+      // Notify the product owner about the comment
+      await db.launchPadNotification.create({
+        data: {
+          userId: productDetails.userId,
+          body: `Commented on your product "${productDetails.name}"`,
+          profilePicture: profilePicture,
+          productId: productId,
+          type: "COMMENT",
+          status: "UNREAD",
+          // Ensure commentId is included here
+        },
+      });
+    }
+    revalidatePath(`/launchpad`);
+  } catch (error) {
+    console.error("Error commenting on product:", error);
+    throw error;
+  }
+};
+
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
@@ -414,6 +479,53 @@ export const getActiveProducts = async () => {
   });
 
   return products;
+};
+
+export const getRejectedProducts = async () => {
+  const products = await db.product.findMany({
+    where: {
+      status: "REJECTED",
+    },
+    include: {
+      categories: true,
+      images: true,
+    },
+  });
+
+  return products;
+};
+
+export const getUsers = async () => {
+  const users = await db.user.findMany();
+
+  return users;
+};
+
+export const getTotalUpvotes = async () => {
+  const totalUpvotes = await db.productUpvote.count({
+    where: {
+      product: {
+        status: "ACTIVE",
+      },
+    },
+  });
+  return totalUpvotes;
+};
+
+export const getAdminData = async () => {
+  const totalProducts = await db.product.count();
+  const totalUsers = await db.user.count();
+  const totalUpvotes = await db.productUpvote.count();
+  const totalComments = await db.launchPadComment.count();
+  const totalCategories = await db.launchPadCategory.count();
+
+  return {
+    totalProducts,
+    totalUsers,
+    totalUpvotes,
+    totalComments,
+    totalCategories,
+  };
 };
 
 // ==================================== Product Actions ====================================
