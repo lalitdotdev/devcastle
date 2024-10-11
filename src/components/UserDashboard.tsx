@@ -26,6 +26,8 @@ import H1 from "./h1";
 import Image from "next/image";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
+import { Loader2 } from "lucide-react";
+import ProductHuntFeedImporter from "@/components/Feed/ProductHuntFeedImport";
 import { UploadCloud } from "lucide-react";
 import { User } from "@prisma/client";
 import { UserProfileValidator } from "@/lib/validators/username";
@@ -35,6 +37,8 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+const Bookmarks = React.lazy(() => import("@/app/bookmarks/_components/BookMarks"));
 
 interface UserDashboardProps extends React.HTMLAttributes<HTMLFormElement> {
     user: Pick<User, "id" | "username" | "image" | "about">;
@@ -101,10 +105,10 @@ export function UserDashboard({
             <Tabs defaultValue="tab1" className="md:w-[80%] items-center">
                 <Tabs defaultValue="account" className="w-full">
                     <div className="border-b border-gray-500">
-                        <TabsList className="grid grid-cols-6 w-full lg:w-[60%]  gap-4 font-semibold max-xl:w-full">
+                        <TabsList className="grid grid-cols-6 w-full lg:w-[60%]  gap-4 font-semibold max-xl:w-full text-sm">
                             <TabsTrigger value="account">Account</TabsTrigger>
                             <TabsTrigger value="articles">Articles</TabsTrigger>
-                            <TabsTrigger value="bookmarks">BookMarks</TabsTrigger>
+                            <TabsTrigger value="bookmarks" className="w-full">BookMarks</TabsTrigger>
                             <TabsTrigger value="gigs">Gigs</TabsTrigger>
                             <TabsTrigger value="kanban">Kanban</TabsTrigger>
                             <TabsTrigger value="imports">Imports</TabsTrigger>
@@ -244,7 +248,12 @@ export function UserDashboard({
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <p>Bookmarks</p>
+                                <React.Suspense fallback={<div className="flex justify-center items-center">
+                                    <Loader2 className="w-10 h-10 animate-spin text-purple-500" />
+
+                                </div>}>
+                                    <Bookmarks />
+                                </React.Suspense>
                             </CardContent>
                         </Card>
                     </TabsContent>
@@ -291,7 +300,7 @@ export function UserDashboard({
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <p>Imports</p>
+                                <ProductHuntFeedImporter />
                             </CardContent>
                         </Card>
                     </TabsContent>
