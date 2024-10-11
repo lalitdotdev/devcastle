@@ -767,3 +767,17 @@ export const getRankById = async (): Promise<
 
   return productsWithRanks;
 };
+
+export const getProductsByCategoryName = async (category: string) => {
+  const products = await db.product.findMany({
+    where: {
+      categories: {
+        some: {
+          name: category,
+        },
+      },
+      status: "ACTIVE",
+    },
+  });
+  return products;
+};
