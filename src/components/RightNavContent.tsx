@@ -19,8 +19,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface RightNavContentProps {
-    products: any;
-    authenticatedUser: any;
+    products?: any;
+    authenticatedUser?: any;
 }
 
 const RightNavContent = ({ products, authenticatedUser }: RightNavContentProps) => {
