@@ -1,6 +1,6 @@
 "use client";
 
-import { Activity, ArrowUpWideNarrow, BookOpen, Briefcase, Compass, FilePlus, Heart, HeartHandshake, HelpingHand, Newspaper, Package, Rocket, Settings, UserCog, User as UserIcon } from "lucide-react";
+import { Activity, ArrowUpWideNarrow, BookOpen, Briefcase, Compass, Crown, FilePlus, Heart, HeartHandshake, HelpingHand, Newspaper, Package, Rocket, Settings, UserCog, User as UserIcon } from "lucide-react";
 import { Github, Library } from "lucide-react";
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetTrigger } from "./ui/sheet";
@@ -17,9 +17,10 @@ import { signOut } from "next-auth/react";
 interface UserAccountNavProps {
     user: Pick<User, "name" | "image" | "email">;
     username: string | null | undefined;
+    isUserPremium: boolean;
 }
 
-const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
+const UserAccountNav: FC<UserAccountNavProps> = ({ user, username, isUserPremium }) => {
     const [open, setOpen] = useState(false);
 
     const handleLinkClick = () => {
@@ -28,22 +29,30 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
 
     return (
         <div className="flex-shrink-0 md:block md:flex-shrink-0 md:items-center gap-4 justify-center items-center ml-2">
+
             <div className="text-gray-200 mr-4">
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
-                        <div className="flex items-center justify-center p-1 rounded-lg transition-all duration-300 ease-in-out cursor-pointer ">
-                            <UserAvatar
-                                className="md:h-10 md:w-10 h-7 w-7"
-                                user={{
-                                    name: user.name || null,
-                                    image: user.image || undefined,
-                                }}
-                            />
+                        <div className="flex items-center justify-center p-1 rounded-lg transition-all duration-300 ease-in-out cursor-pointer  ">
+
+
+                            <div className="relative flex items-center mr-3 border rounded-xl border-zinc-800 py-2 px-2">
+
+                                <UserAvatar
+                                    className="md:h-10 md:w-10 h-7 w-7 "
+                                    user={{
+                                        name: user.name || null,
+                                        image: user.image || undefined,
+                                    }}
+                                />
+
+
+                            </div>
+
                         </div>
                     </SheetTrigger>
                     <SheetContent className="w-[240px] md:w-[400px]  bg-[#1B1F23] text-gray-200 border border-gray-600 rounded-l-2xl p-4 text-xs md:text-sm overflow-hidden data-[state=closed]:animate-out">
                         <div className="space-y-[2.2px] md:space-y-1">
-
 
                             {/* Navigation links */}
                             {[
@@ -123,7 +132,18 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username }) => {
                                 >
                                     Sign Out
                                 </div>
-
+                                {/* Premium Membership */}
+                                {isUserPremium ? (
+                                    <div className="flex items-center gap-2  w-fit p-2 rounded-md ">
+                                        <Crown size={22} className="text-yellow-400" />
+                                        <span>Premium Member</span>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center gap-2 p-2 rounded-md bg-gray-700">
+                                        <Rocket size={22} />
+                                        <span>Upgrade to Premium</span>
+                                    </div>
+                                )}
                                 <div className="flex gap-2">
                                     <Link
                                         href="https://github.com/lalitdotdev/devcastle"
