@@ -3,6 +3,7 @@
 import { authOptions } from "../auth";
 import { db } from "../db";
 import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
 
 interface ProductData {
   name: string;
@@ -221,6 +222,36 @@ export const deleteProduct = async (productId: string) => {
     },
   });
   return true;
+};
+
+export const getUpvotedProducts = async () => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.id
+    ) {
+      throw new Error("User ID is missing or invalid");
+    }
+
+    const userId = authenticatedUser.user.id;
+
+    const upvotedProducts = await db.productUpvote.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        product: true,
+      },
+    });
+
+    return upvotedProducts.map((upvote) => upvote.product);
+  } catch (error) {
+    console.error("Error getting upvoted products:", error);
+    return [];
+  }
 };
 
 // ==================================== Admin Actions ====================================
