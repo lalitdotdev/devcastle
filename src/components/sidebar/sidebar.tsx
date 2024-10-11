@@ -45,7 +45,7 @@ const Sidebar = () => {
                 <div className="mx-auto border-t border-gray-700 py-6">
                     <ul className="space-y-2">
                         <li>
-                            <a href="/settings" className="flex items-center hover:bg-gray-700 rounded p-2 transition-colors duration-200">
+                            <a href="/launchpad/settings" className="flex items-center hover:bg-gray-700 rounded p-2 transition-colors duration-200">
                                 <Settings size={20} />
                             </a>
                         </li>

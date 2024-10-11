@@ -38,12 +38,12 @@ const guestRoutes = [
     {
         icon: Compass,
         label: "Search",
-        href: "/search",
+        href: "/cb/create",
     },
     {
         icon: User,
         label: "Profile",
-        href: "/user",
+        href: "/dashboard",
     },
     {
         icon: BookMarked,
@@ -53,12 +53,12 @@ const guestRoutes = [
     {
         icon: Rocket,
         label: "Launches",
-        href: "/launches"
+        href: "/launchpad"
     },
     {
         icon: Boxes,
         label: "Categories",
-        href: "/showcase/categories"
+        href: "/launchpad/categories"
     },
 ]
 
