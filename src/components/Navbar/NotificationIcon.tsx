@@ -11,7 +11,7 @@ import {
 
 import { BellRing } from "lucide-react";
 import Image from "next/image";
-// import { PiBell } from "react-icons/pi";
+import { markAllNotificationsAsRead } from "@/lib/launchpad-server-actions/server-actions";
 // import { markAllNotificationsAsRead } from "@/lib/server-actions";
 import { useState } from "react";
 
@@ -56,23 +56,23 @@ const NotificationIcon: React.FC<NotificationIconProps> = ({
     };
 
 
-    // const handleMarkAllAsRead = async () => {
-    //     try {
-    //         //mark all notifications as read with server action
-    //         await markAllNotificationsAsRead();
-    //         setUnreadNotifications(0);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
+    const handleMarkAllAsRead = async () => {
+        try {
+            //mark all notifications as read with server action
+            await markAllNotificationsAsRead();
+            setUnreadNotifications(0);
+        } catch (error) {
+            console.log(error);
+        }
 
-    // };
+    };
 
     return (
         <div>
             <Sheet>
                 <SheetTrigger >
-                    <div className="flex items-center border border-gray-700 rounded-lg p-2 ">
-                        <BellRing className="text-gray-600 " size={26} />
+                    <div className="flex items-center mx-2">
+                        <BellRing className="text-emerald-50 " size={28} />
                         {unreadNotifications > 0 && (
                             <div
                                 className="absolute ml-3 mb-3 bg-red-500
@@ -90,7 +90,7 @@ const NotificationIcon: React.FC<NotificationIconProps> = ({
                 </SheetTrigger>
                 <SheetContent className="border-l border-zinc-700">
                     <SheetHeader>
-                        <SheetTitle className="text-teal-500">Notifications</SheetTitle>
+                        <SheetTitle className="text-teal-500">Notifications 🔔</SheetTitle>
                         <SheetDescription>
                             View all your notifications here
                         </SheetDescription>
@@ -104,7 +104,7 @@ const NotificationIcon: React.FC<NotificationIconProps> = ({
                     ) : (
                         <div className="py-6">
                             <button
-                                // onClick={handleMarkAllAsRead}
+                                onClick={handleMarkAllAsRead}
 
                                 className="text-sm text-red-500 hover:underline">
                                 Mark all as read
@@ -125,11 +125,11 @@ const NotificationIcon: React.FC<NotificationIconProps> = ({
                                 />
                                 {notification.status === "UNREAD" ? (
                                     <div>
-                                        <p className="text-xs">
+                                        <p className="text-xs text-zinc-300">
                                             {notification.createdAt &&
                                                 timeAgo(notification.createdAt)}
                                         </p>
-                                        <h1 className="text-sm font-medium">{notification.body}</h1>
+                                        <h1 className="text-sm font-medium text-emerald-200">{notification.body}</h1>
                                     </div>
                                 ) : (
                                     <div className="text-muted-foreground">

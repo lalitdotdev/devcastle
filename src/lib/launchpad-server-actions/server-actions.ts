@@ -3,6 +3,7 @@
 import { authOptions } from "../auth";
 import { db } from "../db";
 import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
 
 interface ProductData {
   name: string;
@@ -223,6 +224,241 @@ export const deleteProduct = async (productId: string) => {
   return true;
 };
 
+export const getUpvotedProducts = async () => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.id
+    ) {
+      throw new Error("User ID is missing or invalid");
+    }
+
+    const userId = authenticatedUser.user.id;
+
+    const upvotedProducts = await db.productUpvote.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        product: true,
+      },
+    });
+
+    return upvotedProducts.map((upvote) => upvote.product);
+  } catch (error) {
+    console.error("Error getting upvoted products:", error);
+    return [];
+  }
+};
+export const getProductBySlug = async (slug: string) => {
+  try {
+    const product = await db.product.findUnique({
+      where: {
+        slug,
+      },
+      include: {
+        images: true,
+        categories: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+        upvotes: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+    return product;
+  } catch (error) {
+    console.error("Error getting product by slug:", error);
+    return null;
+  }
+};
+
+export const getCategories = async () => {
+  const categories = await db.launchPadCategory.findMany({
+    where: {
+      products: {
+        some: {
+          status: "ACTIVE",
+        },
+      },
+    },
+  });
+
+  return categories;
+};
+
+export const commentOnProduct = async (
+  productId: string,
+  commentText: string,
+) => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.id
+    ) {
+      throw new Error("User ID is missing or invalid");
+    }
+
+    const userId = authenticatedUser.user.id;
+
+    // Check if authenticated user has a profile picture
+    const profilePicture = authenticatedUser.user.image || ""; // Use an empty string if profile picture is undefined
+
+    await db.launchPadComment.create({
+      data: {
+        createdAt: new Date(),
+        productId,
+        userId,
+        body: commentText,
+        profilePicture: profilePicture,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    const productDetails = await db.product.findUnique({
+      where: {
+        id: productId,
+      },
+      select: {
+        userId: true,
+        name: true, // Include the product name in the query
+      },
+    });
+
+    // Check if the commenter is not the owner of the product
+    if (productDetails && productDetails.userId !== userId) {
+      // Notify the product owner about the comment
+      await db.launchPadNotification.create({
+        data: {
+          userId: productDetails.userId,
+          body: `Commented on your product "${productDetails.name}"`,
+          profilePicture: profilePicture,
+          productId: productId,
+          type: "COMMENT",
+          status: "UNREAD",
+          // Ensure commentId is included here
+        },
+      });
+    }
+    revalidatePath(`/launchpad`);
+  } catch (error) {
+    console.error("Error commenting on product:", error);
+    throw error;
+  }
+};
+
+export const deleteProductComment = async (commentId: string) => {
+  try {
+    await db.launchPadComment.delete({
+      where: {
+        id: commentId,
+      },
+    });
+    revalidatePath(`/launchpad`);
+    return true;
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    throw error;
+  }
+};
+
+export const getNotifications = async () => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.id
+    ) {
+      throw new Error("User ID is missing or invalid");
+    }
+
+    const userId = authenticatedUser.user.id;
+
+    const notifications = await db.launchPadNotification.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (notifications.length === 0) {
+      return null;
+    }
+
+    return notifications;
+  } catch (error) {
+    console.error("Error getting notifications:", error);
+    return [];
+  }
+};
+
+export const markAllNotificationsAsRead = async () => {
+  try {
+    const authenticatedUser = await getServerSession(authOptions);
+
+    if (
+      !authenticatedUser ||
+      !authenticatedUser.user ||
+      !authenticatedUser.user.id
+    ) {
+      throw new Error("User ID is missing or invalid");
+    }
+
+    const userId = authenticatedUser?.user.id;
+
+    await db.launchPadNotification.updateMany({
+      where: {
+        userId,
+      },
+      data: {
+        status: "READ",
+      },
+    });
+  } catch (error) {
+    console.error("Error marking all notifications as read:", error);
+    throw error;
+  }
+};
+
+export const searchProducts = async (query: string) => {
+  const products = await db.product.findMany({
+    where: {
+      name: {
+        contains: query,
+      },
+      status: "ACTIVE",
+    },
+  });
+
+  return products;
+};
+
+export const getProductsByUserId = async (userId: string) => {
+  const products = await db.product.findMany({
+    where: {
+      userId,
+    },
+  });
+
+  return products;
+};
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
@@ -342,6 +578,53 @@ export const getActiveProducts = async () => {
   });
 
   return products;
+};
+
+export const getRejectedProducts = async () => {
+  const products = await db.product.findMany({
+    where: {
+      status: "REJECTED",
+    },
+    include: {
+      categories: true,
+      images: true,
+    },
+  });
+
+  return products;
+};
+
+export const getUsers = async () => {
+  const users = await db.user.findMany();
+
+  return users;
+};
+
+export const getTotalUpvotes = async () => {
+  const totalUpvotes = await db.productUpvote.count({
+    where: {
+      product: {
+        status: "ACTIVE",
+      },
+    },
+  });
+  return totalUpvotes;
+};
+
+export const getAdminData = async () => {
+  const totalProducts = await db.product.count();
+  const totalUsers = await db.user.count();
+  const totalUpvotes = await db.productUpvote.count();
+  const totalComments = await db.launchPadComment.count();
+  const totalCategories = await db.launchPadCategory.count();
+
+  return {
+    totalProducts,
+    totalUsers,
+    totalUpvotes,
+    totalComments,
+    totalCategories,
+  };
 };
 
 // ==================================== Product Actions ====================================
@@ -483,4 +766,18 @@ export const getRankById = async (): Promise<
   }));
 
   return productsWithRanks;
+};
+
+export const getProductsByCategoryName = async (category: string) => {
+  const products = await db.product.findMany({
+    where: {
+      categories: {
+        some: {
+          name: category,
+        },
+      },
+      status: "ACTIVE",
+    },
+  });
+  return products;
 };

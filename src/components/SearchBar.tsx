@@ -80,7 +80,7 @@ const SearchBar: FC<SearchBarProps> = () => {
                 isLoading={isFetching}
                 onValueChange={handleInputChange}
                 value={input}
-                className="h-full w-full bg-transparent text-[0.9rem] focus:outline-none text-white [&:not(:placeholder-shown)~button]:visible [&:not(:placeholder-shown)~button]:opacity-100"
+                className="h-7 w-full bg-transparent text-[0.9rem] focus:outline-none text-white [&:not(:placeholder-shown)~button]:visible [&:not(:placeholder-shown)~button]:opacity-100"
                 placeholder="Search communities to join..."
             />
 

@@ -143,7 +143,7 @@ export default function ProductHuntFeed() {
                     {posts.map((post) => (
                         <motion.li
                             key={post.id}
-                            className="bg-[#242A30] rounded-md overflow-hidden hover:bg-[#2C353D] transition-colors duration-300"
+                            className="bg-gray-800 border border-gray-700 rounded-md overflow-hidden hover:bg-[#2C353D] transition-colors duration-300"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.5, delay: 0.1 }}
