@@ -281,6 +281,20 @@ export const getProductBySlug = async (slug: string) => {
   }
 };
 
+export const getCategories = async () => {
+  const categories = await db.launchPadCategory.findMany({
+    where: {
+      products: {
+        some: {
+          status: "ACTIVE",
+        },
+      },
+    },
+  });
+
+  return categories;
+};
+
 // ==================================== Admin Actions ====================================
 
 export const getPendingProducts = async () => {
