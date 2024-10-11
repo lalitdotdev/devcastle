@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowBigUp, MessageCircle, Trash, Upload } from "lucide-react";
+import { commentOnProduct, deleteProductComment } from "@/lib/launchpad-server-actions/server-actions";
 
 import { Badge } from "@/components/ui/badge";
 import CarouselComponent from "@/components/launchpad/product-image-carousel";
@@ -8,6 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import ShareModal from "../share-product-modal";
 import ShareProductModalContent from "./share-product-modal-content";
+import { StatefulButton } from "@/components/Feed/Stateful-btn";
+import { toast } from "sonner";
 import { useState } from "react";
 
 interface ProductModalContentProps {
@@ -38,7 +41,27 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
     };
 
     const handleCommentSubmit = async () => {
-        console.log('Comment submit handler')
+        try {
+            // call the comment server action with the product id and the comment text
+            await commentOnProduct(currentProduct.id, commentText);
+
+            //reset the comment text
+            setCommentText("");
+            setComments([
+                ...comments,
+                {
+                    user: authenticatedUser.user.name,
+                    body: commentText,
+                    profile: authenticatedUser.user.image,
+                    userId: authenticatedUser.user.id,
+                    timestamp: new Date().toISOString(),
+                }
+            ])
+
+        } catch (error) {
+            console.log(error);
+        }
+
     };
 
     const handleCommentChange = (event: any) => {
@@ -46,7 +69,16 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
     };
 
     const handleDeleteComment = async (commentId: string) => {
-        console.log('Delete comment handler')
+        try {
+            // Call the deleteComment function with the comment ID
+            await deleteProductComment(commentId);
+            // Filter out the deleted comment from the comments state
+            setComments(comments.filter((comment: any) => comment.id !== commentId));
+            toast.success("Comment deleted successfully");
+        } catch (error) {
+            console.error("Error deleting comment:", error);
+            // Handle error appropriately, e.g., display an error message to the user
+        }
     };
 
     const handleUpvoteClick = async (
@@ -169,12 +201,13 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
                         </div>
 
                         <div className="flex justify-end mt-4">
-                            <button
-                                onClick={handleCommentSubmit}
-                                className="bg-[#ff6154] text-white p-2 rounded-md"
+                            <StatefulButton
+                                onClickAsync={handleCommentSubmit}
+                                statusLoading='Commenting..'
+                                className="p-6 text-sm font-medium  text-white transition-colors duration-300 border border-slate-500 bg-[#9945FF] w-fit"
                             >
                                 Comment
-                            </button>
+                            </StatefulButton>
                         </div>
                     </div>
 
@@ -192,11 +225,11 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
                                 <div className="w-full">
                                     <div className="flex justify-between items-center">
                                         <div className="flex gap-x-2 items-center">
-                                            <h1 className="text-gray-600 font-semibold cursor-pointer">
+                                            <h1 className="text-teal-500 font-semibold cursor-pointer">
                                                 {comment.user}
                                             </h1>
                                             {comment.userId === currentProduct.userId && (
-                                                <Badge className="bg-[#88aaff]">Creator</Badge>
+                                                <Badge className="bg-blue-500 ">Creator</Badge>
                                             )}
 
                                             <div className="text-gray-500 text-xs">
@@ -210,12 +243,13 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
                                                 <Trash
                                                     onClick={() => handleDeleteComment(comment.id)}
                                                     className="text-red-500 hover:cursor-pointer"
+                                                    size={20}
                                                 />
                                             )}
 
                                     </div>
 
-                                    <div className="text-gray-600 text-sm
+                                    <div className="text-zinc-300 text-sm
                     hover:cursor-pointer mt-2">
                                         {comment.body}
                                     </div>
