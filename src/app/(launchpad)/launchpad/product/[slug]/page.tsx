@@ -30,8 +30,8 @@ const ProductPage = async ({ params }: { params: IParams }) => {
     const productImageUrls = product.images.map((image: any) => image.url);
 
     return (
-        <div className=" border min-h-screen  ">
-            <div className="max-w-[90rem]  mx-auto sm:px-16 py-12  lg:px-8">
+        <div className="  min-h-screen  ">
+            <div className="border border-gray-700 max-w-7xl mx-auto sm:px-16 py-12 lg:pl-8 shadow-lg rounded-xl">
                 <div className=" rounded-lg overflow-hidden">
                     <div className="p-6 sm:p-10">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8">
