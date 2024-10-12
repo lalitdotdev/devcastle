@@ -1,6 +1,7 @@
 "use client"
 
-import { HelpCircle, PanelRightClose, PanelRightOpen, PersonStanding, Settings, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronRight, HelpCircle, PersonStanding, Settings } from 'lucide-react';
 import React, { useState } from 'react';
 
 import Link from 'next/link';
@@ -12,67 +13,82 @@ const Sidebar = () => {
 
     const toggleSidebar = () => setIsOpen(!isOpen);
 
+    const sidebarVariants = {
+        open: { x: 0, transition: { type: "spring", stiffness: 300, damping: 30 } },
+        closed: { x: "-100%", transition: { type: "spring", stiffness: 300, damping: 30 } }
+    };
+
+    const iconVariants = {
+        open: { rotate: 0 },
+        closed: { rotate: 180 }
+    };
+
     return (
         <>
-            {/* Mobile menu button */}
-            <button
+            {/* Trigger Button */}
+            <motion.button
                 onClick={toggleSidebar}
-                className="lg:hidden top-24 mt-24 left-6 z-50 flex items-center justify-center p-2  text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white rounded-full"
+                className="fixed top-20 left-6  flex items-center justify-center sm:p-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
             >
-                {isOpen ? <PanelRightClose size={24} className='text-zinc-500' /> : <PanelRightOpen size={24} className='text-zinc-500' />}
-            </button>
+                <motion.div
+                    variants={iconVariants}
+                    animate={isOpen ? "open" : "closed"}
+                >
+                    <ChevronRight size={24} />
+                </motion.div>
+            </motion.button>
 
             {/* Sidebar */}
-            <div
-                className={`fixed inset-y-0 left-0 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
-                    } lg:translate-x-0 transition duration-200 ease-in-out z-10 w-24 border-r border-zinc-800  bg-[#1B1F23] text-gray-100 flex flex-col shadow-lg mt-24 rounded-r-md`}
-
-            >
-                {/* <div className="flex items-center justify-center p-2 "> */}
-                {/* <Image
-                    src="/logo/logo.png"
-                    alt="devcastle"
-                    width={60}
-                    height={60}
-                    className='mx-auto'
-                /> */}
-                {/* <span className="text-xl ml-2">devcastle</span> */}
-                {/* </div> */}
-
-                <nav className="flex-1 overflow-y-auto py-4">
-                    <SidebarRoutes />
-                </nav>
-                <div className="mx-auto border-t border-gray-700 py-6">
-                    <ul className="space-y-2">
-                        <li>
-                            <a href="/launchpad/settings" className="flex items-center hover:bg-gray-700 rounded p-2 transition-colors duration-200">
-                                <Settings size={20} />
-                            </a>
-                        </li>
-                        <Link
-                            href="/admin"
-                            className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2 hover:bg-gray-700")}
-                        >
-                            <PersonStanding size={24} />
-                        </Link>
-                        <li>
-                            <a href="/help" className="flex items-center  hover:bg-gray-700 rounded p-2 transition-colors duration-200">
-                                <HelpCircle size={20} />
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div >
+            <AnimatePresence>
+                <motion.div
+                    className="fixed inset-y-0 left-0 w-24 bg-gray-800  text-white flex flex-col shadow-2xl mt-24 rounded-r-xl overflow-hidden z-50"
+                    variants={sidebarVariants}
+                    initial="closed"
+                    animate={isOpen ? "open" : "closed"}
+                >
+                    <nav className="flex-1 overflow-y-auto py-8 px-2">
+                        <SidebarRoutes />
+                    </nav>
+                    <div className="border-t border-gray-700 py-4 px-2">
+                        <ul className="space-y-6">
+                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                <Link href="/launchpad/settings" className="flex items-center justify-center hover:text-indigo-300 transition-colors duration-200">
+                                    <Settings size={24} />
+                                </Link>
+                            </motion.li>
+                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                <Link
+                                    href="/admin"
+                                    className={cn("flex items-center justify-center hover:text-indigo-300 transition-colors duration-200")}
+                                >
+                                    <PersonStanding size={28} />
+                                </Link>
+                            </motion.li>
+                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                <Link href="/help" className="flex items-center justify-center hover:text-indigo-300 transition-colors duration-200">
+                                    <HelpCircle size={24} />
+                                </Link>
+                            </motion.li>
+                        </ul>
+                    </div>
+                </motion.div>
+            </AnimatePresence>
 
             {/* Overlay */}
-            {
-                isOpen && (
-                    <div
-                        className="fixed inset-0 bg-black bg-opacity-50 z-0 lg:hidden"
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-0 bg-black bg-opacity-50 lg:hidden"
                         onClick={toggleSidebar}
-                    ></div>
-                )
-            }
+                    />
+                )}
+            </AnimatePresence>
         </>
     );
 };
