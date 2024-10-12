@@ -49,7 +49,7 @@ const CategoryPage = async ({ params }: { params: IParams }) => {
             <div className="pt-10 space-y-4">
                 {products.map((product: any) => (
                     <Link
-                        href={`/product/${product.slug}`}
+                        href={`/launchpad/product/${product.slug}`}
                         key={product.id}
                         className="flex gap-x-4 items-center p-2 rounded-lg border border-gray-800 hover:border-gray-700 transition-colors duration-200 bg-gray-800 "
                     >
