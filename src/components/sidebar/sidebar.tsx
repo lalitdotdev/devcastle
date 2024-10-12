@@ -28,7 +28,7 @@ const Sidebar = () => {
             {/* Trigger Button */}
             <motion.button
                 onClick={toggleSidebar}
-                className="fixed top-20 left-6  flex items-center justify-center sm:p-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
+                className="fixed top-20 left-6 z-[100] flex items-center justify-center sm:p-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
             >
