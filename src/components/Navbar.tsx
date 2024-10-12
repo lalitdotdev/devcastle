@@ -90,10 +90,6 @@ const Navbar = async () => {
                         )}
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <button className="md:hidden text-white hover:text-indigo-300 transition-colors duration-200">
-                        <Menu size={24} />
-                    </button>
                 </div>
             </div>
         </nav>
