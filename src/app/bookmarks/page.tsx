@@ -22,7 +22,7 @@ const tabs = [
         href: "/opportunities",
         content: (
             <div className="w-full border-b border-zinc-700 bg-gradient-to-br from-green-600 to-teal-800 p-6 rounded-lg shadow-md">
-                <p className="text-white text-lg">Find new opportunities here!</p>
+                <p className="text-white text-lg">Find your saved opportunities here!</p>
             </div>
         ),
     },

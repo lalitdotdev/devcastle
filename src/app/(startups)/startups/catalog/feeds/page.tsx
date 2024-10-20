@@ -172,7 +172,7 @@ export default function FeedPage() {
                     className="space-y-12"
                 >
                     <header className="">
-                        <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent gradient-text animate-gradient">
+                        <h1 className="text-5xl md:text-7xl font-extrabold mt-8 bg-clip-text text-transparent gradient-text animate-gradient font-sans">
                             Feed Reader
                         </h1>
                         <p className="text-lg text-zinc-500 max-w-2xl ">

@@ -1,7 +1,6 @@
 "use client";
 
-// import Select from "@/components/Jobboard/Select";
-import H1 from "@/components/h1";
+import { CreateJobValues, createJobSchema } from "@/lib/validators/jobFilter";
 import {
     Form,
     FormControl,
@@ -11,22 +10,24 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/Form";
-import { Input } from "@/components/ui/Input";
-import { jobTypes } from "@/lib/job-types";
-import { CreateJobValues, createJobSchema } from "@/lib/validators/jobFilter";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import { locationTypes } from "../../../../lib/job-types";
 
-import LocationInput from "@/components/Jobboard/LocationInput";
-import { X } from "lucide-react";
-import Select from "@/components/Jobboard/Select";
+import { FC } from "react";
+// import Select from "@/components/Jobboard/Select";
+import H1 from "@/components/h1";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
-import RichTextEditor from "@/components/Jobboard/RichTextEditor";
-import { draftToMarkdown } from "markdown-draft-js";
 import LoadingButton from "@/components/Jobboard/LoadingButton";
+import LocationInput from "@/components/Jobboard/LocationInput";
+import RichTextEditor from "@/components/Jobboard/RichTextEditor";
+import Select from "@/components/Jobboard/Select";
+import { X } from "lucide-react";
 import { createJobPosting } from "./actions";
+import { draftToMarkdown } from "markdown-draft-js";
+import { jobTypes } from "@/lib/job-types";
+import { locationTypes } from "../../../../lib/job-types";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface NewJobFormProps { }
 
@@ -66,6 +67,9 @@ const NewJobForm: FC<NewJobFormProps> = ({ }) => {
 
         try {
             await createJobPosting(formData);
+            toast.success('Job Created Successfully ', {
+                description: "Wait for approval from admin!"
+            })
         } catch (error) {
             alert("Something went wrong, please try again.");
         }

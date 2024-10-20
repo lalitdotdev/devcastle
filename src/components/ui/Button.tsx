@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-    "active:scale-95 inline-flex items-center justify-center rounded-md text-sm font-medium  focus:outline-none focus:ring-1 focus:ring-slate-400  disabled:opacity-50 dark:focus:ring-slate-400 disabled:pointer-events-none dark:focus:ring-offset-slate-900",
+    "active:scale-95 inline-flex items-center justify-center rounded-md text-sm font-medium  disabled:opacity-50  disabled:pointer-events-none ",
     {
         variants: {
             variant: {
@@ -16,7 +16,7 @@ const buttonVariants = cva(
                     "hover:bg-indigo-500 outline outline-1 outline-blue-300",
                 subtle: "bg-none text-indigo-600 border-2 border-indigo-600",
                 ghost:
-                    "bg-transparent text-zinc-800 data-[state=open]:bg-transparent data-[state=open]:bg-transparent",
+                    "bg-transparent text-zinc-800 data-[state=open]:bg-transparent data-[state=open]:bg-transparent border-none",
                 link: "bg-transparent underline-offset-4 hover:underline dark:text-slate-100 hover:bg-transparent dark:hover:bg-transparent",
             },
             size: {

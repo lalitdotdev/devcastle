@@ -24,13 +24,13 @@ export function generateMetadata({
 
 
 const page = async () => {
-    // TODO: {/* General feed ---> Logged Out
-    // TODO: Custom Feed -----> Logged In */}
+
 
     const session = await getAuthSession();
 
 
 
+    // todo: add a where clause to filter out only approved jobs and only show published jobs
     const where: Prisma.JobWhereInput = {
         AND: [
             { approved: true },

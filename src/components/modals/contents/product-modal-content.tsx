@@ -148,7 +148,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
                         <div className="flex gap-x-2">
                             {currentProduct.categories.map((category: any) => (
                                 <Link
-                                    href={`/category/${category.toLowerCase()}`}
+                                    href={`/launchpad/category/${category.toLowerCase()}`}
                                     key={category}
                                     className="bg-teal-400 text-black px-4 py-2 rounded-xl cursor-pointer"
                                 >

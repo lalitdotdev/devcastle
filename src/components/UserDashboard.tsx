@@ -105,7 +105,7 @@ export function UserDashboard({
             <Tabs defaultValue="tab1" className="md:w-[80%] items-center">
                 <Tabs defaultValue="account" className="w-full">
                     <div className="border-b border-gray-500">
-                        <TabsList className="grid grid-cols-6 w-full lg:w-[60%]  gap-4 font-semibold max-xl:w-full text-sm">
+                        <TabsList className="grid grid-cols-6 w-full lg:w-[70%]  gap-4 font-semibold max-xl:w-full text-sm">
                             <TabsTrigger value="account">Account</TabsTrigger>
                             <TabsTrigger value="articles">Articles</TabsTrigger>
                             <TabsTrigger value="bookmarks" className="w-full">BookMarks</TabsTrigger>
@@ -237,7 +237,7 @@ export function UserDashboard({
                         </Card>
                     </TabsContent>
                     <TabsContent value="bookmarks">
-                        <Card>
+                        <Card className="border-none">
                             <CardHeader>
                                 <CardTitle>Bookmarks</CardTitle>
                                 <CardDescription>
@@ -289,7 +289,7 @@ export function UserDashboard({
                         </Card>
                     </TabsContent>
                     <TabsContent value="imports">
-                        <Card>
+                        <Card className="border-none">
                             <CardHeader>
                                 <CardTitle>Imports and RSS Feed</CardTitle>
                                 <CardDescription>
