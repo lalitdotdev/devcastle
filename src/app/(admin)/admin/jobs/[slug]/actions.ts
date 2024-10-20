@@ -1,18 +1,19 @@
 "use server";
-import { getAuthSession } from "@/lib/auth";
+
 import { db } from "@/lib/db";
 import { del } from "@vercel/blob";
+import { getAuthSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
 type FormState = { error?: string } | undefined;
 
 export async function approveSubmission(
   prevState: FormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormState> {
   try {
     // throw new Error("Not implemented");
-    const jobId = parseInt(formData.get("jobId") as string);
+    const jobId = formData.get("jobId") as string;
     const session = await getAuthSession();
     if (session?.user.role !== "ADMIN") {
       throw new Error("Not Authorized !!");
@@ -35,11 +36,11 @@ export async function approveSubmission(
 // delete a job server action
 export async function deleteJob(
   prevState: FormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormState> {
   try {
     // throw new Error("Not implemented");
-    const jobId = parseInt(formData.get("jobId") as string);
+    const jobId = formData.get("jobId") as string;
     const session = await getAuthSession();
     if (session?.user.role !== "ADMIN") {
       throw new Error("Not Authorized !!");
