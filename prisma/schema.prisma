@@ -75,6 +75,8 @@ model User {
     receivedNotifications  Notification[]          @relation("Recipient")
     issuedNotifications    Notification[]          @relation("Issuer")
     launchPadNotifications LaunchPadNotification[]
+    createdJobs            Job[]                   @relation("JobCreator")
+    savedJobs              Job[]                   @relation("SavedJobs")
 }
 
 model Product {
@@ -321,25 +323,44 @@ model Follow {
 }
 
 model Job {
-    id               Int      @id @default(autoincrement())
-    slug             String   @unique
+    id               String  @id @default(cuid())
+    slug             String  @unique
     title            String
     type             String
     locationType     String
     location         String?
-    description      String?  @db.Text
+    description      String? @db.Text
     salary           Int
     companyName      String
     applicationEmail String?
     applicationUrl   String?
     companyLogoUrl   String?
-    approved         Boolean  @default(false)
-    createdAt        DateTime @default(now())
-    updatedAt        DateTime @updatedAt
+    user             User    @relation("JobCreator", fields: [userId], references: [id])
 
+    userId String
+
+    yearsOfExperience String?
+    workMode          String?
+    isPublished       Boolean @default(false)
+    tags              Tag[] // Relation to Tag modelapproved         Boolean  @default(false)
+    savedBy           User[]  @relation("SavedJobs") // Relation to User model for saved jobs
+
+    approved  Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([userId])
     @@fulltext([title])
     @@fulltext([title, description, companyName, location, type])
     @@map("jobs")
+}
+
+model Tag {
+    id   Int    @id @default(autoincrement())
+    name String @unique
+    jobs Job[]
+
+    @@map("tags")
 }
 
 model Notification {
