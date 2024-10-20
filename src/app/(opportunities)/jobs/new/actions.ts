@@ -1,7 +1,9 @@
 "use server";
 
+import { authOptions } from "@/lib/auth";
 import { createJobSchema } from "@/lib/validators/jobFilter";
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
 import { nanoid } from "nanoid";
 import path from "path";
 import { put } from "@vercel/blob";
@@ -10,6 +12,10 @@ import { toSlug } from "@/lib/utils";
 
 export async function createJobPosting(formData: FormData) {
   const values = Object.fromEntries(formData.entries());
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
 
   const {
     title,
@@ -35,7 +41,7 @@ export async function createJobPosting(formData: FormData) {
       {
         access: "public",
         addRandomSuffix: false,
-      }
+      },
     );
 
     companyLogoUrl = blob.url;
@@ -43,6 +49,7 @@ export async function createJobPosting(formData: FormData) {
 
   await db.job.create({
     data: {
+      userId: session?.user?.id,
       slug,
       title: title.trim(),
       type,
