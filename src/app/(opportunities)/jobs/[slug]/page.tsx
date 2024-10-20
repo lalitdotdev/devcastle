@@ -1,8 +1,13 @@
+import { ChevronLeft, Edit } from "lucide-react";
+
 import ApplyNowButton from "../_components/ApplyNowBtn";
+import { Button } from "@/components/ui/Button";
 import JobDetailsPageComponent from "@/components/Jobboard/JobDetailsPageComponent";
+import Link from "next/link";
 import { Metadata } from "next";
 import React from 'react';
 import { db } from "@/lib/db";
+import { getAuthSession } from "@/lib/auth";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -32,6 +37,7 @@ export async function generateStaticParams() {
         const jobs = await db.job.findMany({
             where: {
                 approved: true,
+                // isPublished: true,
             },
             select: {
                 slug: true,
@@ -55,7 +61,10 @@ export async function generateMetadata({
 export default async function JobDetailsPage({ params: { slug } }: PageProps) {
     const job = await getJob(slug);
 
+    const session = await getAuthSession();
     if (!job) notFound();
+
+    console.log(job)
 
     const { applicationEmail, applicationUrl } = job;
     const applicationLink = applicationEmail
@@ -67,14 +76,39 @@ export default async function JobDetailsPage({ params: { slug } }: PageProps) {
         notFound();
     }
 
+
+    const isJobCreator = session?.user?.id === job.userId;
     return (
-        <main className="m-auto my-10 flex max-w-7xl flex-col items-center gap-5 px-3  md:items-start">
-            <div className="w-full ">
-                <JobDetailsPageComponent job={job} />
-            </div>
-            <aside className="w-full md:w-1/4 sticky top-5">
-                <ApplyNowButton applicationLink={applicationLink} />
-            </aside>
-        </main>
+        <div className="min-h-screen">
+            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+                <div className="mb-8">
+                    <Link href="/opportunities" className="flex items-center text-blue-600 hover:text-blue-800">
+                        <ChevronLeft className="w-5 h-5 mr-1" />
+                        Back to all jobs
+                    </Link>
+                </div>
+                <div className="bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+                    <div className="p-6 sm:p-10">
+                        <div className="flex justify-between items-start mb-6">
+                            <h1 className="text-3xl font-bold">{job.title}</h1>
+
+
+                            {isJobCreator && (
+                                <Link href={`/jobs/edit/${job.id}`} passHref>
+                                    <Button variant="subtle" className="flex items-center ">
+                                        <Edit className="w-4 h-4 mr-2" />
+                                        Edit Job
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
+                        <JobDetailsPageComponent job={job} />
+                    </div>
+                </div>
+                <aside className="mt-8 w-fit">
+                    <ApplyNowButton applicationLink={applicationLink} />
+                </aside>
+            </main>
+        </div>
     );
 }
