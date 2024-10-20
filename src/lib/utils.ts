@@ -8,6 +8,16 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function isValidObjectId(id: string): boolean {
+  // Corrected CUID regex pattern
+  // This pattern checks for:
+  // - Starts with 'c'
+  // - Followed by 20-32 characters (to allow for different CUID versions)
+  // - Valid characters are lowercase letters a-z and numbers 0-9
+  const cuidPattern = /^c[a-z0-9]{20,32}$/;
+
+  return cuidPattern.test(id);
+}
 export function formatNumber(num: number | string): string {
   // Ensure the input is treated as a number and remove commas
   num = typeof num === "string" ? parseFloat(num.replace(/,/g, "")) : num;
