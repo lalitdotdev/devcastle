@@ -28,7 +28,7 @@ export default function AdminSidebar({ job }: AdminSidebarProps) {
 }
 
 interface AdminButtonProps {
-    jobId: number;
+    jobId: string;
 }
 
 function ApproveSubmissionButton({ jobId }: AdminButtonProps) {
