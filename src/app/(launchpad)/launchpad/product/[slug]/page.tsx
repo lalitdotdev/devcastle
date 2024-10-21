@@ -1,4 +1,4 @@
-import { MessageCircle, Tag } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Tag } from 'lucide-react';
 
 import CarouselComponent from "@/components/launchpad/product-image-carousel";
 import GoToWebsite from "./_components/go-to-website";
@@ -31,6 +31,12 @@ const ProductPage = async ({ params }: { params: IParams }) => {
 
     return (
         <div className="  min-h-screen  ">
+            <Link href='/launchpad'>
+                <div className='flex items-center gap-3 text-sm text-neutral-500'>
+                    <ArrowLeft className='w-4 h-4' />
+                    Back
+                </div>
+            </Link>
             <div className="border border-gray-700 max-w-7xl mx-auto sm:px-16 py-12 lg:pl-8 shadow-lg rounded-xl">
                 <div className=" rounded-lg overflow-hidden">
                     <div className="p-6 sm:p-10">
@@ -72,7 +78,7 @@ const ProductPage = async ({ params }: { params: IParams }) => {
                             </div>
                         </div>
 
-                        <div className="mb-12">
+                        <div className="mb-12 px-12">
                             <h2 className="text-xl font-semibold  mb-4">Product Showcase</h2>
                             <CarouselComponent productImages={productImageUrls} />
                         </div>

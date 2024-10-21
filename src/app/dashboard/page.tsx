@@ -1,6 +1,6 @@
 import { authOptions, getAuthSession } from "@/lib/auth";
 
-import { UserDashboard } from "@/components/UserDashboard";
+import { UserDashboard } from "@/components/dashboard/UserDashboard";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
