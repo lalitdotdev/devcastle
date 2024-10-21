@@ -4,7 +4,7 @@ import * as React from "react"
 import useEmblaCarousel, {
     type UseEmblaCarouselType,
 } from "embla-carousel-react"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "./Button"
@@ -197,60 +197,63 @@ CarouselItem.displayName = "CarouselItem"
 const CarouselPrevious = React.forwardRef<
     HTMLButtonElement,
     React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-    const { orientation, scrollPrev, canScrollPrev } = useCarousel()
+>(({ className, ...props }, ref) => {
+    const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
     return (
         <Button
             ref={ref}
-            variant={variant}
-            size="xs"
+            variant="outline"
+            size="sm"
             className={cn(
-                "absolute h-6 w-6 rounded-full border border-zinc-800",
+                "absolute z-10 h-8 w-8 rounded-full bg-white/80 shadow-md backdrop-blur-sm transition-all hover:bg-white border-none",
                 orientation === "horizontal"
-                    ? "-left-12 top-1/2 -translate-y-1/2"
-                    : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+                    ? "-left-4 top-1/2 -translate-y-1/2"
+                    : "-top-4 left-1/2 -translate-x-1/2 rotate-90",
+                !canScrollPrev && "opacity-50 cursor-not-allowed",
                 className
             )}
             disabled={!canScrollPrev}
             onClick={scrollPrev}
             {...props}
         >
-            <ArrowLeft className="h-4 w-4" />
+            <ChevronLeft className="h-4 w-4 text-zinc-700" />
             <span className="sr-only">Previous slide</span>
         </Button>
     )
-})
-CarouselPrevious.displayName = "CarouselPrevious"
+});
+CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<
     HTMLButtonElement,
     React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-    const { orientation, scrollNext, canScrollNext } = useCarousel()
+>(({ className, ...props }, ref) => {
+    const { orientation, scrollNext, canScrollNext } = useCarousel();
 
     return (
         <Button
             ref={ref}
-            variant={variant}
-            size="xs"
+            variant="outline"
+            size="sm"
             className={cn(
-                "absolute h-6 w-6 rounded-full border border-zinc-800",
+                "absolute z-10 h-8 w-8 rounded-full bg-white/80 shadow-md backdrop-blur-sm transition-all hover:bg-white border-none",
                 orientation === "horizontal"
-                    ? "-right-12 top-1/2 -translate-y-1/2 "
-                    : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90  ",
+                    ? "-right-4 top-1/2 -translate-y-1/2"
+                    : "-bottom-4 left-1/2 -translate-x-1/2 rotate-90",
+                !canScrollNext && "opacity-50 cursor-not-allowed",
                 className
             )}
             disabled={!canScrollNext}
             onClick={scrollNext}
             {...props}
         >
-            <ArrowRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4 text-zinc-700" />
             <span className="sr-only">Next slide</span>
         </Button>
     )
-})
-CarouselNext.displayName = "CarouselNext"
+});
+CarouselNext.displayName = "CarouselNext";
+
 
 export {
     type CarouselApi,
