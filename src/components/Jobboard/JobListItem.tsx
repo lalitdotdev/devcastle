@@ -1,14 +1,17 @@
 "use client"
 
-import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
+import { Banknote, Briefcase, Clock, Edit, Globe2, MapPin } from "lucide-react";
 import { formatMoney, formatTimeToNow } from "@/lib/utils";
 
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/Button";
 import Image from "next/image";
 import { Job } from "@prisma/client";
+import Link from "next/link";
 import React from 'react';
 import compLogoPlaceholder from "@/assets/complogo.png";
 import { motion } from 'framer-motion';
+import { useSession } from "next-auth/react";
 
 interface JobListItemProps {
     job: Job;
@@ -16,7 +19,9 @@ interface JobListItemProps {
 
 export default function JobListItem({
     job: {
+        id,
         title,
+        userId,
         companyName,
         type,
         locationType,
@@ -26,6 +31,10 @@ export default function JobListItem({
         createdAt,
     },
 }: JobListItemProps) {
+
+
+    const { data: session, status } = useSession()
+    const isJobCreator = session?.user?.id === userId
     return (
         <motion.article
             initial={{ opacity: 0, y: 20 }}
@@ -50,6 +59,14 @@ export default function JobListItem({
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
                     <h2 className="text-xl font-md text-blue-400">{title}</h2>
                     <h3 className="text-[#CCCDCE] font-semibold">{companyName}</h3>
+                    {isJobCreator && (
+                        <Link href={`/jobs/edit/${id}`} passHref>
+                            <Button variant="subtle" className="flex items-center ">
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit Job
+                            </Button>
+                        </Link>
+                    )}
                 </motion.div>
                 <motion.div
                     className="text-muted-foreground grid grid-cols-2 gap-2"

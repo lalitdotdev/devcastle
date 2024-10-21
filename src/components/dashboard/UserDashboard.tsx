@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import * as z from "zod";
 
+import { Bookmark, Briefcase, Loader2, RssIcon, Trello, UserIcon } from "lucide-react";
 import {
     Card,
     CardContent,
@@ -11,27 +11,29 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/Card";
+import { Job, User } from "@prisma/client";
+import React, { useEffect, useState } from "react"
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import axios, { AxiosError } from "axios";
 
-import { Button } from "./ui/Button";
-import H1 from "./h1";
+import { Button } from "../ui/Button";
+import H1 from "../h1";
 import Image from "next/image";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
-import { Loader2 } from "lucide-react";
+import { LucideIcon } from 'lucide-react'
 import ProductHuntFeedImporter from "@/components/Feed/ProductHuntFeedImport";
 import { UploadCloud } from "lucide-react";
-import { User } from "@prisma/client";
 import { UserProfileValidator } from "@/lib/validators/username";
 import { cn } from "@/lib/utils";
+import { getUserJobs } from "@/app/dashboard/actions";
 import { toast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -39,13 +41,25 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const Bookmarks = React.lazy(() => import("@/app/bookmarks/_components/BookMarks"));
-
+const JobResults = React.lazy(() => import('../Jobboard/JobResults'));
 interface UserDashboardProps extends React.HTMLAttributes<HTMLFormElement> {
     user: Pick<User, "id" | "username" | "image" | "about">;
 }
 
 type FormData = z.infer<typeof UserProfileValidator>;
 
+
+interface TabIconProps {
+    icon: LucideIcon,
+    label: string
+}
+
+const TabIcon = ({ icon: Icon, label }: TabIconProps) => (
+    <div className="flex items-center space-x-2">
+        <Icon className="w-4 h-4" />
+        <span>{label}</span>
+    </div>
+);
 export function UserDashboard({
     user,
     className,
@@ -63,6 +77,14 @@ export function UserDashboard({
             about: user?.about || "",
         },
     });
+
+
+
+
+    const [jobs, setJobs] = useState<Job[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
 
     const { mutate: updateUserProfile, isLoading } = useMutation({
         mutationFn: async ({ name, about }: FormData) => {
@@ -95,6 +117,25 @@ export function UserDashboard({
             router.refresh();
         },
     });
+    useEffect(() => {
+        async function fetchJobs() {
+            try {
+                const fetchedJobs = await getUserJobs();
+                setJobs(fetchedJobs);
+                setLoading(false);
+            } catch (err) {
+                setError('Failed to fetch jobs. Please try again.');
+                setLoading(false);
+            }
+        }
+
+        fetchJobs();
+    }, []);
+
+
+    if (error) return <div>{error}</div>;
+
+
 
     return (
         <form
@@ -102,20 +143,20 @@ export function UserDashboard({
             onSubmit={handleSubmit((e) => updateUserProfile(e))}
             {...props}
         >
-            <Tabs defaultValue="tab1" className="md:w-[80%] items-center">
+            <Tabs defaultValue="tab1" className="md:w-[85%] items-center">
                 <Tabs defaultValue="account" className="w-full">
-                    <div className="border-b border-gray-500">
-                        <TabsList className="grid grid-cols-6 w-full lg:w-[70%]  gap-4 font-semibold max-xl:w-full text-sm">
-                            <TabsTrigger value="account">Account</TabsTrigger>
-                            <TabsTrigger value="articles">Articles</TabsTrigger>
-                            <TabsTrigger value="bookmarks" className="w-full">BookMarks</TabsTrigger>
-                            <TabsTrigger value="gigs">Gigs</TabsTrigger>
-                            <TabsTrigger value="kanban">Kanban</TabsTrigger>
-                            <TabsTrigger value="imports">Imports</TabsTrigger>
+                    <div className="">
+                        <TabsList className="grid grid-cols-5 gap-4 mb-8 border border-gray-600">
+                            <TabsTrigger value="account"><TabIcon icon={UserIcon} label="Account" /></TabsTrigger>
+                            <TabsTrigger value="bookmarks"><TabIcon icon={Bookmark} label="Bookmarks" /></TabsTrigger>
+                            <TabsTrigger value="createdjobs"><TabIcon icon={Briefcase} label="Jobs" /></TabsTrigger>
+                            <TabsTrigger value="kanban"><TabIcon icon={Trello} label="Kanban" /></TabsTrigger>
+                            <TabsTrigger value="imports"><TabIcon icon={RssIcon} label="Imports" /></TabsTrigger>
                         </TabsList>
+
                     </div>
                     <TabsContent value="account">
-                        <Card className="border-none">
+                        <Card className="border-gray-700">
                             <CardHeader>
                                 <CardTitle className="text-lg font-medium leading-6">
                                     <H1>Personal Information</H1>
@@ -221,7 +262,7 @@ export function UserDashboard({
                         </Card>
                     </TabsContent>
                     <TabsContent value="articles">
-                        <Card>
+                        <Card className="border-gray-700">
                             <CardHeader>
                                 <CardTitle>Articles</CardTitle>
                                 <CardDescription>
@@ -237,7 +278,7 @@ export function UserDashboard({
                         </Card>
                     </TabsContent>
                     <TabsContent value="bookmarks">
-                        <Card className="border-none">
+                        <Card className="border-gray-700">
                             <CardHeader>
                                 <CardTitle>Bookmarks</CardTitle>
                                 <CardDescription>
@@ -257,24 +298,35 @@ export function UserDashboard({
                             </CardContent>
                         </Card>
                     </TabsContent>
-                    <TabsContent value="gigs">
-                        <Card>
+                    <TabsContent value="createdjobs">
+                        <Card className="border-gray-700">
                             <CardHeader>
-                                <CardTitle>Gigs and Colloborative Projects</CardTitle>
+                                <CardTitle>
+                                    Your created Jobs / Opportunities here
+                                </CardTitle>
                                 <CardDescription>
                                     <H1>
-                                        Your created gigs and projects to showcase your work and
-                                        find collaborators.
+                                        Your created jobs are a great way to share your job
+                                        opportunities with the community.
+
                                     </H1>
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <p>Gigs</p>
+                                {loading ? (
+                                    <div className="flex justify-center">
+                                        <Loader2 className="w-10 h-10 animate-spin text-indigo-600" />
+                                    </div>
+                                ) : (
+                                    <React.Suspense fallback={<div className="flex justify-center"><Loader2 className="w-10 h-10 animate-spin text-indigo-600" /></div>}>
+                                        <JobResults jobs={jobs} />
+                                    </React.Suspense>
+                                )}
                             </CardContent>
                         </Card>
                     </TabsContent>
                     <TabsContent value="kanban">
-                        <Card>
+                        <Card className="border-gray-700">
                             <CardHeader>
                                 <CardTitle>Kanban</CardTitle>
                                 <CardDescription>
@@ -289,7 +341,7 @@ export function UserDashboard({
                         </Card>
                     </TabsContent>
                     <TabsContent value="imports">
-                        <Card className="border-none">
+                        <Card className="border-gray-700">
                             <CardHeader>
                                 <CardTitle>Imports and RSS Feed</CardTitle>
                                 <CardDescription>
