@@ -341,24 +341,36 @@ model Job {
 
     yearsOfExperience String?
     workMode          String?
-    isPublished       Boolean @default(false)
-    tags              Tag[] // Relation to Tag modelapproved         Boolean  @default(false)
-    savedBy           User[]  @relation("SavedJobs") // Relation to User model for saved jobs
+    isPublished       Boolean      @default(false)
+    categoryId        String?
+    category          JobCategory? @relation(fields: [categoryId], references: [id])
+
+    tags    Tag[] // Relation to Tag modelapproved         Boolean  @default(false)
+    savedBy User[] @relation("SavedJobs") // Relation to User model for saved jobs
 
     approved  Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([userId])
+    @@index([categoryId])
     @@fulltext([title])
     @@fulltext([title, description, companyName, location, type])
     @@map("jobs")
 }
 
-model Tag {
-    id   Int    @id @default(autoincrement())
+model JobCategory {
+    id   String @id @default(cuid())
     name String @unique
     jobs Job[]
+}
+
+model Tag {
+    id        Int      @id @default(autoincrement())
+    name      String   @unique
+    jobs      Job[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@map("tags")
 }
