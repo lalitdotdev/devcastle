@@ -13,10 +13,9 @@ export default function Markdown({ children }: MarkdownProps) {
         <ReactMarkdown
             rehypePlugins={[rehypeRaw]}
             remarkPlugins={[remarkGfm]}
-            className="space-y-3 p-2  md:p-8 border-2 border-gray-600 rounded-md text-neutral-300"
-
+            className="space-y-3 container mx-auto"
             components={{
-                ul: (props) => <ul className="list-inside list-disc marker:text-blue-600 marker:text-lg " {...props} />,
+                ul: (props) => <ul className="list-disc marker:text-emerald-400 marker:text-lg sm:border p-10 border-gray-700 space-y-1" {...props} />,
                 a: ({ href, children }) => <CustomLinkRenderer href={href || ''}>{children}</CustomLinkRenderer>,
 
 

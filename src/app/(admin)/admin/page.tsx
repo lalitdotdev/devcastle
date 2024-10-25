@@ -18,6 +18,7 @@ export default async function page() {
     const session = await getAuthSession();
     const unapprovedJobs = await db.job.findMany({
         where: { approved: false },
+        include: { category: true },
     });
 
 
@@ -42,7 +43,7 @@ export default async function page() {
         return (
             <main className="m-auto my-10 max-w-7xl space-y-10 px-3">
 
-                <H1 className="text-center animate-gradient gradient-text">Admin Dashboard</H1>
+                <H1 className="text-center animate-gradient gradient-text font-sans font-extrabold">Admin Dashboard</H1>
                 <div className="w-full rounded-md p-8  bg-emerald-200  mt-10 md:flex items-center gap-x-4">
                     <Pin className="text-5xl text-green-600 mb-4 md:mb-0" size={40} />
                     <div className="text-zinc-700">

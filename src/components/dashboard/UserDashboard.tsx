@@ -319,7 +319,13 @@ export function UserDashboard({
                                     </div>
                                 ) : (
                                     <React.Suspense fallback={<div className="flex justify-center"><Loader2 className="w-10 h-10 animate-spin text-indigo-600" /></div>}>
-                                        <JobResults jobs={jobs} />
+                                        {
+                                            jobs.length > 0 ? <JobResults jobs={jobs} /> : <div className="flex justify-center items-center">
+                                                <h1 className="text-center text-xl font-bold text-gray-500">
+                                                    You have not created any jobs for the community yet 😔.
+                                                </h1>
+                                            </div>
+                                        }
                                     </React.Suspense>
                                 )}
                             </CardContent>

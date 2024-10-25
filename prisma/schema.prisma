@@ -323,42 +323,55 @@ model Follow {
 }
 
 model Job {
-    id               String  @id @default(cuid())
-    slug             String  @unique
-    title            String
-    type             String
-    locationType     String
-    location         String?
-    description      String? @db.Text
-    salary           Int
-    companyName      String
-    applicationEmail String?
-    applicationUrl   String?
-    companyLogoUrl   String?
-    user             User    @relation("JobCreator", fields: [userId], references: [id])
+    id                String  @id @default(cuid())
+    slug              String  @unique
+    title             String
+    type              String
+    locationType      String
+    location          String?
+    short_description String? @db.Text
+    description       String? @db.Text
+    salary            Int
+    companyName       String
+    applicationEmail  String?
+    applicationUrl    String?
+    companyLogoUrl    String?
+    user              User    @relation("JobCreator", fields: [userId], references: [id])
 
     userId String
 
     yearsOfExperience String?
     workMode          String?
-    isPublished       Boolean @default(false)
-    tags              Tag[] // Relation to Tag modelapproved         Boolean  @default(false)
-    savedBy           User[]  @relation("SavedJobs") // Relation to User model for saved jobs
+    isPublished       Boolean      @default(false)
+    categoryId        String?
+    category          JobCategory? @relation(fields: [categoryId], references: [id])
+
+    tags    Tag[] // Relation to Tag modelapproved         Boolean  @default(false)
+    savedBy User[] @relation("SavedJobs") // Relation to User model for saved jobs
 
     approved  Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([userId])
+    @@index([categoryId])
     @@fulltext([title])
     @@fulltext([title, description, companyName, location, type])
     @@map("jobs")
 }
 
-model Tag {
-    id   Int    @id @default(autoincrement())
+model JobCategory {
+    id   String @id @default(cuid())
     name String @unique
     jobs Job[]
+}
+
+model Tag {
+    id        Int      @id @default(autoincrement())
+    name      String   @unique
+    jobs      Job[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@map("tags")
 }

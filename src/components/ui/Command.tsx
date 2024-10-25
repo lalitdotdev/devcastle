@@ -69,7 +69,7 @@ const CommandList = React.forwardRef<
     <CommandPrimitive.List
         ref={ref}
         className={cn(
-            " overflow-y-auto  bg-[#1B1F23] ",
+            " overflow-y-auto  ",
             className,
         )}
         {...props}
@@ -123,7 +123,7 @@ const CommandItem = React.forwardRef<
     <CommandPrimitive.Item
         ref={ref}
         className={cn(
-            "relative flex select-none items-center px-2 py-1.5 text-sm  aria-selected:bg-blue-700 aria-selected:text-white  aria-selected:border-indigo-700 mt-1 hover:text-blue-700 border-r-2 z-[1000]",
+            "relative flex select-none items-center px-2 py-1.5 text-sm  aria-selected:bg-blue-700 aria-selected:text-white  aria-selected:border-indigo-700 mt-1 hover:text-blue-700  z-[1000]",
             className,
         )}
         {...props}

@@ -80,6 +80,7 @@ export default async function Jobboardpage({
         }
         : {};
 
+    // todo: add a where clause to filter out only approved jobs and only show published jobs
     const where: Prisma.JobWhereInput = {
         AND: [
             searchFilter,
