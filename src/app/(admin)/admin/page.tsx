@@ -18,6 +18,7 @@ export default async function page() {
     const session = await getAuthSession();
     const unapprovedJobs = await db.job.findMany({
         where: { approved: false },
+        include: { category: true },
     });
 
 
