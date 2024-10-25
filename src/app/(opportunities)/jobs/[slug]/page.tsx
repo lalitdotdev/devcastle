@@ -18,6 +18,9 @@ async function getJob(slug: string) {
     try {
         const job = await db.job.findUnique({
             where: { slug },
+            include: {
+                category: true
+            }
         });
 
         if (!job) {
