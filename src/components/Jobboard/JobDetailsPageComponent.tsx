@@ -1,9 +1,9 @@
 "use client"
 
-import { Banknote, Briefcase, Globe2, MapPin } from "lucide-react";
+import { Banknote, Briefcase, Globe2, MapPin, Tag } from "lucide-react";
+import { Job, JobCategory } from "@prisma/client";
 
 import Image from "next/image";
-import { Job } from "@prisma/client";
 import Link from "next/link";
 import Markdown from "./Markdown";
 import React from 'react';
@@ -11,15 +11,20 @@ import { formatMoney } from "@/lib/utils";
 import { motion } from 'framer-motion';
 
 interface JobDetailsPageComponentProps {
-    job: Job;
+    job: Job & {
+        category: JobCategory | null;
+    };
 }
 
 export default function JobDetailsPageComponent({
     job: {
         title,
+        short_description,
         description,
         companyName,
         applicationUrl,
+        category,
+
         type,
         locationType,
         location,
@@ -32,7 +37,7 @@ export default function JobDetailsPageComponent({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full grow space-y-8 bg-gradient-to-br from-[#2A303C] to-[#1B1F23] md:p-6 p-1 rounded-xl shadow-2xl"
+            className="w-full grow space-y-8 bg-gradient-to-br from-[#2A303C] to-[#1B1F23] md:p-6  rounded-xl shadow-2xl"
         >
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -63,6 +68,30 @@ export default function JobDetailsPageComponent({
                     >
                         {title}
                     </motion.h1>
+
+                    {category && (
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.35, duration: 0.3 }}
+                            className="flex items-center gap-2 mb-4"
+                        >
+                            <Tag size={16} className="text-blue-400" />
+                            <span className="text-blue-400 bg-[#1B1F23] px-3 py-1 rounded-full text-sm">
+                                {category.name}
+                            </span>
+                        </motion.div>
+                    )}
+                    <motion.p
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4, duration: 0.3 }}
+                        className=" text-gray-400 mb-6"
+                    >
+                        {
+                            short_description
+                        }
+                    </motion.p>
                     <motion.p
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -80,6 +109,8 @@ export default function JobDetailsPageComponent({
                             <span>{companyName}</span>
                         )}
                     </motion.p>
+
+
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -108,11 +139,12 @@ export default function JobDetailsPageComponent({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.3 }}
-                className="bg-[#252A34] p-1 md:p-2 rounded-lg shadow-inner "
+                className=" "
             >
                 {description && (
                     <div className="">
                         <Markdown
+
 
                         >{description}</Markdown>
                     </div>
