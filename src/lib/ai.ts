@@ -1,3 +1,5 @@
+"use server";
+
 const {
   GoogleGenerativeAI,
   HarmCategory,
@@ -11,7 +13,6 @@ if (!process.env.GEMINI_API_KEY) {
   throw new Error("GEMINI_API_KEY is not defined in environment variables");
 }
 
-console.log("API Key:", apiKey);
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
