@@ -46,7 +46,9 @@ const TitleForm = ({ initialData, jobId }: TitleFormProps) => {
 
         try {
             await updateJobPosting(jobId, formData);
-            toast.success('Job title updated successfully');
+            toast.success('Job title updated successfully', {
+                position: 'top-center'
+            });
             router.refresh();
         } catch (error) {
             toast.error('Something went wrong. Please try again.');
