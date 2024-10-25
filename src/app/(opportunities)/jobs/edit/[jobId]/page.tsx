@@ -2,10 +2,13 @@ import { ArrowLeft, LayoutDashboard } from 'lucide-react'
 import { notFound, redirect } from 'next/navigation'
 
 import Banner from '../../../../../components/banner'
+import CategoryForm from './_components/category-form'
 import IconBadge from '@/components/icon-badge'
 import JobPublishActions from './_components/job-publish-actions'
+import JobTypeForm from './_components/job-type-form'
 import Link from 'next/link'
 import React from 'react'
+import ShortDescriptionForm from './_components/short-description-form'
 import TitleForm from './_components/title-form'
 import { db } from '@/lib/db'
 import { getAuthSession } from '@/lib/auth'
@@ -37,6 +40,12 @@ const JobDetailsPage = async ({ params: { jobId } }: JobDetailsPageProps) => {
 
     });
 
+    const jobCategories = await db.jobCategory.findMany({
+        orderBy: {
+            name: 'asc'
+        }
+    })
+
 
     if (!job) {
         return redirect('/opportunities/jobs');
@@ -44,14 +53,14 @@ const JobDetailsPage = async ({ params: { jobId } }: JobDetailsPageProps) => {
     console.log(job)
 
     const requiredFields = [
-        job.title, job.description, job.location, job.type, job.salary, job.companyLogoUrl, job.location, job.locationType, job.applicationEmail || job.applicationUrl, job.workMode, job.companyName, job.yearsOfExperience
+        job.title, job.description, job.location, job.type, job.salary, job.companyLogoUrl, job.location, job.locationType, job.applicationEmail || job.applicationUrl, job.workMode, job.companyName, job.yearsOfExperience, job.categoryId
     ]
 
     const totalFields = requiredFields.length;
     const filledFields = requiredFields.filter(Boolean).length;
     const completionText = `${filledFields}/${totalFields} fields completed.`
     const isComplete = requiredFields.every(Boolean);
-
+    console.log(jobCategories)
 
     return (
         <div className='container p-6 mx-auto px-24'>
@@ -118,6 +127,25 @@ const JobDetailsPage = async ({ params: { jobId } }: JobDetailsPageProps) => {
                     </div>
                     {/* title form */}
                     <TitleForm initialData={job} jobId={job.id} />
+
+                    {/* category form */}
+
+                    <CategoryForm
+                        initialData={job}
+                        jobId={job.id}
+                        options={jobCategories.map((category) => ({
+                            label: category.name,
+                            value: category.id
+                        }))}
+
+                    />
+
+
+                    {/* Short description form */}
+                    <ShortDescriptionForm initialData={job} jobId={job.id} />
+
+                    {/* Job type form */}
+                    <JobTypeForm initialData={job} jobId={job.id} />
                 </div>
             </div>
 
