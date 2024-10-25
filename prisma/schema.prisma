@@ -323,19 +323,20 @@ model Follow {
 }
 
 model Job {
-    id               String  @id @default(cuid())
-    slug             String  @unique
-    title            String
-    type             String
-    locationType     String
-    location         String?
-    description      String? @db.Text
-    salary           Int
-    companyName      String
-    applicationEmail String?
-    applicationUrl   String?
-    companyLogoUrl   String?
-    user             User    @relation("JobCreator", fields: [userId], references: [id])
+    id                String  @id @default(cuid())
+    slug              String  @unique
+    title             String
+    type              String
+    locationType      String
+    location          String?
+    short_description String? @db.Text
+    description       String? @db.Text
+    salary            Int
+    companyName       String
+    applicationEmail  String?
+    applicationUrl    String?
+    companyLogoUrl    String?
+    user              User    @relation("JobCreator", fields: [userId], references: [id])
 
     userId String
 
