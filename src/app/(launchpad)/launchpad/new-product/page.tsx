@@ -341,7 +341,7 @@ const NewProductPage = () => {
         setUploadedLogoUrl("");
     };
     return (
-        <div className="flex items-center justify-center py-8 md:py-20 min-h-[70vh] bg-[#262a35]">
+        <div className="flex items-center justify-center py-8 md:py-20 min-h-[70vh] bg-gray-800">
             <div className="px-8 md:w-3/5 md:mx-auto">
                 {step === 1 && (
                     <motion.div
