@@ -41,7 +41,7 @@ export default function JobListItem({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             whileHover={{ scale: 1.02 }}
-            className="flex shadow-lg gap-3 rounded-lg p-4 border border-zinc-700 bg-gradient-to-br from-[#212329] to-[#2C2F38] transition-all duration-300"
+            className="flex shadow-lg gap-3 rounded-lg p-4 border border-zinc-700 bg-gradient-to-br from-zinc-900 to-zinc-800/50 transition-all duration-300"
         >
             <motion.div
                 whileHover={{ scale: 1.1 }}
@@ -61,7 +61,7 @@ export default function JobListItem({
                     <h3 className="text-[#CCCDCE] font-semibold">{companyName}</h3>
                     {isJobCreator && (
                         <Link href={`/jobs/edit/${id}`} passHref>
-                            <Button variant="subtle" className="flex items-center ">
+                            <Button variant="subtle" className="flex items-center border-none">
                                 <Edit className="w-4 h-4 mr-2" />
                                 Edit Job
                             </Button>

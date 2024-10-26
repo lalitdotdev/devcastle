@@ -63,7 +63,7 @@ const Post: FC<PostProps> = ({
         : false;
 
     return (
-        <div className="w-full  md:rounded-lg tracking-tight z-0  border-[#1E293B] bg-[#242A30] rounded-md overflow-hidden hover:bg-[#2C353D] transition-colors duration-300 border backdrop-blur-3xl">
+        <div className="w-full  md:rounded-lg tracking-tight z-0  rounded-lg border border-gray-800 sm:p-2 bg-zinc-900/50 overflow-hidden hover:bg-zinc-900/100 transition-colors duration-300  backdrop-blur-3xl">
             <div className="flex justify-between p-3 ">
 
                 <div className="w-0 flex-1 relative ">
