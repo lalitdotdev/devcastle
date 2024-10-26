@@ -43,7 +43,7 @@ const Sidebar = () => {
             {/* Sidebar */}
             <AnimatePresence>
                 <motion.div
-                    className="fixed inset-y-0 left-0 w-24 bg-gray-800  text-white flex flex-col shadow-2xl mt-24 rounded-r-xl overflow-hidden z-50"
+                    className="fixed inset-y-0 left-0 w-24 bg-gray-800/50  text-white flex flex-col shadow-2xl mt-24 rounded-r-xl overflow-hidden z-50"
                     variants={sidebarVariants}
                     initial="closed"
                     animate={isOpen ? "open" : "closed"}
