@@ -1,5 +1,7 @@
 "use client";
 
+import { Briefcase, LucideIcon, MessageSquare, Rocket } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -7,8 +9,27 @@ import { useState } from "react";
 type Tab = {
     title: string;
     value: string;
+    icon?: LucideIcon;
     content?: string | React.ReactNode | any;
 };
+
+const defaultTabs: Tab[] = [
+    {
+        title: "Discussions",
+        value: "discussions",
+        icon: MessageSquare
+    },
+    {
+        title: "Opportunities",
+        value: "opportunities",
+        icon: Briefcase
+    },
+    {
+        title: "Showcases",
+        value: "showcases",
+        icon: Rocket
+    }
+];
 
 export const HomeFeedTabs = ({
     tabs: propTabs,
@@ -23,50 +44,82 @@ export const HomeFeedTabs = ({
     tabClassName?: string;
     contentClassName?: string;
 }) => {
-    const [active, setActive] = useState<Tab>(propTabs[0]);
+    // Merge default icons with provided tabs
+    const tabs = propTabs.map(tab => ({
+        ...tab,
+        icon: tab.icon || defaultTabs.find(t => t.value === tab.value)?.icon
+    }));
+
+    const [active, setActive] = useState<Tab>(tabs[0]);
     const [hovering, setHovering] = useState(false);
 
     return (
         <>
             <div
                 className={cn(
-                    "flex flex-row items-center justify-start  relative overflow-auto  no-visible-scrollbar max-w-full border border-white/10 md:p-2 p-1 rounded-full tracking-tighter ",
+                    "flex flex-row items-center justify-start relative overflow-auto scrollbar-hide",
+                    "bg-zinc-900/50 backdrop-blur-sm border border-white/10 rounded-2xl p-2",
+                    "shadow-lg shadow-purple-900/20",
                     containerClassName
                 )}
             >
-                {propTabs.map((tab) => (
-                    <button
-                        key={tab.value}
-                        onClick={() => setActive(tab)}
-                        onMouseEnter={() => setHovering(true)}
-                        style={{
-                            transformStyle: "preserve-3d",
-                        }}
-                        onMouseLeave={() => setHovering(false)}
-                        className={cn(
-                            "relative px-2 py-1 rounded-full",
-                            tabClassName,
-                            active.value === tab.value && activeTabClassName
-                        )}
-                    >
-                        {active.value === tab.value && (
-                            <motion.div
-                                layoutId="clickedbutton"
-                                transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+                <div className="flex gap-2 p-1 w-full">
+                    {tabs.map((tab) => {
+                        const Icon = tab.icon;
+                        const isActive = active.value === tab.value;
+
+                        return (
+                            <button
+                                key={tab.value}
+                                onClick={() => setActive(tab)}
+                                onMouseEnter={() => setHovering(true)}
+                                onMouseLeave={() => setHovering(false)}
                                 className={cn(
-                                    "absolute inset-0 bg-gradient-to-br from-purple-700 to-violet-900 rounded-full"
+                                    "relative flex items-center gap-2 px-4 py-2 rounded-xl flex-1",
+                                    "text-sm font-medium transition-all duration-200",
+                                    "text-white",
+                                    !isActive && "text-zinc-400",
+                                    tabClassName
                                 )}
-                            />
-                        )}
-                        <span className="relative block text-white dark:text-white text-sm">
-                            {tab.title}
-                        </span>
-                    </button>
-                ))}
+                            >
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="active-tab"
+                                        className={cn(
+                                            "absolute inset-0 rounded-xl",
+                                            "bg-gradient-to-br from-purple-700/80 to-violet-900/80",
+                                            "border border-purple-500/20",
+                                            "shadow-lg shadow-purple-900/20",
+                                            activeTabClassName
+                                        )}
+                                        transition={{
+                                            type: "spring",
+                                            bounce: 0.25,
+                                            duration: 0.5
+                                        }}
+                                    />
+                                )}
+
+                                <span className="relative flex items-center gap-2">
+                                    {Icon && (
+                                        <Icon
+                                            className={cn(
+                                                "w-4 h-4 transition-colors",
+                                                isActive ? "text-white" : "text-zinc-400"
+                                            )}
+                                        />
+                                    )}
+                                    <span className="relative whitespace-nowrap">{tab.title}</span>
+                                </span>
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
+
             <FadeInDiv
                 active={active}
-                className={cn("mt-10", contentClassName)}
+                className={cn("mt-6", contentClassName)}
             />
         </>
     );
@@ -83,11 +136,13 @@ export const FadeInDiv = ({
         <div className="relative w-full">
             <motion.div
                 key={active.value}
-                layoutId={active.value}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{
+                    duration: 0.3,
+                    ease: "easeOut"
+                }}
                 className={cn("w-full", className)}
             >
                 {active.content}
