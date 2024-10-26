@@ -341,90 +341,163 @@ const NewProductPage = () => {
         setUploadedLogoUrl("");
     };
     return (
-        <div className="flex items-center justify-center py-8 md:py-20 min-h-[70vh] bg-gray-800">
-            <div className="px-8 md:w-3/5 md:mx-auto">
+        <div className="flex items-center justify-center ">
+            <div className="">
                 {step === 1 && (
                     <motion.div
-                        initial={{ opacity: 0, x: "100%" }} // Slide in from the right
-                        animate={{ opacity: 1, x: 0 }} // Slide to the center
-                        exit={{ opacity: 0, x: "-100%" }} // Slide out to the left
-                        transition={{ duration: 0.3 }}
-                        className="space-y-10">
-                        <h1 className="text-4xl font-semibold"> 📦  Submit a New product</h1>
-                        <p className="text-xl text-zinc-400 font-light mt-4 leading-8">
-                            Ready to showcase your product to the world? You came to the right
-                            place. Follow the steps below to get started.
-                        </p>
-                        <div className="mt-10">
-                            <h2 className="font-medium">Name of the product</h2>
-                            <input
-                                type="text"
-                                value={name}
-                                maxLength={30}
-                                className="border border-zinc-500 rounded-md p-2 w-full mt-2 focus:outline-none bg-zinc-700 focus:ring-2 ring-teal-500"
-                                onChange={handleNameChange}
-                            />
-                            <div className="text-sm text-gray-500 mt-1">
-                                {name.length} / 30
-
+                        initial={{ opacity: 0, x: "100%" }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: "-100%" }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 100,
+                            damping: 20,
+                            duration: 0.3
+                        }}
+                        className="space-y-12 rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8 backdrop-blur-xl backdrop-saturate-150"
+                    >
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <h1 className="flex items-center gap-3 text-4xl font-semibold tracking-tight text-zinc-100">
+                                    <span className="inline-block animate-bounce">📦</span>
+                                    Submit a New Product
+                                </h1>
+                                <p className="text-xl font-light leading-relaxed text-zinc-400">
+                                    Ready to showcase your product to the world? You came to the right
+                                    place. Follow the steps below to get started.
+                                </p>
                             </div>
                         </div>
-                        <div className="mt-10">
-                            <h2 className="font-medium">
-                                Slug (URL) - This will be used to create a unique URL for
-                                your product
-                            </h2>
 
-                            <input
-                                type="text"
-                                value={slug}
-                                className="border border-zinc-500 rounded-md p-2 w-full mt-2 focus:outline-none bg-zinc-700"
-                                readOnly
-                            />
+                        <div className="space-y-8">
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label
+                                        htmlFor="productName"
+                                        className="text-sm font-medium text-zinc-200"
+                                    >
+                                        Name of the product
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            id="productName"
+                                            type="text"
+                                            value={name}
+                                            maxLength={30}
+                                            className="w-full rounded-lg border border-zinc-800 bg-zinc-800/50 px-4 py-3 text-base
+                                     text-zinc-100 transition-colors placeholder:text-zinc-500
+                                     focus:border-teal-500/50 focus:outline-none focus:ring-2
+                                     focus:ring-teal-500/20"
+                                            onChange={handleNameChange}
+                                            placeholder="Enter product name..."
+                                        />
+                                        <div className="absolute bottom-3 right-4 text-sm text-zinc-500">
+                                            {name.length} / 30
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label
+                                        htmlFor="productSlug"
+                                        className="text-sm font-medium text-zinc-200"
+                                    >
+                                        Slug (URL)
+                                    </label>
+                                    <p className="text-sm text-zinc-500">
+                                        This will be used to create a unique URL for your product
+                                    </p>
+                                    <div className="relative group">
+                                        <input
+                                            id="productSlug"
+                                            type="text"
+                                            value={slug}
+                                            className="w-full rounded-lg border border-zinc-800 bg-zinc-800/50 px-4 py-3
+                                     text-zinc-400 cursor-not-allowed opacity-80
+                                     transition group-hover:opacity-100"
+                                            readOnly
+                                        />
+                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
+                                            🔒
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 )}
                 {step === 2 && (
                     <motion.div
-                        initial={{ opacity: 0, x: "100%" }} // Slide in from the right
-                        animate={{ opacity: 1, x: 0 }} // Slide to the center
-                        exit={{ opacity: 0, x: "-100%" }} // Slide out to the left
-                        transition={{ duration: 0.3 }}
+                        initial={{ opacity: 0, x: "100%" }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: "-100%" }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 100,
+                            damping: 20,
+                            duration: 0.3
+                        }}
+                        className="space-y-12 rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8 backdrop-blur-xl backdrop-saturate-150"
+                    >
+                        <div className="space-y-6">
+                            <h1 className="flex items-center gap-3 text-4xl font-semibold tracking-tight text-zinc-100">
+                                <span className="inline-block animate-pulse">📊</span>
+                                What category does your product belong to?
+                            </h1>
+                            <p className="text-xl font-light leading-relaxed text-zinc-300">
+                                Choose at least <span className="text-teal-400 font-medium">3 categories</span> that
+                                best fits your product. This will help people discover your product.
+                            </p>
+                        </div>
 
-                        className="space-y-10">
-                        <h1 className="text-4xl font-semibold">
-                            {" "}
-                            📊 What category does your product belong to ?{" "}
-                        </h1>
-                        <p className="text-xl font-light mt-4 leading-8 text-zinc-300">
-                            Choose at least 3 categories that best fits your product. This
-                            will people discover your product
-                        </p>
-
-                        <div className="mt-10">
-                            <h2 className="font-medium">Select Categories</h2>
-                            <div className="grid grid-cols-4 gap-2 pt-4 items-center justify-center">
-                                {categories.map((category, index) => (
-                                    <motion.div
-                                        key={index}
-                                        className={`flex border rounded-full border-teal-600  ${selectedCategories.includes(category)
-                                            ? "bg-[#9945FF] text-white border-none font-semibold rounded-full"
-                                            : "text-zinc-300"
-                                            } `}
-                                        onClick={() => handleCategoryToggle(category)}
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        <div
-                                            className={`text-xs md:text-sm p-2 cursor-pointer w-full text-center
-                     ${selectedCategories.includes(category)
-                                                    ? "bg-[#9945FF] text-white border-none font-semibold rounded-full"
-                                                    : "text-zinc-300"
-                                                }`}
+                        <div className="space-y-6">
+                            <div className="space-y-4">
+                                <h2 className="text-sm font-medium text-zinc-200">
+                                    Select Categories
+                                    <span className="ml-2 text-xs text-zinc-400">
+                                        ({selectedCategories.length} selected)
+                                    </span>
+                                </h2>
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                                    {categories.map((category, index) => (
+                                        <motion.button
+                                            key={index}
+                                            onClick={() => handleCategoryToggle(category)}
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            className={`
+                                relative overflow-hidden rounded-full border transition-all duration-300
+                                ${selectedCategories.includes(category)
+                                                    ? "border-transparent bg-gradient-to-r from-[#9945FF] to-[#8A2BE2] text-white shadow-lg shadow-purple-500/25"
+                                                    : "border-teal-500/30 bg-zinc-900/50 text-zinc-300 hover:border-teal-500/50 hover:bg-zinc-800/50"
+                                                }
+                            `}
                                         >
-                                            {category}
-                                        </div>
-                                    </motion.div>
-                                ))}
+                                            <div className="relative z-10 px-4 py-2.5">
+                                                <span className="text-sm font-medium">
+                                                    {category}
+                                                </span>
+                                            </div>
+                                            {selectedCategories.includes(category) && (
+                                                <motion.div
+                                                    initial={{ scale: 0 }}
+                                                    animate={{ scale: 1 }}
+                                                    className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#8A2BE2] opacity-50 blur-xl"
+                                                />
+                                            )}
+                                        </motion.button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="rounded-lg border border-zinc-800 bg-zinc-900/30 p-4">
+                                <p className="text-sm text-zinc-400">
+                                    <span className="text-teal-400">💡 Tip:</span> Choose categories that accurately
+                                    represent your product&apos;s core features. This helps in better discoverability
+                                    and reaching the right audience.
+                                </p>
                             </div>
                         </div>
                     </motion.div>
@@ -437,7 +510,7 @@ const NewProductPage = () => {
                         exit={{ opacity: 0, x: "-100%" }} // Slide out to the left
                         transition={{ duration: 0.3 }}
 
-                        className="space-y-10">
+                        className="space-y-12 rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8 backdrop-blur-xl backdrop-saturate-150">
                         <div className="text-4xl font-semibold">📝 Product Details</div>
                         <p className="text-xl font-light mt-4 leading-8">
                             Keep it simple and clear. Describe your product in a way that
@@ -482,7 +555,7 @@ const NewProductPage = () => {
                         exit={{ opacity: 0, x: "-100%" }} // Slide out to the left
                         transition={{ duration: 0.3 }}
 
-                        className="space-y-10">
+                        className="space-y-12 rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8 backdrop-blur-xl backdrop-saturate-150">
                         <h1 className="text-4xl font-semibold">
                             🖼️ Add images to showcase your product
                         </h1>
@@ -547,7 +620,8 @@ const NewProductPage = () => {
                         exit={{ opacity: 0, x: "-100%" }} // Slide out to the left
                         transition={{ duration: 0.3 }}
 
-                        className="space-y-10">
+                        className="space-y-12 rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8 backdrop-blur-xl backdrop-saturate-150">
+
                         <h1 className="text-4xl font-semibold"> 🗓️ Release Date</h1>
                         <p className="text-xl font-light mt-4 leading-8">
                             When will your product be available to the public? Select a date
@@ -592,7 +666,8 @@ const NewProductPage = () => {
                         exit={{ opacity: 0, x: "-100%" }} // Slide out to the left
                         transition={{ duration: 0.3 }}
 
-                        className="space-y-10">
+                        className="space-y-12 rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8 backdrop-blur-xl backdrop-saturate-150">
+
                         <h1 className="text-4xl font-semibold">Additional Links </h1>
                         <p className="text-xl font-light mt-4 leading-8">
                             Add links to your product&apos;s website, social media, and other
@@ -660,7 +735,8 @@ const NewProductPage = () => {
                         transition={{ duration: 0.3 }}
 
 
-                        className="space-y-10 ">
+                        className="space-y-12 rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8 backdrop-blur-xl backdrop-saturate-150">
+
                         <h1 className="text-4xl font-semibold"> 🔍 Review and submit</h1>
                         <p className="text-xl font-light mt-4 leading-8">
                             Review the details of your product and submit it to the world.
@@ -739,7 +815,8 @@ const NewProductPage = () => {
                     </motion.div>
                 )}
                 {step === 8 && (
-                    <div className="space-y-10">
+                    <div className="space-y-12 rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8 backdrop-blur-xl backdrop-saturate-150">
+
                         <div className="text-4xl font-semibold"> Congratulations 🎉 </div>
                         <div className="text-xl font-light mt-4 leading-8 ">
                             Your product has been successfully submitted. Our team will review
@@ -793,7 +870,7 @@ const NewProductPage = () => {
                                 ) : (
                                     <button
                                         onClick={nextStep}
-                                        className="bg-teal-600 text-white py-2 px-4 rounded-xl mt-4 items-end"
+                                        className="bg-teal-600 text-white py-2 px-4 rounded-xl mt-4 items-end w-fit"
                                     >
                                         {step === 7 ? "Submit" : "Continue"}
                                     </button>
