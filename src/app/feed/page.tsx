@@ -3,11 +3,12 @@ import CustomFeed from "@/components/Feed/CustomFeed";
 import GeneralFeed from "@/components/Feed/GeneralFeed";
 import { HomeFeedTabs } from "@/components/ui/HomeFeedTabs";
 import JobResults from "@/components/Jobboard/JobResults";
+import Link from "next/link";
 import { Metadata } from "next";
 import { Prisma } from "@prisma/client";
 import ProductHuntFeedImporter from "@/components/Feed/ProductHuntFeedImport";
+import RightAside from "@/components/RightAside/RightAside";
 import { Separator } from "@/components/ui/separator";
-import ToolbarExpandable from "@/components/ToolbarDynamics";
 import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
@@ -21,16 +22,9 @@ export function generateMetadata({
     };
 }
 
-
-
-const page = async () => {
-
-
+const Page = async () => {
     const session = await getAuthSession();
 
-
-
-    // todo: add a where clause to filter out only approved jobs and only show published jobs
     const where: Prisma.JobWhereInput = {
         AND: [
             { approved: true },
@@ -42,36 +36,24 @@ const page = async () => {
         orderBy: { createdAt: "desc" },
     });
 
-
-
-
-
-    // bg-[#1B1F23]
     const tabs = [
         {
             title: "Discussions",
             value: "discussions",
+
             content: (
-                <div className="w-full overflow-y-auto h-full ">
-                    <div className="flex items-center gap-2 bg-gradient-to-br from-zinc-800 to-transparent p-4 rounded-xl md:pl-8">
-                        <CommunityAvatar seed={"xyz"} classNames="w-12 h-12 rounded-xl p-2 " />
-                        <h1 className="font-normal text-3xl md:text-4xl  text-gray-400">
+                <div className="w-full overflow-y-auto h-full">
+                    <div className="w-full flex  items-center gap-4 md:rounded-lg tracking-tight z-0  rounded-lg border border-gray-800 p-4 bg-zinc-900/50 overflow-hidden hover:bg-zinc-900 transition-colors duration-300  backdrop-blur-3xl">
+                        <CommunityAvatar seed={"xyz"} classNames="w-12 h-12 rounded-xl p-2" />
+                        <h1 className="font-normal text-2xl md:text-3xl text-gray-400">
                             Discussion feed
                         </h1>
                     </div>
-
-
                     <Separator className="my-4 bg-gray-700" />
                     {/* @ts-expect-error server component */}
                     {session ? <CustomFeed /> : <GeneralFeed />}
                 </div>
             )
-            // content: (
-            //     <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-            //         <p>Product Tab</p>
-            //         <DummyContent />
-            //     </div>
-            // ),
         },
         {
             title: "Opportunities",
@@ -79,70 +61,57 @@ const page = async () => {
             href: "/opportunities",
             content: (
                 <div className="w-full border-b border-zinc-700">
-                    <div className="w-full overflow-hidden relative h-full rounded-2xl p-4 text-xl md:text-4xl font-bold mb-4 text-white border  border-purple-700 ">
-                        <p>Opportunities</p>
+                    <div className="w-full flex  items-center gap-4 md:rounded-lg tracking-tight z-0  rounded-lg border border-gray-800 p-4 bg-zinc-900/50 overflow-hidden hover:bg-zinc-900 transition-colors duration-300  backdrop-blur-3xl">
+                        <CommunityAvatar seed={"opportunities"} classNames="w-12 h-12 rounded-xl p-2" />
+                        <h1 className="font-normal text-2xl md:text-3xl text-gray-400">
+                            Seek latest opportunities
+                        </h1>
                     </div>
-                    <Separator className="mb-4 bg-gray-600" />
+                    <Separator className="my-4 bg-gray-700" />
                     <JobResults jobs={jobs} />
                 </div>
             ),
-
         },
-
-        // content: (
-        //     <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-        //         <p>Services tab</p>
-        //         <DummyContent />
-        //     </div>
-        // ),
-
         {
             title: "Showcases",
             value: "showcases",
             content: (
-                <main className="w-full ">
+                <main className="w-full">
                     <ProductHuntFeedImporter />
                 </main>
             ),
         }
-
-
     ];
 
-
-
-    //   console.log("session", session);
-
-    // if (!session?.user) {
-    //   // redirect(authOptions?.pages?.signIn || "/");
-    //   redirect("/");
-    // }
-
-
-
-
-    // check if user is subscribed to community or not if user is logged in then show leave community button and if not then show join community button
-
-
-    // return (
-    //     <pre className="mt-16 text-white">
-    //         {JSON.stringify(communities, null, 2)}
-    //     </pre>
-    // );
-
     return (
-        <div className="pt-8 h-full w-full mx-auto pb-16 md:pb-0">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 py-6 md:space-x-24 w-full md:px-10 md:pl-20">
-                <div className="w-full">
+        <main className="mx-auto pt-8 max-w-[1440px]  sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-8 gap-x-6 gap-y-4 sm:px-2">
+                {/* Main content - 5 columns on large screens */}
+                <div className="lg:col-span-5">
                     <HomeFeedTabs tabs={tabs} />
                 </div>
 
-                <div className="md:sticky md:top-16 md:h-[calc(100vh-4rem)]">
-                    <ToolbarExpandable />
+                {/* Right sidebar - 3 columns on large screens */}
+                <div className="hidden lg:block lg:col-span-3">
+                    <div className="sticky top-20 space-y-4 mb-8" >
+                        {/* @ts-expect-error Server Component */}
+                        <RightAside />
+
+                        {/* Additional widgets can be added here */}
+                        <div className="rounded-lg border border-gray-800 p-4 bg-zinc-900/50">
+                            <h2 className="font-semibold text-xl mb-4 text-gray-200">Create your castle</h2>
+                            <p className="text-gray-400 text-sm mb-4">
+                                Your castle, your rules. Create a community for your favorite topics.
+                            </p>
+                            <Link href={"/cb/create"} className="w-full py-2 px-4 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition">
+                                Create Castle
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
     );
 };
 
-export default page;
+export default Page;
