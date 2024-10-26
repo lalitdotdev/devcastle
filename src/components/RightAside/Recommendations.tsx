@@ -9,7 +9,9 @@ import CommunityAvatar from '../Avatars/CommunityAvatar';
 import Link from 'next/link';
 import { Separator } from '../ui/separator';
 import { cn } from '@/lib/utils';
+import { useCustomToast } from '@/hooks/use-custom-toast';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 type Community = {
     id: string
@@ -32,8 +34,17 @@ const Recommendations = ({
     const [subscribedIds, setSubscribedIds] = useState(initialSubscribedIds)
     const [isLoading, setIsLoading] = useState<string | null>(null)
     const router = useRouter()
+    const { loginToast } = useCustomToast();
+
+    const { data: session } = useSession();
+
 
     const handleJoinLeave = async (communityId: string) => {
+        if (!session) {
+            return loginToast()
+        }
+
+
         try {
             setIsLoading(communityId)
 
