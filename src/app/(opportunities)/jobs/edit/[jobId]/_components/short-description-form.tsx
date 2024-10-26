@@ -72,11 +72,15 @@ const ShortDescriptionForm = ({ initialData, jobId }: ShortDescriptionFormProps)
                 form.setValue('short_description', response)
                 setIsPromptLoading(false)
             })
+
+
+
         } catch (error) {
             console.log(error)
             toast.error("Something went wrong!")
         }
     }
+
 
     return (
         <div className="mt-6  bg-gray-800 rounded-md p-4">
@@ -105,14 +109,15 @@ const ShortDescriptionForm = ({ initialData, jobId }: ShortDescriptionFormProps)
                             {
                                 isPromptLoading ? (
                                     <>
-                                        <Button>
+                                        <Button className="bg-zinc-900/50 rounded-xl w-1/2">
                                             <Loader2 className="w-4 h-4 animate-spin" />
+                                            <span className="ml-2 "> Generating with AI</span>
                                         </Button>
                                     </>
                                 ) : (
                                     <>
-                                        <Button onClick={handlePromptGenerate} size={'lg'} className="bg-zinc-400">
-                                            <Lightbulb className="w-6 h-6 text-black" />
+                                        <Button onClick={handlePromptGenerate} className="bg-gray-900/50 rounded-xl">
+                                            <Lightbulb className="w-6 h-6 " />
                                         </Button>
                                     </>
                                 )
