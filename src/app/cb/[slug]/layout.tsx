@@ -61,7 +61,7 @@ const Layout = async ({
     // Extract the community description from the fetched community object
     const communityDescription = community?.description;
     return (
-        <div className="sm:container max-w-7xl mx-auto h-full pt-12">
+        <div className="max-w-[1440px] mx-auto h-full pt-12">
             <div>
                 {/* TODO: BTN TO TAKE BACK TO FEED */}
 

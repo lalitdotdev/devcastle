@@ -55,7 +55,7 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
     }
     return (
         <div>
-            <div className="h-full flex flex-col sm:flex-row items-center sm:items-start justify-between ">
+            <div className="max-w-[1440px] mx-auto h-full flex flex-col sm:flex-row items-center sm:items-start justify-between ">
                 {/* return postVoteShell while getData is being executed  */}
                 {/* rendering actual post content */}
                 <div className="sm:w-0 w-full flex-1  p-4 rounded-sm bg-[#21242d]">

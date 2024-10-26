@@ -49,9 +49,9 @@ const page = async ({ params }: PageProps) => {
     }
 
     return (
-        <>
+        <main className="container mx-auto  items-center gap-2 ">
 
-            <div className="flex items-center gap-2 bg-gradient-to-br from-zinc-800 to-transparent p-4 rounded-xl md:pl-8">
+            <div className=" flex items-center gap-2 rounded-xl border border-gray-800  bg-zinc-900/50 p-4  md:pl-8 my-4">
                 <CommunityAvatar seed={community.name} classNames="w-12 h-12 rounded-xl p-2 " />
                 <h1 className="font-normal text-3xl md:text-4xl  text-gray-400">
                     c/{community.name}
@@ -64,7 +64,7 @@ const page = async ({ params }: PageProps) => {
 
 
             <PostFeed initialPosts={community.posts} communityName={community.name} />
-        </>
+        </main>
     );
 };
 
