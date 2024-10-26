@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { fetchAndStoreProductHuntPosts, getProductHuntPosts } from '@/app/feed/actions/getProductHuntPosts'
 
 import { Badge } from '../ui/badge'
+import Banner from '../banner'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Separator } from '../ui/separator'
@@ -87,7 +88,7 @@ export default function ProductHuntFeed() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="flex items-center gap-2 w-full justify-between rounded-2xl max-w-7xl mx-auto bg-gradient-to-r from-zinc-700 to-slate-700 p-3 md:p-5 shadow-xl"
+                className="w-full flex  items-center gap-4 md:rounded-lg tracking-tight z-0  rounded-lg border border-gray-800 p-4 bg-zinc-900/50 overflow-hidden hover:bg-zinc-900 transition-colors duration-300  backdrop-blur-3xl justify-between"
             >
                 <div className="flex items-center gap-2">
                     <Image
@@ -127,10 +128,11 @@ export default function ProductHuntFeed() {
             )}
 
 
-            <p className='text-lg hidden md:block text-zinc-400'>
-                Discover the latest trending products and startups from Product Hunt! 🚀
-            </p>
+            <Banner
+                variant={'success'}
+                label='Discover the latest trending products and startups from Product Hunt! 🚀.'
 
+            />
             <Separator className='bg-zinc-700 my-4' />
 
             {isFeedVisible && posts.length > 0 && (
@@ -143,7 +145,7 @@ export default function ProductHuntFeed() {
                     {posts.map((post) => (
                         <motion.li
                             key={post.id}
-                            className="bg-gray-800 border border-gray-700 rounded-md overflow-hidden hover:bg-[#2C353D] transition-colors duration-300"
+                            className="bg-zinc-900/50 border border-gray-700 rounded-md overflow-hidden hover:bg-zinc-900 transition-colors duration-300"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.5, delay: 0.1 }}
