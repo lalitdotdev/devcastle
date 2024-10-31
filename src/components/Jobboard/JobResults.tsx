@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { Job } from "@prisma/client";
-import JobListItem from "./JobListItem";
+import { JobListItemWrapper } from "./JobListItem";
 import Link from "next/link";
 import React from 'react';
 
@@ -29,7 +29,7 @@ const JobResults = ({ jobs }: JobResultsProps) => {
                         transition={{ duration: 0.3 }}
                     >
                         <Link href={`jobs/${job.slug}`} className="block">
-                            <JobListItem job={job} />
+                            <JobListItemWrapper job={job} />
                         </Link>
                     </motion.div>
                 ))}

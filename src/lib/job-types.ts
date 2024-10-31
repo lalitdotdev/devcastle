@@ -19,3 +19,22 @@ export const locationTypes = [
   "Travel",
   "Other",
 ];
+
+export const yearsOfExperience = [
+  {
+    value: "0",
+    label: "Fresher",
+  },
+  {
+    value: "2",
+    label: "0-2 years",
+  },
+  {
+    value: "3",
+    label: "2-4 years",
+  },
+  {
+    value: "5",
+    label: "5+ years",
+  },
+];

@@ -41,7 +41,7 @@ const JobFilterSidebar = ({
     distinctLocations,
 }: JobFilterSidebarProps) => {
     return (
-        <aside className="w-full md:w-[340px] md:sticky md:top-24 h-fit rounded-lg bg-gradient-to-br from-[#282C35] to-[#1E2128] p-4 md:p-6 shadow-xl">
+        <aside className="w-full md:min-w-[400px] max-w-[380px] md:sticky md:top-24 h-fit rounded-lg bg-gradient-to-br from-[#282C35] to-[#1E2128] p-4 md:p-6 shadow-xl">
             <Accordion type="single" collapsible className="w-full md:hidden">
                 <AccordionItem value="item-1">
                     <AccordionTrigger className="text-blue-400 ">
