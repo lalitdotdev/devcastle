@@ -1,12 +1,11 @@
 "use client"
 
-import { Banknote, Briefcase, Globe2, MapPin, Tag } from "lucide-react";
+import { Banknote, Building2, Clock, Globe2, MapPin, Tag } from "lucide-react";
 import { Job, JobCategory } from "@prisma/client";
 
 import Image from "next/image";
 import Link from "next/link";
 import Markdown from "./Markdown";
-import React from 'react';
 import { formatMoney } from "@/lib/utils";
 import { motion } from 'framer-motion';
 
@@ -16,7 +15,13 @@ interface JobDetailsPageComponentProps {
     };
 }
 
-export default function JobDetailsPageComponent({
+const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 }
+};
+
+const JobDetailsPageComponent = ({
     job: {
         title,
         short_description,
@@ -24,132 +29,140 @@ export default function JobDetailsPageComponent({
         companyName,
         applicationUrl,
         category,
-
+        yearsOfExperience,
         type,
         locationType,
         location,
         salary,
         companyLogoUrl,
     },
-}: JobDetailsPageComponentProps) {
+}: JobDetailsPageComponentProps) => {
+    const jobDetails = [
+        { Icon: Building2, text: type, label: "Job Type" },
+        { Icon: MapPin, text: locationType, label: "Work Model" },
+        { Icon: Globe2, text: location || "Worldwide", label: "Location" },
+        { Icon: Banknote, text: formatMoney(salary), label: "Salary" },
+        { Icon: Clock, text: yearsOfExperience, label: "Experience" },
+    ];
+
     return (
-        <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="w-full grow space-y-8 bg-gradient-to-br from-[#2A303C] to-[#1B1F23] md:p-6  rounded-xl shadow-2xl"
-        >
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.3 }}
-                className="flex flex-col md:flex-row items-center"
+        <div className="">
+            <motion.section
+                {...fadeInUp}
+                className="space-y-8 bg-gradient-to-br  rounded-2xl shadow-2xl overflow-hidden"
             >
-                {companyLogoUrl && (
-                    <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <Image
-                            src={companyLogoUrl}
-                            alt="Company logo"
-                            width={150}
-                            height={150}
-                            className="rounded-full border-4 border-blue-500 object-contain bg-white p-2 shadow-lg"
-                        />
-                    </motion.div>
-                )}
-                <div className="flex-1 bg-[#252A34] p-6 rounded-lg shadow-inner">
-                    <motion.h1
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.3 }}
-                        className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-4"
-                    >
-                        {title}
-                    </motion.h1>
-
-                    {category && (
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.35, duration: 0.3 }}
-                            className="flex items-center gap-2 mb-4"
-                        >
-                            <Tag size={16} className="text-blue-400" />
-                            <span className="text-blue-400 bg-[#1B1F23] px-3 py-1 rounded-full text-sm">
-                                {category.name}
-                            </span>
-                        </motion.div>
-                    )}
-                    <motion.p
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4, duration: 0.3 }}
-                        className=" text-gray-400 mb-6"
-                    >
-                        {
-                            short_description
-                        }
-                    </motion.p>
-                    <motion.p
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4, duration: 0.3 }}
-                        className="text-xl text-gray-300 mb-6"
-                    >
-                        {applicationUrl ? (
-                            <Link
-                                href={new URL(applicationUrl).origin}
-                                className="text-blue-400 hover:text-blue-300 transition-colors duration-200 underline underline-offset-4"
+                {/* Header Section */}
+                <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 p-6">
+                    <div className="absolute inset-0 bg-black/30" />
+                    <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                        {companyLogoUrl && (
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="shrink-0"
                             >
-                                {companyName}
-                            </Link>
-                        ) : (
-                            <span>{companyName}</span>
+                                <Image
+                                    src={companyLogoUrl}
+                                    alt={`${companyName} logo`}
+                                    width={120}
+                                    height={120}
+                                    className="rounded-xl border-2 border-white/20 bg-white p-2 shadow-xl"
+                                />
+                            </motion.div>
                         )}
-                    </motion.p>
 
+                        <div className="flex-1 text-center md:text-left">
+                            <motion.h1
+                                className="text-3xl md:text-4xl font-bold text-white mb-3"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                {title}
+                            </motion.h1>
 
+                            <motion.div
+                                className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-4"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.3 }}
+                            >
+                                {category && (
+                                    <span className="bg-white/10 backdrop-blur-sm px-4 py-1 rounded-full text-sm text-white flex items-center gap-2">
+                                        <Tag size={14} />
+                                        {category.name}
+                                    </span>
+                                )}
+                                <Link
+                                    href={applicationUrl ? new URL(applicationUrl).origin : '#'}
+                                    className="bg-white/10 backdrop-blur-sm px-4 py-1 rounded-full text-sm text-white hover:bg-white/20 transition-colors"
+                                >
+                                    {companyName}
+                                </Link>
+                            </motion.div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Content Section */}
+                <div className="px-6 pb-6 space-y-8">
+                    {/* Job Overview */}
                     <motion.div
+                        className="bg-gray-800/50 rounded-xl p-6"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5, duration: 0.3 }}
-                        className="grid grid-cols-2 gap-4 text-gray-300"
+                        transition={{ delay: 0.4 }}
                     >
-                        {[
-                            { Icon: Briefcase, text: type },
-                            { Icon: MapPin, text: locationType },
-                            { Icon: Globe2, text: location || "Worldwide" },
-                            { Icon: Banknote, text: formatMoney(salary) },
-                        ].map(({ Icon, text }, index) => (
-                            <motion.p
+                        <h2 className="text-xl font-semibold text-white mb-4">Job Overview</h2>
+                        <p className="text-gray-300 leading-relaxed">{short_description}</p>
+                    </motion.div>
+
+                    {/* Job Details Grid */}
+                    <motion.div
+                        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                    >
+                        {jobDetails.map(({ Icon, text, label }, index) => (
+                            <motion.div
                                 key={index}
-                                className="flex items-center gap-2 bg-[#1B1F23] p-3 rounded-md"
-                                whileHover={{ scale: 1.05, backgroundColor: "#2A303C" }}
+                                className="bg-gray-800/30 rounded-xl p-4 hover:bg-gray-700/30 transition-colors"
+                                whileHover={{ scale: 1.02 }}
                             >
-                                <Icon size={20} className="text-blue-400 shrink-0" />
-                                <span className="text-sm md:text-base">{text}</span>
-                            </motion.p>
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-blue-500/10 rounded-lg">
+                                        <Icon size={20} className="text-blue-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-400">{label}</p>
+                                        <p className="text-white font-medium">{text}</p>
+                                    </div>
+                                </div>
+                            </motion.div>
                         ))}
                     </motion.div>
+
+                    {/* Job Description */}
+                    {description && (
+                        <motion.div
+                            className="bg-gray-800/50 rounded-xl p-6 prose prose-invert max-w-none"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.6 }}
+                        >
+                            <h2 className="text-xl font-semibold text-white mb-4">Job Description</h2>
+                            <div className="text-gray-300">
+                                <Markdown>{description}</Markdown>
+                            </div>
+                        </motion.div>
+                    )}
+
+
                 </div>
-            </motion.div>
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.3 }}
-                className=" "
-            >
-                {description && (
-                    <div className="">
-                        <Markdown
-
-
-                        >{description}</Markdown>
-                    </div>
-                )}
-            </motion.div>
-        </motion.section>
+            </motion.section>
+        </div>
     );
-}
+};
+
+export default JobDetailsPageComponent;
