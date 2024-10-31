@@ -4,12 +4,14 @@ import { notFound, redirect } from 'next/navigation'
 import Banner from '../../../../../components/banner'
 import CategoryForm from './_components/category-form'
 import IconBadge from '@/components/icon-badge'
+import JobLocationTypeForm from './_components/job-location-type-form'
 import JobPublishActions from './_components/job-publish-actions'
 import JobTypeForm from './_components/job-type-form'
 import Link from 'next/link'
 import React from 'react'
 import ShortDescriptionForm from './_components/short-description-form'
 import TitleForm from './_components/title-form'
+import YearsOfExperienceForm from './_components/years-of-experience-form'
 import { db } from '@/lib/db'
 import { getAuthSession } from '@/lib/auth'
 import { isValidObjectId } from '@/lib/utils'
@@ -146,6 +148,12 @@ const JobDetailsPage = async ({ params: { jobId } }: JobDetailsPageProps) => {
 
                     {/* Job type form */}
                     <JobTypeForm initialData={job} jobId={job.id} />
+                    {/* Job location Type form */}
+
+                    <JobLocationTypeForm initialData={job} jobId={job.id} />
+
+                    {/* Years of experience form */}
+                    <YearsOfExperienceForm initialData={job} jobId={job.id} />
                 </div>
             </div>
 
