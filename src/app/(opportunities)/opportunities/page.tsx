@@ -1,3 +1,4 @@
+import Banner from "@/components/banner";
 import H1 from "@/components/h1";
 import JobFilterSidebar from "@/components/Jobboard/JobFilterSidebar";
 import { JobFilterValues } from "@/lib/validators/jobFilter";
@@ -97,8 +98,8 @@ export default async function Jobboardpage({
     });
 
     return (
-        <main className="max-w-5xl m-auto px-3 my-10 space-y-10 ">
-            <div className="space-y-3">
+        <main className="max-w-7xl m-auto px-3 my-10 space-y-10 ">
+            <div className="space-y-6">
                 <H1 className="gradient-text animate-gradient">
                     {getTitle({
                         q,
@@ -107,16 +108,14 @@ export default async function Jobboardpage({
                         remote: remote === "true",
                     })}
                 </H1>
-                <p className="text-lg text-n-14">Companies Actively Hiring!</p>
+                <Banner
+                    variant={'success'}
+                    label='Discover the latest opportunities from the DevCastle Job Board! .'
 
-                <p className="text-md text-muted-foreground">
-                    We update this list once per week with new companies hiring remote
-                    positions. Please help us make it better, use the form at the bottom
-                    of the page to suggest great remote jobs or suggest updates to the
-                    current remote companies.
-                </p>
+                />
+
+
             </div>
-
             <hr className="border-t border-zinc-700" />
 
             <section className="flex flex-col md:flex-row gap-4">
@@ -125,6 +124,8 @@ export default async function Jobboardpage({
                     distinctLocations={distinctLocations}
                 />
                 <JobResults jobs={jobs} />
+
+
             </section>
         </main>
     );

@@ -1,6 +1,5 @@
 import { Bell, Pin, Settings2, TerminalSquare } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { authOptions, getAuthSession } from "@/lib/auth";
 import { getActiveProducts, getAdminData, getPendingProducts, getRejectedProducts, getTotalUpvotes, getUsers } from "@/lib/launchpad-server-actions/server-actions";
 
 import H1 from "@/components/h1";
@@ -11,7 +10,7 @@ import PendingProducts from "./launchpad/_components/pending-products";
 import RecentActivity from "./launchpad/_components/recent-activity";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
+import { getAuthSession } from "@/lib/auth";
 import { notFound } from "next/navigation";
 
 export default async function page() {
@@ -24,7 +23,7 @@ export default async function page() {
 
     const users = await getUsers();
     const pendingProducts = await getPendingProducts();
-    const authenticatedUser = await getServerSession(authOptions);
+
     const activeProducts = await getActiveProducts();
     const rejectedProducts = await getRejectedProducts();
     const totalUpvotes = await getTotalUpvotes();
