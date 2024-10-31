@@ -1,14 +1,16 @@
 "use server";
 
+import { jobTypes, locationTypes } from "@/lib/job-types";
+
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
-import { jobTypes } from "@/lib/job-types";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+
 const requiredString = z.string().min(1, "Required");
 // Create a new schema for updates, making all fields optional
-
+const yearsOfExperience = ["0", "2", "3", "5"];
 // Create separate schemas for different update operations
 
 const updateJobSchema = z.object({
@@ -18,12 +20,24 @@ const updateJobSchema = z.object({
     .optional(),
   categoryId: z.string().min(1, "Required").optional(),
   companyName: z.string().min(1, "Required").max(100).optional(),
-  locationType: z.enum(["remote", "hybrid", "on-site"]).optional(),
+  locationType: z
+    .string({
+      required_error: "Please select a location type",
+    })
+    .refine((value) => locationTypes.includes(value), "Invalid location type")
+    .optional(),
   location: z.string().max(100).optional(),
   applicationEmail: z.string().email().max(100).optional(),
   applicationUrl: z.string().url().max(100).optional(),
   short_description: z.string().max(1000).optional(),
   description: z.string().max(5000).optional(),
+  yearsOfExperience: z
+    .string()
+    .refine(
+      (value) => yearsOfExperience.includes(value),
+      "Invalid years of experience",
+    )
+    .optional(),
   salary: z.string().regex(/^\d+$/, "Must be a number").max(9).optional(),
 });
 
@@ -52,6 +66,7 @@ export async function updateJobPosting(jobId: string, formData: FormData) {
     applicationUrl,
     short_description,
     description,
+    yearsOfExperience,
     salary,
   } = validatedFields.data;
 
@@ -73,6 +88,7 @@ export async function updateJobPosting(jobId: string, formData: FormData) {
       categoryId,
       locationType,
       location,
+      yearsOfExperience,
       applicationEmail: applicationEmail?.trim(),
       applicationUrl: applicationUrl?.trim(),
       short_description: short_description?.trim(),
