@@ -33,6 +33,44 @@ export default async function page() {
     console.log(data)
     const premiumUsers = users.filter((user: any) => user.isPremium);
 
+    const stats = [
+        {
+            title: "Total Users",
+            value: users.length,
+            icon: "👤",
+            gradientClasses: "bg-gradient-to-r from-blue-500 to-blue-700"
+        },
+        {
+            title: "Premium Users",
+            value: premiumUsers.length,
+            icon: "💎",
+            gradientClasses: "bg-gradient-to-r from-purple-500 to-purple-700"
+        },
+        {
+            title: "Active Products",
+            value: activeProducts.length,
+            icon: "📦",
+            gradientClasses: "bg-gradient-to-r from-emerald-500 to-emerald-700"
+        },
+        {
+            title: "Pending Products",
+            value: pendingProducts.length,
+            icon: "🕒",
+            gradientClasses: "bg-gradient-to-r from-amber-500 to-amber-700"
+        },
+        {
+            title: "Rejected Products",
+            value: rejectedProducts.length,
+            icon: "❌",
+            gradientClasses: "bg-gradient-to-r from-red-500 to-red-700"
+        },
+        {
+            title: "Total Upvotes",
+            value: totalUpvotes,
+            icon: "⭐",
+            gradientClasses: "bg-gradient-to-r from-teal-500 to-teal-700"
+        },
+    ];
 
 
 
@@ -40,161 +78,120 @@ export default async function page() {
         return notFound();
     } else {
         return (
-            <main className="m-auto my-10 max-w-7xl space-y-10 px-3">
-
-                <H1 className="text-center animate-gradient gradient-text font-sans font-extrabold">Admin Dashboard</H1>
-                <div className="w-full rounded-md p-8  bg-emerald-200  mt-10 md:flex items-center gap-x-4">
-                    <Pin className="text-5xl text-green-600 mb-4 md:mb-0" size={40} />
-                    <div className="text-zinc-700">
-                        This is admin dashboard. You can view and manage all the products, users and jobs here.
+            <main className="min-h-screen text-gray-100">
+                <div className="m-auto max-w-7xl space-y-8 px-4 py-12">
+                    {/* Header */}
+                    <div className="text-center space-y-2">
+                        <H1 className="text-4xl font-bold bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent">
+                            Admin Dashboard
+                        </H1>
+                        <p className="text-gray-400">Manage your platform with ease</p>
                     </div>
-                </div>
 
-                {/* Launchpad section */}
-                <div>
-                    <div className="flex justify-between items-center">
-                        <div className="flex gap-x-6 items-center py-10">
-                            <Link href={"/"} className="">
+                    {/* Notice Banner */}
+                    <div className="bg-gradient-to-r from-emerald-900/50 to-blue-900/50 rounded-lg border border-emerald-500/20 p-6 backdrop-blur-sm">
+                        <div className="flex items-center gap-4">
+                            <Pin className="text-emerald-400" size={32} />
+                            <p className="text-gray-300">
+                                Welcome to your admin dashboard. Monitor and manage all products, users, and jobs from this central hub.
+                            </p>
+                        </div>
+                    </div>
 
-                                <TerminalSquare className="text-5xl text-purple-600" size={52} />
+                    {/* Dashboard Header */}
+                    <div className="flex justify-between items-center py-6">
+                        <div className="flex items-center gap-6">
+                            <Link href="/" className="transition-transform hover:scale-105">
+                                <TerminalSquare className="text-emerald-400" size={48} />
                             </Link>
-
-                            <div className="hidden md:block">
-                                <h1 className="text-3xl font-bold">Welcome back admin</h1>
-                                <p className="text-gray-500">
-                                    Here is what&apos;s happening in your business today
-                                </p>
+                            <div>
+                                <h2 className="text-2xl font-bold text-white">Welcome back, Admin</h2>
+                                <p className="text-gray-400">Here&apos;s your business overview</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
-                            <Bell className="text-2xl text-gray-500" />
-                            <Settings2 className="text-2xl text-gray-500" />
+                            <button className="p-2 rounded-lg hover:bg-gray-800 transition-colors">
+                                <Bell className="text-gray-400 hover:text-emerald-400" size={24} />
+                            </button>
+                            <button className="p-2 rounded-lg hover:bg-gray-800 transition-colors">
+                                <Settings2 className="text-gray-400 hover:text-emerald-400" size={24} />
+                            </button>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <Card className=" bg-gray-800 border-teal-600">
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-md font-bold">Users</CardTitle>👤
-                            </CardHeader>
-                            <CardContent>
-                                {users.length}
-                            </CardContent>
-                        </Card>
-
-                        <Card className=" bg-gray-800 border-teal-600">
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-md font-bold">Premium Users</CardTitle>{" "}
-                                💰
-                            </CardHeader>
-                            <CardContent>
-                                {premiumUsers.length}
-                            </CardContent>
-                        </Card>
-
-                        <Card className=" bg-gray-800 border-teal-600">
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-md font-bold">
-                                    Active Products
-                                </CardTitle>{" "}
-                                📦
-                            </CardHeader>
-                            <CardContent>
-                                {activeProducts.length}
-                            </CardContent>
-                        </Card>
-
-                        <Card className=" bg-gray-800 border-teal-600">
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-md font-bold">
-                                    Pending Products
-                                </CardTitle>{" "}
-                                🕒
-                            </CardHeader>
-                            <CardContent>
-                                {pendingProducts.length}
-                            </CardContent>
-                        </Card>
-
-                        <Card className=" bg-gray-800 border-teal-600">
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-md font-bold">
-                                    Rejected Products
-                                </CardTitle>
-                                👤
-                            </CardHeader>
-                            <CardContent>
-                                {rejectedProducts.length}
-                            </CardContent>
-                        </Card>
-
-                        <Card className=" bg-gray-800 border-teal-600">
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-md font-bold">Upvotes</CardTitle> 🔺
-                            </CardHeader>
-                            <CardContent>
-                                {totalUpvotes}
-                            </CardContent>
-                        </Card>
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {stats.map((stat, index) => (
+                            <Card key={index} className="bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800 transition-colors">
+                                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                    <CardTitle className="text-lg font-medium text-gray-200">
+                                        {stat.title}
+                                    </CardTitle>
+                                    <span className="text-2xl">{stat.icon}</span>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className={`text-3xl font-bold ${stat.gradientClasses} bg-clip-text text-transparent`}>
+                                        {stat.value}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
                     </div>
-
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-7 my-4 gap-4">
-                        <Card className="col-span-4 bg-emerald-50 ">
+                    {/* Charts Section */}
+                    <div className="grid lg:grid-cols-7 gap-6 mt-8">
+                        <Card className="lg:col-span-4 bg-gray-800/50 border-gray-700">
                             <CardHeader>
-                                <CardTitle className="pb-10 text-zinc-700">Overview</CardTitle>
+                                <CardTitle className="text-xl text-gray-200">Overview</CardTitle>
                             </CardHeader>
-                            <CardContent className="pl-2">
+                            <CardContent>
                                 <OverviewChart data={data} />
-
                             </CardContent>
                         </Card>
 
-                        <Card className="w-full col-span-4 md:col-span-3 bg-emerald-50">
+                        <Card className="lg:col-span-3 bg-gray-800/50 border-gray-700">
                             <CardHeader>
-                                <CardTitle className="text-zinc-700">Recent Activity</CardTitle>
-                                <CardDescription>View recent activity</CardDescription>
-
+                                <CardTitle className="text-xl text-gray-200">Recent Activity</CardTitle>
+                                <CardDescription className="text-gray-400">Latest platform updates</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <RecentActivity users={users} />
-
                             </CardContent>
                         </Card>
-
                     </div>
 
-                    <Separator className="my-10 bg-zinc-600" />
+                    <Separator className="bg-gray-700" />
 
-                    <div className="pb-10 space-y-10">
-                        <h2 className="text-2xl font-semibold bg-gradient text-zinc-900 p-2 border-l-4 border-red-400">Pending Products 📦</h2>
-                        <PendingProducts
-                            pendingProducts={pendingProducts}
-                            authenticatedUser={session}
-                        />
+                    {/* Pending Products Section */}
+                    <section className="space-y-6">
+                        <h2 className="text-2xl font-semibold flex items-center gap-3 text-white">
+                            <span className="w-2 h-8 bg-emerald-500 rounded-full"></span>
+                            Pending Products
+                            <span className="text-2xl">📦</span>
+                        </h2>
+                        <PendingProducts pendingProducts={pendingProducts} authenticatedUser={session} />
+                    </section>
 
-                    </div>
+                    <Separator className="bg-gray-700" />
+
+                    {/* Jobs Section */}
+                    <section className="space-y-6">
+                        <h2 className="text-2xl font-semibold flex items-center gap-3 text-white">
+                            <span className="w-2 h-8 bg-blue-500 rounded-full"></span>
+                            Pending Job Listings
+                            <span className="text-2xl">💼</span>
+                        </h2>
+                        <div className="space-y-4">
+                            {unapprovedJobs.map((job) => (
+                                <Link key={job.id} href={`/admin/jobs/${job.slug}`}>
+                                    <JobListItem job={job} />
+                                </Link>
+                            ))}
+                            {unapprovedJobs.length === 0 && (
+                                <p className="text-gray-400 italic">No unapproved jobs</p>
+                            )}
+                        </div>
+                    </section>
                 </div>
-                <Separator className="bg-zinc-600" />
-
-                {/* Job Section */}
-                <section className="flex flex-col gap-3">
-                    <h2 className="text-2xl font-semibold bg-emerald-100 text-zinc-900 p-2 border-l-4 border-blue-600">Pending Job Listings 💼</h2>
-
-                    {unapprovedJobs.map((job) => (
-                        <Link
-                            key={job.id}
-                            href={`/admin/jobs/${job.slug}`}
-                            className="block"
-                        >
-                            <JobListItem job={job} />
-                        </Link>
-                    ))}
-                    {unapprovedJobs.length === 0 && (
-                        <p className="text-muted-foreground">No unapproved jobs</p>
-                    )}
-                </section>
-
             </main>
         );
     }

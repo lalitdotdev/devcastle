@@ -4,6 +4,7 @@ import { CheckCircle, Eye, XCircle } from "lucide-react";
 
 import ActivateProductModal from "@/components/modals/launchpad/activate-product-modal";
 import ActivateProductModalContent from "./activate-product-modal-content";
+import H1 from "@/components/h1";
 import Image from "next/image";
 import ProductModal from "@/components/modals/launchpad/product-modal";
 import ProductModalContent from "@/components/modals/contents/product-modal-content";
@@ -22,12 +23,19 @@ const PendingProducts: React.FC<PendingProductsProps> = ({
 }) => {
     const [currentProduct, setCurrentProduct] = useState<any>(null);
 
+
     const [viewProductModalVisible, setViewProductModalVisible] = useState(false);
     const [activateProductModalVisible, setActivateProductModalVisible] =
         useState(false);
     const [rejectProductModalVisible, setRejectProductModalVisible] =
         useState(false);
 
+
+    if (pendingProducts?.length === 0) {
+        return (
+            <p className="text-muted-foreground">No pending products</p>
+        );
+    }
     const formattedProducts = pendingProducts?.map((product: any) => {
         const {
             id,
