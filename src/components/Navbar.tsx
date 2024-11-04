@@ -30,7 +30,7 @@ const Navbar = async () => {
     }
 
     return (
-        <nav className="fixed top-0 w-full z-10 bg-gradient-to-r border-b border-gray-800 backdrop-blur-lg shadow-sm bg-[#1B1F23]">
+        <nav className="fixed top-0 w-full z-10 bg-gradient-to-r border-b border-gray-800 backdrop-blur-lg shadow-sm ">
             <div className="container max-w-7xl mx-auto flex justify-between items-center py-4 px-4 md:px-6">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 text-white hover:text-indigo-300 transition-colors duration-200">

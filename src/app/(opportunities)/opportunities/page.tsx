@@ -98,7 +98,7 @@ export default async function Jobboardpage({
     });
 
     return (
-        <main className="max-w-7xl m-auto px-3 my-10 space-y-10 ">
+        <main className="max-w-7xl mx-auto my-10 space-y-10 ">
             <div className="space-y-6">
                 <H1 className="gradient-text animate-gradient">
                     {getTitle({

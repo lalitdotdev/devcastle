@@ -17,46 +17,53 @@ const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
     const pathname = usePathname();
 
     return (
-        <li className="w-full list-none overflow-hidden rounded-md bg-transparent shadow border-2 border-indigo-500 my-4">
-            <div className="h-full px-6 py-4 flex sm:justify-between gap-6">
-                <div className="relative flex items-start ">
+        <div className="overflow-hidden rounded-lg bg-zinc-900 shadow-md hover:shadow-lg transition-shadow duration-200 my-4">
+            <div className="px-6 py-4">
+                <div className="flex items-center gap-4">
                     <UserAvatar
                         user={{
                             name: session?.user.name || null,
                             image: session?.user.image || null,
                         }}
                     />
-                    <span className="absolute bottom-1 right-0 rounded-full h-2 w-2 md:w-3 md:h-3 bg-green-500 outline outline-2 outline-white" />
-                </div>
-                <Input
-                    onClick={() => router.push(pathname + "/publish")}
-                    readOnly
-                    placeholder="Create post"
-                    className="md:w-[50%]"
-                />
-                <div className="items-center flex justify-between w-[40%]">
-                    <span
-                        onClick={() => router.push(pathname + "/publish")}
-                        className="rounded-full md:ml-12 "
-                    >
-                        <Award className="text-gray-500 hover:text-indigo-600 cursor-pointer" />
-                    </span>
 
-                    <span
-                        onClick={() => router.push(pathname + "/publish")}
-                        className="rounded-full  "
-                    >
-                        <Link2 className="hidden text-gray-500 md:flex hover:text-indigo-600 cursor-pointer" />
-                    </span>
-                    <span
-                        onClick={() => router.push(pathname + "/publish")}
-                        className="rounded-full md:mr-12 "
-                    >
-                        <Feather className="text-gray-500 hover:text-indigo-600 cursor-pointer" />
-                    </span>
+                    <div className="flex-1">
+                        <Input
+                            onClick={() => router.push(pathname + "/publish")}
+                            readOnly
+                            placeholder="Create post"
+                            className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-blue-500 hover:bg-zinc-700/50 transition-colors duration-200"
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => router.push(pathname + "/publish")}
+                            className="flex items-center gap-2 rounded-full bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-700 transition-colors duration-200"
+                        >
+                            <Feather className="h-4 w-4" />
+                            <span className="hidden md:inline">Write</span>
+                        </button>
+
+                        <button
+                            onClick={() => router.push(pathname + "/publish")}
+                            className="flex items-center gap-2 rounded-full bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-700 transition-colors duration-200"
+                        >
+                            <Link2 className="h-4 w-4" />
+                            <span className="hidden md:inline">Link</span>
+                        </button>
+
+                        <button
+                            onClick={() => router.push(pathname + "/publish")}
+                            className="flex items-center gap-2 rounded-full bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-700 transition-colors duration-200"
+                        >
+                            <Award className="h-4 w-4" />
+                            <span className="hidden md:inline">Award</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </li>
+        </div>
     );
 };
 
