@@ -1,4 +1,4 @@
-// wrapper component around all the page component
+import { Calendar, Crown, MessageSquare, Plus, Users } from "lucide-react";
 
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -30,8 +30,6 @@ const Layout = async ({
         },
     });
 
-    // Check subscription
-
     const subscription = !session?.user
         ? undefined
         : await db.subscription.findFirst({
@@ -49,7 +47,6 @@ const Layout = async ({
 
     if (!community) return notFound();
 
-    // No of members
     const memberCount = await db.subscription.count({
         where: {
             community: {
@@ -58,81 +55,83 @@ const Layout = async ({
         },
     });
 
-    // Extract the community description from the fetched community object
-    const communityDescription = community?.description;
     return (
-        <div className="max-w-[1440px] mx-auto h-full pt-12">
-            <div>
-                {/* TODO: BTN TO TAKE BACK TO FEED */}
-
+        <div className="min-h-screen  px-4 py-6">
+            <div className="mx-auto max-w-7xl">
                 <ToFeedButton />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6 ">
-                    <ul className="flex flex-col col-span-2 space-y-6">{children}</ul>
+                <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+                    {/* Main Content */}
+                    <div className="col-span-2 space-y-6">
+                        {children}
+                    </div>
 
-                    {/* info sidebar */}
-
-                    <div className="overflow-hidden h-fit rounded-sm border-2 border-gray-600 order-first md:order-last tracking-tight bg-[#242A30]">
-                        <div className="md:p-4 p-3 md:border-b-2  border-gray-600 md:rounded-lg  ">
-                            <div className="flex p-1 gap-2 ">
-                                <div className="font-md text-center text-lg text-zinc-400 flex">
-                                    <p className=" text-indigo-500 font-semibold">
-                                        {community?.name}
-                                    </p>
+                    {/* Sidebar */}
+                    <div className="order-first space-y-4 md:order-last">
+                        {/* Community Info Card */}
+                        <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-xl">
+                            {/* Header */}
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/10" />
+                                <div className="relative space-y-2 p-6">
+                                    <h2 className="flex items-center gap-2 text-xl font-bold text-zinc-100">
+                                        {community.name}
+                                        {community.creatorId === session?.user?.id && (
+                                            <Crown className="h-5 w-5 text-yellow-500" />
+                                        )}
+                                    </h2>
+                                    <p className="text-sm text-zinc-400">{community.description}</p>
                                 </div>
-
                             </div>
 
-                            <div className="flex p-1 gap-2">
-                                <p className="text-sm  text-gray-400">{communityDescription}</p>
+                            {/* Stats */}
+                            <div className="grid grid-cols-3 divide-x divide-zinc-800 border-y border-zinc-800 bg-zinc-900/30">
+                                <div className="p-4 text-center">
+                                    <Users className="mx-auto mb-1 h-5 w-5 text-zinc-500" />
+                                    <p className="text-lg font-semibold text-zinc-100">{memberCount}</p>
+                                    <p className="text-xs text-zinc-500">Members</p>
+                                </div>
+                                <div className="p-4 text-center">
+                                    <MessageSquare className="mx-auto mb-1 h-5 w-5 text-zinc-500" />
+                                    <p className="text-lg font-semibold text-zinc-100">{community.posts.length}</p>
+                                    <p className="text-xs text-zinc-500">Posts</p>
+                                </div>
+                                <div className="p-4 text-center">
+                                    <Calendar className="mx-auto mb-1 h-5 w-5 text-zinc-500" />
+                                    <p className="text-xs font-medium text-zinc-100">
+                                        {format(community.createdAt, "MMM yyyy")}
+                                    </p>
+                                    <p className="text-xs text-zinc-500">Created</p>
+                                </div>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="space-y-3 p-6">
+                                {community.creatorId !== session?.user?.id && (
+                                    <SubscribeLeaveToggle
+                                        isSubscribed={isSubscribed}
+                                        communityId={community.id}
+                                        communityName={community.name}
+                                    />
+                                )}
+
+                                {session?.user && (
+                                    <Link
+                                        className={buttonVariants({
+                                            variant: 'outline',
+                                            className: 'group relative w-full overflow-hidden border-zinc-700 bg-transparent',
+                                        })}
+                                        href={`/cb/${slug}/publish`}
+                                    >
+                                        <div className="absolute inset-0 transform bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-indigo-600/10 transition-transform duration-300 group-hover:translate-x-full" />
+                                        <span className="relative flex items-center justify-center gap-2 text-white">
+                                            <Plus className="h-4 w-4" />
+                                            Create Post
+                                        </span>
+                                    </Link>
+                                )}
                             </div>
                         </div>
-                        <dl className=" divide-y divide-gray-600 px-6 py-4 text-sm  ">
-                            <div className="flex justify-between gap-x-4 py-3">
-                                <dt className="text-gray-500">Created</dt>
-                                <dd className="text-gray-400">
-                                    <time dateTime={community?.createdAt.toDateString()}>
-                                        {format(community?.createdAt, "MMMM d, yyyy")}
-                                    </time>
-                                </dd>
-                            </div>
-                            <div className="flex justify-between gap-x-4 py-3 text-gray-400">
-                                <dt className="text-gray-500">Members</dt>
-                                <dd className="flex items-start gap-x-2">{memberCount}</dd>
-                            </div>
-                            <div className="flex justify-between gap-x-4 py-3 text-gray-400">
-                                <dt className="text-gray-500">Posts</dt>
-                                <dd className="text-gray-400">{community.posts.length}</dd>
-                            </div>
-                            {community.creatorId === session?.user?.id ? (
-                                <div className="flex justify-between gap-x-4 py-3">
-                                    <dt className="text-gray-500">You created this community</dt>
-                                </div>
-                            ) : null}
-
-                            {community.creatorId !== session?.user?.id ? (
-                                <SubscribeLeaveToggle
-                                    isSubscribed={isSubscribed}
-                                    communityId={community.id}
-                                    communityName={community.name}
-                                />
-                            ) : null}
-
-                            {/* create Button for creating post */}
-
-                            {/* only allow for logged in user to post in the community */}
-                            {session?.user && (
-                                <Link
-                                    className={buttonVariants({
-                                        variant: 'outline',
-                                        className: 'w-full mb-6 bg-transparent hover:bg-indigo-500 text-white',
-                                    })}
-                                    href={`/cb/${slug}/publish`}
-                                >
-                                    Create Post
-                                </Link>
-                            )}
-                        </dl>
                     </div>
                 </div>
             </div>

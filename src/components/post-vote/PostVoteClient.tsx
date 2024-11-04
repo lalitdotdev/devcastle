@@ -1,16 +1,17 @@
-"use client";
+"use client"
 
-import { useCustomToast } from "@/hooks/use-custom-toast";
-import { toast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
-import { PostVoteRequest } from "@/lib/validators/vote";
-import { usePrevious } from "@mantine/hooks";
-import { VoteType } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
-import { ArrowBigDown, ArrowBigUp } from "lucide-react";
-import { FC, useEffect, useState } from "react";
-import { Button } from "../ui/Button";
+import { ArrowBigDown, ArrowBigUp } from 'lucide-react';
+import React, { FC, useEffect, useState } from 'react';
+import axios, { AxiosError } from 'axios';
+
+import { Button } from '../ui/Button';
+import { PostVoteRequest } from '@/lib/validators/vote';
+import { VoteType } from '@prisma/client';
+import { cn } from '@/lib/utils';
+import { toast } from '@/hooks/use-toast';
+import { useCustomToast } from '@/hooks/use-custom-toast';
+import { useMutation } from '@tanstack/react-query';
+import { usePrevious } from '@mantine/hooks';
 
 interface PostVoteClientProps {
     postId: string;
@@ -28,31 +29,21 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
     const [currentVote, setCurrentVote] = useState(initialVote);
     const prevVote = usePrevious(currentVote);
 
-    // this is client component so we need to synchronize this with server
     useEffect(() => {
         setCurrentVote(initialVote);
     }, [initialVote]);
 
     const { mutate: vote } = useMutation({
         mutationFn: async (voteType: VoteType) => {
-            // payload
-
             const payload: PostVoteRequest = {
                 postId,
                 voteType,
             };
-
-            // updating by patch request as we don't want to send the whole post object to the server just to update the votes field in the db request body
-
             await axios.patch("/api/community/post/vote", payload);
         },
-
-        // error handling
         onError: (err: any, voteType) => {
             if (voteType === "UPVOTE") setVotesAmt(prev => prev - 1);
             else setVotesAmt(prev => prev + 1);
-
-            // reset the current vote to previous vote
             setCurrentVote(prevVote);
 
             if (err instanceof AxiosError) {
@@ -63,7 +54,7 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
 
             return toast({
                 title: "Something went wrong!",
-                description: "Your vote was not registered , Please try again later.",
+                description: "Your vote was not registered. Please try again later.",
                 variant: "destructive",
             });
         },
@@ -83,41 +74,65 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
     });
 
     return (
-        <div className="flex gap-1 pr-0 w-24 bg-zinc-800 hover:bg-zinc-800/40 rounded-full p-1 sm:pb-0 items-center top-0">
-            {/* upvote */}
-            <Button
-                onClick={() => vote("UPVOTE")}
-                size="sm"
-                aria-label="upvote"
-                className="bg-transparent"
-            >
-                <ArrowBigUp
-                    className={cn("h-5 w-5 text-gray-400", {
-                        // cn helper => conditionally apply the classNames
-                        "text-emerald-500 outline-emerald-500": currentVote === "UPVOTE",
-                    })}
-                />
-            </Button>
-            {/* score */}
-            <p className="text-center py-2 font-medium text-md text-gray-400">
-                {votesAmt}
-            </p>
+        <div className="group relative">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-zinc-800/90 to-zinc-900/90 backdrop-blur-sm p-2 transition-all duration-300 hover:from-zinc-700/90 hover:to-zinc-800/90 shadow-lg hover:shadow-xl">
+                {/* Upvote button */}
+                <Button
+                    onClick={() => vote("UPVOTE")}
+                    variant="ghost"
+                    size="sm"
+                    className={cn(
+                        "transition-all duration-200 hover:scale-110 active:scale-95",
+                        "p-0 h-8 w-8 rounded-lg",
+                        "bg-transparent hover:bg-zinc-700/50"
+                    )}
+                    aria-label="upvote"
+                >
+                    <ArrowBigUp
+                        className={cn(
+                            "h-6 w-6 transition-colors duration-200",
+                            currentVote === "UPVOTE"
+                                ? "text-emerald-400 group-hover:text-emerald-300"
+                                : "text-zinc-400 group-hover:text-zinc-300"
+                        )}
+                    />
+                </Button>
 
-            {/* downvote */}
-            <Button
-                onClick={() => vote("DOWNVOTE")}
-                size="sm"
-                className={cn("bg-transparent", {
-                    "text-emerald-500": currentVote === "DOWNVOTE",
-                })}
-                aria-label="downvote"
-            >
-                <ArrowBigDown
-                    className={cn("h-5 w-5 text-gray-400", {
-                        "text-red-500 outline-red-500": currentVote === "DOWNVOTE",
-                    })}
-                />
-            </Button>
+                {/* Vote count */}
+                <span className={cn(
+                    "min-w-12 text-center px-2 py-1 rounded-lg font-medium text-sm transition-colors duration-200",
+                    "bg-zinc-800/50 group-hover:bg-zinc-700/50",
+                    currentVote === "UPVOTE"
+                        ? "text-emerald-400 group-hover:text-emerald-300"
+                        : currentVote === "DOWNVOTE"
+                            ? "text-red-400 group-hover:text-red-300"
+                            : "text-zinc-300 group-hover:text-zinc-200"
+                )}>
+                    {votesAmt}
+                </span>
+
+                {/* Downvote button */}
+                <Button
+                    onClick={() => vote("DOWNVOTE")}
+                    variant="ghost"
+                    size="sm"
+                    className={cn(
+                        "transition-all duration-200 hover:scale-110 active:scale-95",
+                        "p-0 h-8 w-8 rounded-lg",
+                        "bg-transparent hover:bg-zinc-700/50"
+                    )}
+                    aria-label="downvote"
+                >
+                    <ArrowBigDown
+                        className={cn(
+                            "h-6 w-6 transition-colors duration-200",
+                            currentVote === "DOWNVOTE"
+                                ? "text-red-400 group-hover:text-red-300"
+                                : "text-zinc-400 group-hover:text-zinc-300"
+                        )}
+                    />
+                </Button>
+            </div>
         </div>
     );
 };

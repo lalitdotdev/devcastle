@@ -5,7 +5,7 @@ import axios, { AxiosError } from 'axios';
 
 import { Button } from './ui/Button';
 import { SubscribeCommunityPayload } from '../lib/validators/community';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { useCustomToast } from '@/hooks/use-custom-toast';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -44,10 +44,9 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
                 }
             }
 
-            return toast({
-                title: 'There was a problem , ',
+            return toast.error('There was a problem ', {
                 description: 'Could not subscribe to community, please try again.',
-                variant: 'destructive',
+
             });
         },
 
@@ -57,8 +56,7 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
             startTransition(() => {
                 router.refresh();
             });
-            return toast({
-                title: 'Subscribed',
+            return toast.success('Subscribed', {
                 description: `You are now subscribed to cb/${communityName}`,
             });
         },
@@ -81,10 +79,9 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
                 }
             }
 
-            return toast({
-                title: 'There was a problem , ',
-                description: 'Could not unsubscribe community, please try again.',
-                variant: 'destructive',
+            return toast.error('There was a problem ', {
+                description: 'Could not unsubscribe from community, please try again.',
+
             });
         },
 
@@ -94,8 +91,7 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
             startTransition(() => {
                 router.refresh();
             });
-            return toast({
-                title: 'Unsubscribed',
+            return toast.success('Unsubscribed', {
                 description: `You are now unsubscribed from cb/${communityName}`,
             });
         },

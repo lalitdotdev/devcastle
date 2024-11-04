@@ -2,7 +2,7 @@ import Skeleton from "@/components/ui/skeleton";
 
 export function PostSkeleton() {
     return (
-        <div className="p-3 rounded-xl bg-[#1F1F21]">
+        <div className="p-3 rounded-xl ">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
                     <Skeleton className="h-12 w-12 rounded-full" />
