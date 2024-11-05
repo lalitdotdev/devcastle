@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import React, { useState } from 'react';
 import { Store, Trash } from "lucide-react";
 
+import { StatefulButton } from "@/components/Feed/Stateful-btn";
 import { deleteProduct } from "@/lib/launchpad-server-actions/server-actions";
 import { useRouter } from "next/navigation";
 
@@ -66,16 +67,20 @@ const DeleteProduct: React.FC<DeleteProductProps> = ({ productId }) => {
                             Cancel
                         </button>
 
-                        <button
+                        <StatefulButton
                             className={`px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ${isDeleteButtonEnabled
                                 ? "bg-red-600 hover:bg-red-700"
                                 : "bg-gray-300 cursor-not-allowed"
                                 }`}
                             disabled={!isDeleteButtonEnabled} // This is the condition that disables the delete button if the confirmation input is not "delete"
-                            onClick={handleConfirmDelete} // This is the function that deletes the product from the database and server
+                            statusLoading="Deleting Product..."
+                            statusSuccess="Deleted"
+                            onClickAsync={handleConfirmDelete} // This is the function that deletes the product from the database and server
+
+                        // This is the function that deletes the product from the database and server
                         >
                             Confirm delete
-                        </button>
+                        </StatefulButton>
                     </div>
                 </div>
             </DialogContent>

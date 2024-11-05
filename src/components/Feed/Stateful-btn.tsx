@@ -44,7 +44,7 @@ export const StatefulButton: React.FC<StatefulButtonProps> = ({
             onClick={handleClick}
             {...rest}
             variant={status === 'error' ? 'destructive' : rest.variant}
-            className={cn('w-40 rounded-lg overflow-hidden gap-2', className)}
+            className={cn('w-40 rounded-lg overflow-hidden gap-2 flex min-w-fit', className)}
         >
             <span key="label" className=''>
                 {status === 'idle'

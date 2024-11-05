@@ -1,5 +1,6 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { CreateJobValues, createJobSchema } from "@/lib/validators/jobFilter";
 import {
     Form,
@@ -11,9 +12,6 @@ import {
     FormMessage,
 } from "@/components/ui/Form";
 
-import { FC } from "react";
-// import Select from "@/components/Jobboard/Select";
-import H1 from "@/components/h1";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import LoadingButton from "@/components/Jobboard/LoadingButton";
@@ -29,9 +27,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-interface NewJobFormProps { }
-
-const NewJobForm: FC<NewJobFormProps> = ({ }) => {
+const NewJobForm = () => {
     const form = useForm<CreateJobValues>({
         resolver: zodResolver(createJobSchema),
     });
@@ -46,16 +42,6 @@ const NewJobForm: FC<NewJobFormProps> = ({ }) => {
         setFocus,
     } = form;
 
-    //   const onSubmit = async (data: CreateJobValues) => {
-    //     toast({
-    //       description: (
-    //         <pre>
-    //           <code>{JSON.stringify(data, null, 2)}</code>
-    //         </pre>
-    //       ),
-    //     });
-    //   };
-
     const onSubmit = async (values: CreateJobValues) => {
         const formData = new FormData();
 
@@ -67,41 +53,37 @@ const NewJobForm: FC<NewJobFormProps> = ({ }) => {
 
         try {
             await createJobPosting(formData);
-            toast.success('Job Created Successfully ', {
-                description: "Wait for approval from admin!"
-            })
+            toast.success('Job Created Successfully', {
+                description: 'Wait for approval from admin!',
+            });
         } catch (error) {
-            alert("Something went wrong, please try again.");
+            toast.error('Something went wrong, please try again.');
         }
     };
 
     return (
-        <main className="m-auto my-10 max-w-4xl space-y-10">
-            <div className="space-y-5 text-center">
-                <H1>Find your perfect developer.</H1>
-
-                <p
-                    className=" text-muted-foreground"
-                //   style={{ maxWidth: "40ch", margin: "auto" }}
-                >
-                    Post a job to reach
-                    . We&apos;ll
-                    help you find the best candidates.
+        <Card className="m-auto my-10 space-y-10 max-w-6xl mx-auto border border-gray-600 ">
+            <CardHeader className="bg-indigo-600 text-white p-6 max-w-6xl mx-auto">
+                <CardTitle>
+                    <h1 className="text-2xl font-bold text-white">Post a New Job</h1>
+                </CardTitle>
+                <p className="text-gray-200">
+                    Reach top developers and find your perfect fit.
                 </p>
-            </div>
-            <div className="space-y-6 rounded-lg border border-zinc-600 p-4">
+            </CardHeader>
+            <CardContent className="p-6 max-w-6xl mx-auto">
                 <div>
                     <h2 className="font-semibold">Job details</h2>
                     <p className="text-muted-foreground">
                         Provide a job description and details
                     </p>
                 </div>
+
+
+
+
                 <Form {...form}>
-                    <form
-                        className="space-y-4"
-                        noValidate
-                        onSubmit={handleSubmit(onSubmit)}
-                    >
+                    <form className="space-y-6 max-w-6xl mx-auto" noValidate onSubmit={handleSubmit(onSubmit)} >
                         <FormField
                             control={control}
                             name="title"
@@ -334,8 +316,9 @@ const NewJobForm: FC<NewJobFormProps> = ({ }) => {
                         </LoadingButton>
                     </form>
                 </Form>
-            </div>
-        </main>
+            </CardContent>
+
+        </Card>
     );
 };
 
