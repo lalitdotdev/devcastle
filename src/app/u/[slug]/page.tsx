@@ -6,8 +6,10 @@ import {
     HeartHandshake,
     Instagram,
     Linkedin,
+    LucideIcon,
     Twitter,
-    UserCheck2
+    UserCheck2,
+    UserCog
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 
@@ -17,7 +19,6 @@ import Link from "next/link";
 import { Metadata } from "next";
 import React from 'react';
 import { Timeline } from "../_components/Timeline";
-import { UserCog } from 'lucide-react';
 import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
@@ -26,37 +27,77 @@ interface pageProps {
         slug: string;
     };
 }
+interface Profile {
+    id: string;
+    username: string;
+    image: string | null;
+    about: string | null;
+}
 
-// const socials = {
-//     twitter: "https://twitter.com/mrExplorist",
-//     github: "https://github.com/mrExplorist",
-//     linkedin: "https://www.linkedin.com/in/pinglalit/",
-//     website: "https://lalitsharma-portfolio.netlify.app/",
-//     instagram: "",
-// };
+interface Session {
+    user: {
+        id: string;
+    };
+}
 
+interface Social {
+    twitter?: string;
+    github?: string;
+    linkedin?: string;
+    website?: string;
+    instagram?: string;
+}
 
+interface User {
+    about?: string;
+    followersCount?: number;
+    followingCount?: number;
+    articlesCount?: number;
+    socials?: Social;
+}
 
-const user = {
-    about:
-        "I am a full stack developer with 2+ years of experience in building web applications",
-    followersCount: 80,
-    followingCount: 20,
-    articlesCount: 2,
-    socials: {
-        twitter: "https://twitter.com/mrExplorist",
-        github: "https://github.com/mrExplorist",
-        linkedin: "https://www.linkedin.com/in/pinglalit/",
-        website: "https://litsharmadev.tech/",
-        instagram: "",
-    },
+interface TimelineData {
+    title: string;
+    content: React.ReactNode;
+}
+
+interface ProfilePageProps {
+    profile: Profile;
+    session: Session | null;
+    user?: User;
+    data: TimelineData[];
+    params: {
+        slug: string;
+    };
+}
+
+interface StatProps {
+    label: string;
+    value: number;
+}
+
+interface SocialLinkProps {
+    platform: keyof Social;
+    url: string;
 }
 
 
 
+// Default user data
+const defaultUser: User = {
+    about: "",
+    followersCount: 0,
+    followingCount: 0,
+    articlesCount: 0,
+    socials: {
+        twitter: "",
+        github: "",
+        linkedin: "",
+        website: "",
+        instagram: ""
+    }
+};
 
-
-// generate metadata for the page after /cb in slug
 
 export function generateMetadata({ params: { slug } }: pageProps): Metadata {
     return {
@@ -64,11 +105,10 @@ export function generateMetadata({ params: { slug } }: pageProps): Metadata {
         description: `Profile of ${slug}`,
     };
 }
+const ProfilePage = async ({ params }: ProfilePageProps) => {
+    // Merge default user with provided user data
 
-const Page = async ({ params }: pageProps) => {
     const { slug } = params;
-
-
 
     const session = await getAuthSession();
 
@@ -83,8 +123,6 @@ const Page = async ({ params }: pageProps) => {
             about: true,
         }
     });
-
-    // Get user posts from db
 
 
     const data = [
@@ -231,187 +269,166 @@ const Page = async ({ params }: pageProps) => {
             ),
         },
     ];
-
     return (
+        <div className="min-h-screen ">
+            <main className="mx-auto w-full px-4 py-12 sm:max-w-6xl  lg:px-8">
+                {/* Hero Section */}
+                <div className="relative overflow-hidden rounded-2xl bg-gray-800/50 p-8 backdrop-blur-lg">
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10" />
+                    <div className="relative flex flex-col md:flex-row gap-8">
+                        {/* Profile Image */}
+                        <div className="flex-shrink-0">
+                            <div className="relative h-32 w-32 rounded-2xl overflow-hidden ring-4 ring-indigo-500/30">
+                                {profile?.image && (
+                                    <Image
+                                        src={profile.image}
+                                        alt=""
+                                        width={128}
+                                        height={128}
+                                        className="object-cover transition-transform duration-300 hover:scale-110"
+                                    />
+                                )}
+                            </div>
+                        </div>
 
-        <main className="mx-auto my-6 w-full px-4  sm:max-w-5xl md:max-w-6xl lg:px-8">
-            <div className="flex flex-col md:flex-row py-8 justify-center md:items-center  border-gray-600 mb-4 rounded-md border p-4">
-                <div className=" w-full flex flex-col md:justify-start items-center md:flex-row md:gap-4">
-                    <div className="sm:m-0 shadow-lg overflow-hidden h-[74px] w-[74px]   border-4 rounded-full  mt-1 object-cover">
-                        {profile?.image && (
-                            <Image
-                                src={profile?.image}
-                                height={250}
-                                width={250}
-                                alt=""
-                            />
-                        )}
-                    </div>
-                    <div className="" >
-                        <div className="flex flex-col flex-wrap justify-center md:justify-between  ">
-                            <h2 className=" md:text-4xl text-2xl text-indigo-500 font-bold capitalize ml-0">
-                                {profile?.username}
-                            </h2>
-                            <p className="text-sm  text-light-gray">{profile?.about} </p>
+                        {/* Profile Info */}
+                        <div className="flex-1 space-y-4">
+                            <div className="flex items-center justify-between">
+                                <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                                    {profile?.username}
+                                </h1>
+                                <div className="flex gap-3">
+                                    {session?.user?.id !== profile?.id ? (
+                                        <Link href="/mentorship">
+                                            <Button className="group bg-indigo-500 hover:bg-indigo-600 text-white">
+                                                <HeartHandshake className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
+                                                Book a session
+                                            </Button>
+                                        </Link>
+                                    ) : (
+                                        <Link href="/dashboard">
+                                            <Button variant="outline" className="group">
+                                                <UserCog className="h-5 w-5 text-indigo-400 transition-transform group-hover:scale-110" />
+                                            </Button>
+                                        </Link>
+                                    )}
+                                    {session?.user?.id !== profile?.id && (
+                                        <Button className="group bg-gray-700 hover:bg-gray-600">
+                                            <UserCheck2 className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
+                                            Follow
+                                        </Button>
+                                    )}
+                                </div>
+                            </div>
 
-                            {/* only show followers and followings for user's own profile and dont show on other's profile */}
-                            {
-                                session?.user.id !== profile?.id ? (
-                                    <div className="flex w-full flex-wrap sm:w-auto gap-x-4 py-4 items-center justify-start">
-                                        <span className="tracking-wider cursor hover:text-indigo-500 text-gray-500  flex gap-1">
-                                            <span className="text-gray-400 dark:text-gray-300">
-                                                {user.followersCount}
-                                            </span>
-                                            <span className="cursor-pointer">Follower</span>
-                                        </span>
-                                        <span className="tracking-wider text-gray-500 dark:text-gray-400  flex gap-1">
-                                            <span className="text-gray-400 dark:text-gray-300">
-                                                {user.followingCount}
-                                            </span>
-                                            <span className="hover:text-indigo-500 cursor-pointer">
-                                                Following
-                                            </span>
-                                        </span>
-                                        <span className="tracking-wider text-gray-500 dark:text-gray-400  flex gap-1">
-                                            <span className="text-gray-400 dark:text-gray-300">
-                                                {user.articlesCount}
-                                            </span>
-                                            <span className="hover:text-indigo-500 cursor-pointer">
-                                                Articles
-                                            </span>
-                                        </span>
-                                    </div>
-                                ) : (
-                                    // Show socials for other users with icons from lucide react as link
-                                    <div className="flex w-full justify-center pb-4 sm:mt-0 sm:mb-0 sm:w-auto sm:justify-start gap-3 relative md:top-3  opacity-70 text-gray-500 ">
-                                        {user.socials?.twitter && (
-                                            <a href={user.socials.twitter} target="_blank" rel="noreferrer">
-                                                <Twitter className="h-6 w-6 hover:text-indigo-500 ">
-                                                    Twitter
-                                                </Twitter>
-                                            </a>
-                                        )}
+                            <p className="text-gray-300">{profile?.about}</p>
 
-                                        {user.socials?.github && (
-                                            <a href={user.socials?.github} target="_blank" rel="noreferrer">
-                                                <Github className="h-6 w-6 hover:text-indigo-500 ">
-                                                    Github
-                                                </Github>
-                                            </a>
-                                        )}
-                                        {user.socials?.website && (
-                                            <a href={user.socials?.website} target="_blank" rel="noreferrer">
-                                                <Globe className="h-6 w-6 hover:text-indigo-500 " />
-                                            </a>
-                                        )}
-
-                                        {user.socials?.linkedin && (
-                                            <a
-                                                href={user.socials?.linkedin}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                            >
-                                                <Linkedin className="h-6 w-6 hover:text-indigo-500 " />
-                                            </a>
-                                        )}
-
-                                        {user.socials?.instagram && (
-                                            <a
-                                                href={user.socials?.instagram}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                            >
-                                                <Instagram className="h-5 w-5 " />
-                                            </a>
-                                        )}
-                                    </div>
-                                )
-                            }
+                            {session?.user?.id !== profile?.id ? (
+                                <div className="flex gap-6">
+                                    <Stat label="Followers" value={defaultUser.followersCount || 0} />
+                                    <Stat label="Following" value={defaultUser.followingCount || 0} />
+                                    <Stat label="Articles" value={defaultUser.articlesCount || 0} />
+                                </div>
+                            ) : (
+                                <div className="flex gap-4">
+                                    {defaultUser.socials && Object.entries(defaultUser.socials).map(([platform, url]) => (
+                                        url && <SocialLink key={platform} platform={platform as keyof Social} url={url} />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
 
-                {/*TODO: Hard Coded now will fetch from DB */}
-
-
-                <div className='flex flex-col items-end w-full text-lg'>
-                    {
-                        session?.user?.id !== profile?.id && (
-                            <Link href="/mentorship" >
-                                <Button className=" gap-2 px-3 py-2 font-semibold  uppercase tracking-wide  text-zinc-400">
-                                    <HeartHandshake size={28} />
-                                    <span className="font-semibold uppercase text-lg">
-                                        Book a session</span>
-                                </Button>
-                            </Link>
-                        )
-                    }
-                    {session?.user?.id === profile?.id ? (
-                        <Link href="/dashboard">
-                            <Button className=" gap-2 px-3 py-2 font-semibold  uppercase tracking-wide  text-zinc-400">
-                                <UserCog className="text-indigo-500" size={52} />
-                            </Button>
-
-
-                        </Link>
-                    ) : (
-                        <Button className="gap-2 tracking-wide px-3 py-2  font-semibold  uppercase text-lg text-zinc-400">
-                            <UserCheck2 size={32} />Follow
-                        </Button>
-                    )}
-
-
-
-                </div>
-                {/* Show edit on profile if the  */}
-
-            </div>
-
-
-
-            {/* Profile tabs */}
-            <div>
-                <Tabs defaultValue="about" className="w-full">
-                    <div className="border-b border-neutral-600 md:font-semibold w-full ">
-                        <TabsList className="grid md:grid-cols-6 grid-cols-3 md:w-4/5 w-full ">
-                            <TabsTrigger value="about">About</TabsTrigger>
-                            <TabsTrigger value="articles">Articles</TabsTrigger>
-                            <TabsTrigger value="posts">Posts</TabsTrigger>
-                            <TabsTrigger value="experience" className="mr-4">
-                                Experience
-                            </TabsTrigger>
-                            <TabsTrigger value="techstack" className="mr-4">
-                                Tech Stack
-                            </TabsTrigger>
-
-                            <TabsTrigger value="repositories">Repositories</TabsTrigger>
+                {/* Tabs Section */}
+                <div className="mt-8">
+                    <Tabs defaultValue="about" className="w-full">
+                        <TabsList className="flex justify-start gap-2 p-1 bg-gray-800/50 backdrop-blur-lg rounded-lg">
+                            <TabsTrigger value="about" className="text-sm">About</TabsTrigger>
+                            <TabsTrigger value="articles" className="text-sm">Articles</TabsTrigger>
+                            <TabsTrigger value="posts" className="text-sm">Posts</TabsTrigger>
+                            <TabsTrigger value="experience" className="text-sm">Experience</TabsTrigger>
+                            <TabsTrigger value="techstack" className="text-sm">Tech Stack</TabsTrigger>
+                            <TabsTrigger value="repositories" className="text-sm">Repositories</TabsTrigger>
                         </TabsList>
-                    </div>
 
-                    <TabsContent value="about" className="max-lg:pt-4">
-                        <div className="flex flex-col gap-4 p-4">
-                            <p className="text-gray-400 w-2/3">{profile?.about}</p>
+                        <div className="mt-6">
+                            <TabsContent value="about">
+                                <div className="rounded-xl bg-gray-800/50 backdrop-blur-lg p-6">
+                                    <p className="text-gray-300 leading-relaxed">{profile?.about}</p>
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="experience">
+                                <div className="rounded-xl bg-gray-800/50 backdrop-blur-lg p-6">
+                                    <Timeline data={data} />
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="articles">
+                                <div className="rounded-xl bg-gray-800/50 backdrop-blur-lg p-6">
+                                    <p className="text-gray-300">Articles</p>
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="posts">
+                                <div className="rounded-xl bg-gray-800/50 backdrop-blur-lg p-6">
+                                    <p className="text-gray-300">Posts</p>
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="techstack">
+                                <div className="rounded-xl bg-gray-800/50 backdrop-blur-lg p-6">
+                                    <p className="text-gray-300">Tech Stack</p>
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="repositories">
+                                <div className="rounded-xl bg-gray-800/50 backdrop-blur-lg p-6">
+                                    <p className="text-gray-300">Repositories</p>
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="projects">
+                                <div className="rounded-xl bg-gray-800/50 backdrop-blur-lg p-6">
+                                    <p className="text-gray-300">Projects</p>
+                                </div>
+                            </TabsContent>
                         </div>
-                    </TabsContent>
-                    <TabsContent value="articles" className="max-lg:pt-4">Articles</TabsContent>
-                    <TabsContent value="posts" className="max-lg:pt-4">
-
-                    </TabsContent>
-
-                    <TabsContent value='experience' className="max-lg:pt-4">
-
-                        <div className="w-full">
-                            <Timeline data={data} />
-                        </div>
-
-                    </TabsContent>
-
-                    <TabsContent value="repositories" className="max-lg:pt-4"></TabsContent>
-                </Tabs>
-            </div>
-        </main >
-
+                    </Tabs>
+                </div>
+            </main>
+        </div>
     );
 };
 
-export default Page;
+const Stat: React.FC<StatProps> = ({ label, value }) => (
+    <div className="flex flex-col items-center">
+        <span className="text-2xl font-bold text-indigo-400">{value}</span>
+        <span className="text-sm text-gray-400">{label}</span>
+    </div>
+);
+
+const SocialLink: React.FC<SocialLinkProps> = ({ platform, url }) => {
+    const icons: Record<keyof Social, LucideIcon> = {
+        twitter: Twitter,
+        github: Github,
+        linkedin: Linkedin,
+        website: Globe,
+        instagram: Instagram
+    };
+    const Icon = icons[platform];
+
+    return (
+        <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            className="group p-2 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"
+        >
+            <Icon className="h-5 w-5 text-gray-400 group-hover:text-indigo-400 transition-colors" />
+        </a>
+    );
+};
+
+export default ProfilePage;
