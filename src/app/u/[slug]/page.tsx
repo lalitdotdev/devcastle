@@ -1,8 +1,6 @@
 import {
-    Code2Icon,
     Github,
     Globe,
-    GraduationCap,
     HeartHandshake,
     Instagram,
     Linkedin,
@@ -105,7 +103,7 @@ export function generateMetadata({ params: { slug } }: pageProps): Metadata {
         description: `Profile of ${slug}`,
     };
 }
-const ProfilePage = async ({ params }: ProfilePageProps) => {
+const ProfilePage = async ({ params }: pageProps) => {
     // Merge default user with provided user data
 
     const { slug } = params;
