@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { CreateJobValues, createJobSchema } from "@/lib/validators/jobFilter";
@@ -62,25 +62,22 @@ const NewJobForm = () => {
     };
 
     return (
-        <Card className="m-auto my-10 space-y-10 max-w-6xl mx-auto border border-gray-600 ">
-            <CardHeader className="bg-indigo-600 text-white p-6 max-w-6xl mx-auto">
+        <Card className="m-auto my-10 space-y-10 max-w-6xl mx-auto bg-gray-900 border-2 border-indigo-600 rounded-lg">
+            <CardHeader className="bg-indigo-600 text-white p-6 max-w-6xl mx-auto rounded-t-lg">
                 <CardTitle>
                     <h1 className="text-2xl font-bold text-white">Post a New Job</h1>
                 </CardTitle>
-                <p className="text-gray-200">
+                <p className="text-gray-300 text-lg">
                     Reach top developers and find your perfect fit.
                 </p>
             </CardHeader>
-            <CardContent className="p-6 max-w-6xl mx-auto">
-                <div>
-                    <h2 className="font-semibold">Job details</h2>
-                    <p className="text-muted-foreground">
+            <CardContent className="p-8 max-w-6xl mx-auto">
+                <div className="mb-6">
+                    <h2 className="font-semibold text-xl text-white">Job details</h2>
+                    <p className="text-gray-400 text-base">
                         Provide a job description and details
                     </p>
                 </div>
-
-
-
 
                 <Form {...form}>
                     <form className="space-y-6 max-w-6xl mx-auto" noValidate onSubmit={handleSubmit(onSubmit)} >
@@ -89,14 +86,18 @@ const NewJobForm = () => {
                             name="title"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Job title</FormLabel>
+                                    <FormLabel className="text-gray-400 font-medium">Job title</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="e.g. Frontend" {...field} />
+                                        <Input
+                                            placeholder="e.g. Frontend Developer"
+                                            className="bg-gray-800 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-md text-white"
+                                            {...field}
+                                        />
                                     </FormControl>
-                                    <FormDescription>
+                                    <FormDescription className="text-gray-400 text-sm">
                                         A descriptive title that will help developers find your job
                                     </FormDescription>
-                                    <FormMessage />
+                                    <FormMessage className="text-red-500 font-medium" />
                                 </FormItem>
                             )}
                         />
@@ -106,13 +107,16 @@ const NewJobForm = () => {
                             name="type"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Job type</FormLabel>
+                                    <FormLabel className="text-gray-400 font-medium">Job type</FormLabel>
                                     <FormControl>
-                                        <Select {...field} defaultValue="" className="bg-[#282C35]">
+                                        <Select
+                                            {...field}
+                                            defaultValue=""
+                                            className="bg-gray-800 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-md text-white"
+                                        >
                                             <option value="" hidden>
                                                 Select an option
                                             </option>
-
                                             {jobTypes.map((jobType) => (
                                                 <option key={jobType} value={jobType}>
                                                     {jobType}
@@ -120,60 +124,65 @@ const NewJobForm = () => {
                                             ))}
                                         </Select>
                                     </FormControl>
-                                    <FormDescription>
+                                    <FormDescription className="text-gray-400 text-sm">
                                         Full-time, part-time, contract, etc.
                                     </FormDescription>
-
-                                    <FormMessage />
+                                    <FormMessage className="text-red-500 font-medium" />
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={control}
                             name="companyName"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Company</FormLabel>
+                                    <FormLabel className="text-gray-400 font-medium">Company</FormLabel>
                                     <FormControl>
-                                        <Input {...field} />
+                                        <Input
+                                            {...field}
+                                            className="bg-gray-800 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-md text-white"
+                                        />
                                     </FormControl>
-
-                                    <FormMessage />
+                                    <FormMessage className="text-red-500 font-medium" />
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={control}
                             name="companyLogo"
                             render={({ field: { value, ...fieldValues } }) => (
                                 <FormItem>
-                                    <FormLabel>Company logo</FormLabel>
+                                    <FormLabel className="text-gray-400 font-medium">Company logo</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...fieldValues}
                                             type="file"
                                             accept="image/*"
+                                            className="bg-gray-800 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-md text-white"
                                             onChange={(e) => {
                                                 const file = e.target.files?.[0];
                                                 fieldValues.onChange(file);
                                             }}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="text-red-500 font-medium" />
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={control}
                             name="locationType"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Location</FormLabel>
+                                    <FormLabel className="text-gray-400 font-medium">Location</FormLabel>
                                     <FormControl>
                                         <Select
                                             {...field}
                                             defaultValue=""
-                                            className="bg-[#282C35]"
+                                            className="bg-gray-800 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-md text-white"
                                             onChange={(e) => {
                                                 field.onChange(e);
                                                 if (e.currentTarget.value === "Remote") {
@@ -191,7 +200,7 @@ const NewJobForm = () => {
                                             ))}
                                         </Select>
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="text-red-500 font-medium" />
                                 </FormItem>
                             )}
                         />
@@ -201,16 +210,17 @@ const NewJobForm = () => {
                             name="location"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Office location</FormLabel>
+                                    <FormLabel className="text-gray-400 font-medium">Office location</FormLabel>
                                     <FormControl>
                                         <LocationInput
                                             onLocationSelected={field.onChange}
                                             ref={field.ref}
+                                            className="bg-gray-800 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-md text-white"
                                         />
                                     </FormControl>
 
                                     {watch("location") && (
-                                        <div className="flex items-center gap-1">
+                                        <div className="flex items-center gap-2 mt-2">
                                             <button
                                                 type="button"
                                                 className="border-2 border-indigo-600 rounded-md p-1 hover:bg-indigo-600 hover:text-white transition-colors duration-200 ease-in-out"
@@ -220,18 +230,20 @@ const NewJobForm = () => {
                                             >
                                                 <X size={20} />
                                             </button>
-                                            <span className="text-sm">{watch("location")}</span>
+                                            <span className="text-sm text-gray-400">{watch("location")}</span>
                                         </div>
                                     )}
 
-                                    <FormMessage />
+                                    <FormMessage className="text-red-500 font-medium" />
                                 </FormItem>
                             )}
                         />
 
                         <div className="space-y-2">
-                            <Label htmlFor="applicationEmail">How to apply</Label>
-                            <div className="flex justify-between">
+                            <Label htmlFor="applicationEmail" className="text-gray-400 font-medium">
+                                How to apply
+                            </Label>
+                            <div className="flex justify-between gap-4">
                                 <FormField
                                     control={control}
                                     name="applicationEmail"
@@ -243,12 +255,13 @@ const NewJobForm = () => {
                                                         id="applicationEmail"
                                                         placeholder="Email"
                                                         type="email"
+                                                        className="bg-gray-800 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-md text-white"
                                                         {...field}
                                                     />
-                                                    <span className="mx-2">or</span>
+                                                    <span className="mx-2 text-gray-400">or</span>
                                                 </div>
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage className="text-red-500 font-medium" />
                                         </FormItem>
                                     )}
                                 />
@@ -261,6 +274,7 @@ const NewJobForm = () => {
                                                 <Input
                                                     placeholder="Website URL e.g. https://example.com/jobs/1234"
                                                     type="url"
+                                                    className="bg-gray-800 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-md text-white"
                                                     {...field}
                                                     onChange={(e) => {
                                                         field.onChange(e);
@@ -268,18 +282,22 @@ const NewJobForm = () => {
                                                     }}
                                                 />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage className="text-red-500 font-medium" />
                                         </FormItem>
                                     )}
                                 />
                             </div>
                         </div>
+
                         <FormField
                             control={control}
                             name="description"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Label onClick={() => setFocus("description")}>
+                                    <Label
+                                        onClick={() => setFocus("description")}
+                                        className="text-gray-400 font-medium"
+                                    >
                                         Description
                                     </Label>
                                     <FormControl>
@@ -288,36 +306,42 @@ const NewJobForm = () => {
                                                 field.onChange(draftToMarkdown(draft))
                                             }
                                             ref={field.ref}
+
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="text-red-500 font-medium" />
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={control}
                             name="salary"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Salary</FormLabel>
+                                    <FormLabel className="text-gray-400 font-medium">Salary</FormLabel>
                                     <FormControl>
-                                        <Input {...field} type="number" />
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            className="bg-gray-800 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-md text-white"
+                                        />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="text-red-500 font-medium" />
                                 </FormItem>
                             )}
                         />
+
                         <LoadingButton
                             type="submit"
                             loading={isSubmitting}
-                            className=" bg-[#4F46E5] rounded-none text-gray-900 font-semibold text-md focus:border-4 hover:text-gray-800"
+                            className="bg-indigo-600 text-white font-medium rounded-md px-6 py-3 focus:ring-4 focus:ring-indigo-300 hover:bg-indigo-700 transition-colors duration-200 ease-in-out"
                         >
                             Submit
                         </LoadingButton>
                     </form>
                 </Form>
             </CardContent>
-
         </Card>
     );
 };
