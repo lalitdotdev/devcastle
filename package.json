@@ -82,7 +82,7 @@
     "framer-motion": "^11.0.3",
     "ky": "^1.4.0",
     "lodash.debounce": "^4.0.8",
-    "lucide-react": "^0.257.0",
+    "lucide-react": "^0.515.0",
     "markdown-draft-js": "^2.4.0",
     "nanoid": "^5.0.7",
     "next": "^14.2.3",
