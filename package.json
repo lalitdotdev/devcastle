@@ -106,7 +106,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "react-textarea-autosize": "^8.4.1",
     "react-tweet": "^3.2.1",
-    "recharts": "^2.13.0",
+    "recharts": "^3.3.0",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
     "rss-parser": "^3.13.0",
