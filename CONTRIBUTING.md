@@ -1,13 +1,13 @@
-# Contributing to CampusBuddy
+# Contributing to Devcastle
 
-Welcome to CampusBuddy! We're thrilled that you're interested in contributing to our project. Please follow these comprehensive guidelines to set up your local development environment and contribute effectively.
+Welcome to Devcastle! We're thrilled that you're interested in contributing to our project. Please follow these comprehensive guidelines to set up your local development environment and contribute effectively.
 
 ## Setting Up Locally
 
 ### 1. Fork and then clone the Repository
 
 ```bash
-git clone https://github.com/your-username/campusbuddy.git
+git clone https://github.com/your-username/devcastle.git
 cd campusBuddy
 ```
 
@@ -147,4 +147,4 @@ This allows you to interact with your PlanetScale database directly.
 
 If using Upstash, ensure your `REDIS_URL` is correctly configured. You can obtain the URL from the Upstash dashboard.
 
-Thank you for contributing to CampusBuddy ! 🚀🔗
+Thank you for contributing to Devcastle ! 🚀🔗
