@@ -1,6 +1,7 @@
 'use client';
 
-import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
+import { AnimatePresence as _AnimatePresence, MotionConfig, motion } from 'framer-motion';
+const AnimatePresence = _AnimatePresence as any;
 import { BaggageClaim, Briefcase, CassetteTape, Castle, Folder, MessageCircle, WalletCards } from 'lucide-react';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 

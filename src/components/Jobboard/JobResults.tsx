@@ -1,6 +1,7 @@
 "use client"
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence as _AnimatePresence, motion } from 'framer-motion';
+const AnimatePresence = _AnimatePresence as any;
 
 import { Job } from "@prisma/client";
 import { JobListItemWrapper } from "./JobListItem";

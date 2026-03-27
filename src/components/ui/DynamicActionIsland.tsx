@@ -1,6 +1,7 @@
 "use client"
 
-import { AnimatePresence, motion, useWillChange } from "framer-motion"
+import { AnimatePresence as _AnimatePresence, motion, useWillChange } from "framer-motion"
+const AnimatePresence = _AnimatePresence as any;
 import React, {
     ReactNode,
     createContext,

@@ -1,4 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence as _AnimatePresence, motion } from 'framer-motion';
+const AnimatePresence = _AnimatePresence as any;
 import { Button, ButtonProps } from '@/components/ui/Button';
 import { CheckCircle, XCircle } from 'lucide-react';
 import React, { useState } from 'react';
