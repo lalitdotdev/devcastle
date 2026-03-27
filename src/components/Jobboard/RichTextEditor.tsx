@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 
-const Editor = dynamic(
+const Editor: any = dynamic(
     () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
     {
         loading: () => <Loader2 className="h-6 w-6 animate-spin" />,
