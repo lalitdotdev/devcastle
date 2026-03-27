@@ -62,7 +62,7 @@ Stripe is an equal opportunity employer. We value diversity and are committed to
     salary: 120000,
     approved: true,
     description: `
-**About Vercel:** 
+**About Vercel:**
 
 Vercel is a cloud platform for static sites and Serverless Functions that fits perfectly with your workflow. It enables developers to host Jamstack websites with ease.
 
@@ -184,7 +184,7 @@ I might not be able to pay you a lot, but I can offer you a lot of experience an
     description: `
 **Help build the future of journaling**
 
-Smart Diary is the intelligent journaling app with AI integration. I'm looking for someone who can help me build this website. 
+Smart Diary is the intelligent journaling app with AI integration. I'm looking for someone who can help me build this website.
 
 Try it out for free at [https://smartdiary.co](https://smartdiary.co).
 `,
@@ -346,6 +346,23 @@ This is a fantastic opportunity for those looking to kickstart their career in w
   },
 ];
 
+const placeholderJobCategories = [
+  "Software Development",
+  "Data Science",
+  "Product Management",
+  "Design",
+  "UI UX Design",
+  "Marketing",
+  "Sales",
+  "Customer Success",
+  "Operations",
+  "Finance",
+  "HR",
+  "Legal",
+  "Other",
+];
+
 module.exports = {
   placeholderJobs,
+  placeholderJobCategories,
 };
