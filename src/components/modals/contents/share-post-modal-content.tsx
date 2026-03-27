@@ -1,4 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence as _AnimatePresence, motion } from 'framer-motion';
+const AnimatePresence = _AnimatePresence as any;
 import { Check, Copy, Share2, X } from 'lucide-react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";

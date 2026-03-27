@@ -12,6 +12,7 @@ import { db } from "@/lib/db";
 import { formatTimeToNow } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { redis } from "@/lib/redis";
+import { getAuthSession } from "@/lib/auth";
 
 interface CommunityPostPageProps {
     params: {
@@ -23,13 +24,18 @@ export function generateMetadata({
     params: { postId },
 }: CommunityPostPageProps): Metadata {
     return {
-        title: `Post | Community Post`,
-        description: `Post `,
+        title: `Post ${postId} | Community Post`,
+        description: `Post details for ${postId}`,
     };
 }
 
 const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
-    const cachedPost = (await redis.hgetall(`post:${params.postId}`)) as CachedPost;
+    // Parallelize Redis and Session fetching
+    const [cachedPost, session] = await Promise.all([
+        redis.hgetall(`post:${params.postId}`) as Promise<CachedPost | null>,
+        getAuthSession()
+    ]);
+
     let post: (Post & { votes: Vote[]; author: User }) | null = null;
 
     if (!cachedPost) {
@@ -37,9 +43,35 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
             where: { id: params.postId },
             include: { votes: true, author: true },
         });
+    } else {
+        // If we have cachedPost, we still need the votes for the PostVoteServer
+        // We'll fetch the votes once here to avoid multiple queries later
+        const postWithVotes = await db.post.findUnique({
+            where: { id: params.postId },
+            include: { votes: true },
+        });
+        if (postWithVotes) {
+            post = {
+                ...postWithVotes,
+                author: {
+                    username: cachedPost.authorUsername
+                } as User, // Mock author from cache for UI
+            } as (Post & { votes: Vote[]; author: User });
+        }
     }
 
     if (!post && !cachedPost) return notFound();
+
+    // Calculate votes Amt and current user's vote here to pass to both instances of PostVoteServer
+    const votesAmt = post?.votes.reduce((acc, vote) => {
+        if (vote.type === "UPVOTE") return acc + 1;
+        if (vote.type === "DOWNVOTE") return acc - 1;
+        return acc;
+    }, 0) ?? 0;
+
+    const currentVote = post?.votes.find(
+        (vote) => vote.userId === session?.user?.id
+    )?.type;
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-zinc-900 to-zinc-950">
@@ -57,14 +89,14 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                                         <p className="text-sm font-medium text-zinc-300">
                                             Posted by{" "}
                                             <a
-                                                href={`/u/${post?.author.username ?? cachedPost.authorUsername}`}
+                                                href={`/u/${post?.author?.username ?? cachedPost?.authorUsername}`}
                                                 className="text-blue-400 hover:text-blue-300 transition-colors"
                                             >
-                                                u/{post?.author.username ?? cachedPost.authorUsername}
+                                                u/{post?.author?.username ?? cachedPost?.authorUsername}
                                             </a>
                                         </p>
                                         <p className="text-xs text-zinc-500">
-                                            {formatTimeToNow(new Date(post?.createdAt ?? cachedPost.createdAt))}
+                                            {formatTimeToNow(new Date(post?.createdAt ?? cachedPost!.createdAt))}
                                         </p>
                                     </div>
                                 </div>
@@ -78,7 +110,7 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                                 </div>
                             </div>
                             <h1 className="mt-4 text-xl sm:text-2xl md:text-3xl font-bold text-zinc-100 tracking-tight">
-                                {post?.title ?? cachedPost.title}
+                                {post?.title ?? cachedPost?.title}
                             </h1>
                         </div>
 
@@ -89,13 +121,9 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                                 <Suspense fallback={<PostVoteShell />}>
                                     {/* @ts-expect-error server component*/}
                                     <PostVoteServer
-                                        postId={post?.id ?? cachedPost.id}
-                                        getData={async () => {
-                                            return await db.post.findUnique({
-                                                where: { id: params.postId },
-                                                include: { votes: true },
-                                            });
-                                        }}
+                                        postId={post?.id ?? cachedPost!.id}
+                                        initialVoteAmt={votesAmt}
+                                        initialVote={currentVote}
                                     />
                                 </Suspense>
                             </div>
@@ -106,13 +134,9 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                                     <Suspense fallback={<PostVoteShellMobile />}>
                                         {/* @ts-expect-error server component*/}
                                         <PostVoteServer
-                                            postId={post?.id ?? cachedPost.id}
-                                            getData={async () => {
-                                                return await db.post.findUnique({
-                                                    where: { id: params.postId },
-                                                    include: { votes: true },
-                                                });
-                                            }}
+                                            postId={post?.id ?? cachedPost!.id}
+                                            initialVoteAmt={votesAmt}
+                                            initialVote={currentVote}
                                         />
                                     </Suspense>
                                 </div>
@@ -121,7 +145,7 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                             {/* Main Content */}
                             <div className="p-4 sm:p-6 lg:pl-24">
                                 <div className="prose prose-invert prose-zinc max-w-none">
-                                    <EditorOutputContent content={post?.content ?? cachedPost.content} />
+                                    <EditorOutputContent content={post?.content ?? (cachedPost ? JSON.parse(cachedPost.content) : null)} />
                                 </div>
                             </div>
                         </div>
@@ -143,7 +167,7 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                                 }
                             >
                                 {/* @ts-expect-error server component */}
-                                <CommentsSection postId={post?.id ?? cachedPost.id} />
+                                <CommentsSection postId={post?.id ?? cachedPost!.id} />
                             </Suspense>
                         </div>
                     </div>

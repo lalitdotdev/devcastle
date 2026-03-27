@@ -1,6 +1,7 @@
 "use client"
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence as _AnimatePresence, motion } from 'framer-motion';
+const AnimatePresence = _AnimatePresence as any;
 import { ChevronRight, HelpCircle, PersonStanding, Settings } from 'lucide-react';
 import React, { useState } from 'react';
 

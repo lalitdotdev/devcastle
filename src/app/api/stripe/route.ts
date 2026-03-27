@@ -4,7 +4,7 @@ import Stripe from "stripe";
 import { db } from "@/lib/db";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: "2024-09-30.acacia",
+  apiVersion: "2025-02-24.acacia",
 });
 const webhookSigningSecret = process.env
   .STRIPE_WEBHOOK_SIGNING_SECRET as string;

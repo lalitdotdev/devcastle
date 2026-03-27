@@ -1,5 +1,6 @@
-import { z } from "zod";
 import { jobTypes, locationTypes } from "../job-types";
+
+import { z } from "zod";
 
 const requiredString = z.string().min(1, "Required");
 const numericRequiredString = requiredString.regex(/^\d+$/, "Must be a number");
@@ -8,7 +9,7 @@ const companyLogoSchema = z
   .custom<File | undefined>()
   .refine(
     (file) => !file || (file instanceof File && file.type.startsWith("image/")),
-    "Must be an image file"
+    "Must be an image file",
   )
   .refine((file) => {
     return !file || file.size < 1024 * 1024 * 2;
@@ -24,11 +25,11 @@ const applicationSchema = z
     path: ["applicationEmail"],
   });
 
-const locationSchema = z
+export const locationSchema = z
   .object({
     locationType: requiredString.refine(
       (value) => locationTypes.includes(value),
-      "Invalid location type"
+      "Invalid location type",
     ),
     location: z.string().max(100).optional(),
   })
@@ -38,7 +39,7 @@ const locationSchema = z
     {
       message: "Location is required for on-site jobs",
       path: ["location"],
-    }
+    },
   );
 
 export const createJobSchema = z
@@ -46,14 +47,14 @@ export const createJobSchema = z
     title: requiredString.max(100),
     type: requiredString.refine(
       (value) => jobTypes.includes(value),
-      "Invalid job type"
+      "Invalid job type",
     ),
     companyName: requiredString.max(100),
     companyLogo: companyLogoSchema,
     description: z.string().max(5000).optional(),
     salary: numericRequiredString.max(
       9,
-      "Number can't be longer than 9 digits"
+      "Number can't be longer than 9 digits",
     ),
   })
   .and(applicationSchema)

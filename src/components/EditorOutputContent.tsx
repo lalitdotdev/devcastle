@@ -10,12 +10,13 @@ import remarkGfm from 'remark-gfm';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 // Dynamically import custom renderers to avoid SSR issues
-const CustomCodeRenderer = dynamic(() => import("./renderers/CustomCodeRenderer"), { ssr: false });
-const CustomImageRenderer = dynamic(() => import("./renderers/CustomImageRenderer"), { ssr: false });
-const CustomLinkRenderer = dynamic(() => import("./renderers/EditorCustomLink"), { ssr: false });
-const CustomAlertRenderer = dynamic(() => import("./renderers/CustomAlertRenderer"), { ssr: false });
+// Typed as `any` to avoid ReactNode conflict from @types/react-copy-to-clipboard's nested @types/react
+const CustomCodeRenderer: any = dynamic(() => import("./renderers/CustomCodeRenderer"), { ssr: false });
+const CustomImageRenderer: any = dynamic(() => import("./renderers/CustomImageRenderer"), { ssr: false });
+const CustomLinkRenderer: any = dynamic(() => import("./renderers/EditorCustomLink"), { ssr: false });
+const CustomAlertRenderer: any = dynamic(() => import("./renderers/CustomAlertRenderer"), { ssr: false });
 
-const Output = dynamic(
+const Output: any = dynamic(
     async () => (await import("editorjs-react-renderer")).default,
     { ssr: false }
 );
@@ -66,7 +67,7 @@ const MarkdownRenderer: FC<{ content: string }> = ({ content }) => (
                     </code>
                 )
             },
-            a: ({ href, children }) => <CustomLinkRenderer href={href || ''}>{children}</CustomLinkRenderer>,
+            a: ({ href, children }: any) => <CustomLinkRenderer href={href || ''}>{children}</CustomLinkRenderer>,
         }}
         className="text-sm"
     >
