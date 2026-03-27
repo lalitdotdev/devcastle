@@ -12,3 +12,4 @@ declare module "@editorjs/checklist";
 declare module "@editorjs/link-autocomplete";
 declare module "@bomdi/codebox";
 declare module "editorjs-alert";
+declare module "@editorjs/header";

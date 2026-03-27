@@ -128,7 +128,6 @@
   "devDependencies": {
     "@editorjs/link-autocomplete": "^0.1.0",
     "@types/bcrypt": "^5.0.2",
-    "@types/editorjs__header": "^2.8.2",
     "@types/lodash.debounce": "^4.0.9",
     "@types/markdown-draft-js": "^2.2.7",
     "@types/react-copy-to-clipboard": "^5.0.7",
