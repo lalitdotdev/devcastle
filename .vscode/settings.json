@@ -9,6 +9,5 @@
   "workbench.colorCustomizations": {
     "minimap.background": "#00000000",
     "scrollbar.shadow": "#00000000"
-  },
-  "prisma.pinToPrisma6": true
+  }
 }

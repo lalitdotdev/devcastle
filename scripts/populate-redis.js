@@ -9,6 +9,12 @@ try {
   // dotenv not found, assuming env vars are already loaded (e.g. by Bun or --env-file)
 }
 
+if (!process.env.REDIS_URL || !process.env.REDIS_SECRET) {
+  console.error("❌ Error: REDIS_URL or REDIS_SECRET is missing in environment variables.");
+  console.log("Please ensure they are set in your .env file or deployment environment.");
+  process.exit(1);
+}
+
 const prisma = new PrismaClient();
 const redis = new Redis({
   url: process.env.REDIS_URL,
