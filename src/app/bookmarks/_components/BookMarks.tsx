@@ -55,7 +55,7 @@ export default function Bookmarks() {
     }
 
 
-    console.log(posts)
+    // console.log(posts)
 
     return (
         <InfiniteScrollContainer

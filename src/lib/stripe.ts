@@ -46,7 +46,7 @@ export const createCustomerLink = async () => {
 
     const email = authenticatedUser.user.email;
 
-    console.log(email, "email");
+    // console.log(email, "email");
 
     const customers = await stripe.customers.list({
       email: email,
