@@ -30,7 +30,7 @@ export default async function page() {
     const data = await getAdminData();
 
 
-    console.log(data)
+    // console.log(data)
     const premiumUsers = users.filter((user: any) => user.isPremium);
 
     const stats = [
