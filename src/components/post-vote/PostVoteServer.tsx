@@ -10,7 +10,8 @@ interface PostVoteServerProps {
   postId: string;
   initialVoteAmt?: number;
   initialVote?: VoteType | null;
-  getData?: () => Promise<(Post & { votes: Vote[] }) | null>; // getData is a function that returns a promise that resolves to a post object or null
+  getData?: () => Promise<(Post & { votes: Vote[] }) | null>;
+  layout?: "horizontal" | "vertical";
 }
 
 // const wait = (ms: number) => new Promise(res => setTimeout(res, ms));
@@ -20,6 +21,7 @@ const PostVoteServer = async ({
   initialVoteAmt,
   initialVote,
   getData,
+  layout,
 }: PostVoteServerProps) => {
   const session = await getAuthSession();
   let _votesAmt: number = 0; // total votes for the post
@@ -52,6 +54,7 @@ const PostVoteServer = async ({
       postId={postId}
       initialVotesAmt={_votesAmt}
       initialVote={_currentVote}
+      layout={layout}
     />
   );
 };

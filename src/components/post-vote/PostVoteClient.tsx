@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowBigDown, ArrowBigUp } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import React, { FC, useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 
@@ -17,12 +17,14 @@ interface PostVoteClientProps {
     postId: string;
     initialVotesAmt: number;
     initialVote?: VoteType | null;
+    layout?: "horizontal" | "vertical";
 }
 
 const PostVoteClient: FC<PostVoteClientProps> = ({
     postId,
     initialVotesAmt,
     initialVote,
+    layout = "horizontal",
 }) => {
     const { loginToast } = useCustomToast();
     const [votesAmt, setVotesAmt] = useState<number>(initialVotesAmt);
@@ -74,39 +76,36 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
     });
 
     return (
-        <div className="group relative">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-zinc-800/90 to-zinc-900/90 backdrop-blur-sm p-2 transition-all duration-300 hover:from-zinc-700/90 hover:to-zinc-800/90 shadow-lg hover:shadow-xl">
+        <div className="group relative w-fit">
+            <div className={cn(
+                "flex items-center gap-1 rounded-full bg-zinc-800/60 backdrop-blur-md p-1 border border-zinc-700/50 shadow-md",
+                layout === "vertical" ? "flex-col py-2" : "flex-row px-1"
+            )}>
                 {/* Upvote button */}
                 <Button
                     onClick={() => vote("UPVOTE")}
                     variant="ghost"
                     size="sm"
                     className={cn(
-                        "transition-all duration-200 hover:scale-110 active:scale-95",
-                        "p-0 h-8 w-8 rounded-lg",
-                        "bg-transparent hover:bg-zinc-700/50"
+                        "transition-all duration-300 hover:scale-110 active:scale-90",
+                        "p-0 h-7 w-7 rounded-full",
+                        currentVote === "UPVOTE" 
+                            ? "bg-emerald-500/15 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.3)] animate-pulse-subtle" 
+                            : "text-zinc-500 hover:bg-zinc-700/50 hover:text-emerald-400"
                     )}
                     aria-label="upvote"
                 >
-                    <ArrowBigUp
-                        className={cn(
-                            "h-6 w-6 transition-colors duration-200",
-                            currentVote === "UPVOTE"
-                                ? "text-emerald-400 group-hover:text-emerald-300"
-                                : "text-zinc-400 group-hover:text-zinc-300"
-                        )}
-                    />
+                    <ChevronUp className="h-5 w-5" />
                 </Button>
 
                 {/* Vote count */}
                 <span className={cn(
-                    "min-w-12 text-center px-2 py-1 rounded-lg font-medium text-sm transition-colors duration-200",
-                    "bg-zinc-800/50 group-hover:bg-zinc-700/50",
+                    "min-w-[2.5rem] text-center font-bold text-xs tabular-nums transition-colors duration-300",
                     currentVote === "UPVOTE"
-                        ? "text-emerald-400 group-hover:text-emerald-300"
+                        ? "text-emerald-400"
                         : currentVote === "DOWNVOTE"
-                            ? "text-red-400 group-hover:text-red-300"
-                            : "text-zinc-300 group-hover:text-zinc-200"
+                            ? "text-red-400"
+                            : "text-zinc-300"
                 )}>
                     {votesAmt}
                 </span>
@@ -117,20 +116,15 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
                     variant="ghost"
                     size="sm"
                     className={cn(
-                        "transition-all duration-200 hover:scale-110 active:scale-95",
-                        "p-0 h-8 w-8 rounded-lg",
-                        "bg-transparent hover:bg-zinc-700/50"
+                        "transition-all duration-300 hover:scale-110 active:scale-90",
+                        "p-0 h-7 w-7 rounded-full",
+                        currentVote === "DOWNVOTE" 
+                            ? "bg-red-500/15 text-red-400 shadow-[0_0_15px_rgba(248,113,113,0.3)] animate-pulse-subtle" 
+                            : "text-zinc-500 hover:bg-zinc-700/50 hover:text-red-400"
                     )}
                     aria-label="downvote"
                 >
-                    <ArrowBigDown
-                        className={cn(
-                            "h-6 w-6 transition-colors duration-200",
-                            currentVote === "DOWNVOTE"
-                                ? "text-red-400 group-hover:text-red-300"
-                                : "text-zinc-400 group-hover:text-zinc-300"
-                        )}
-                    />
+                    <ChevronDown className="h-5 w-5" />
                 </Button>
             </div>
         </div>
