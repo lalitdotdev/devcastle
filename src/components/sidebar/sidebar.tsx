@@ -2,7 +2,7 @@
 
 import { AnimatePresence as _AnimatePresence, motion } from 'framer-motion';
 const AnimatePresence = _AnimatePresence as any;
-import { ChevronRight, HelpCircle, PersonStanding, Settings } from 'lucide-react';
+import { ChevronRight, HelpCircle, PersonStanding, Rocket, Settings } from 'lucide-react';
 import React, { useState } from 'react';
 
 import Link from 'next/link';
@@ -14,78 +14,93 @@ const Sidebar = () => {
 
     const toggleSidebar = () => setIsOpen(!isOpen);
 
-    const sidebarVariants = {
-        open: { x: 0, transition: { type: "spring", stiffness: 300, damping: 30 } },
-        closed: { x: "-100%", transition: { type: "spring", stiffness: 300, damping: 30 } }
-    };
-
-    const iconVariants = {
-        open: { rotate: 0 },
-        closed: { rotate: 180 }
-    };
-
     return (
         <>
-            {/* Trigger Button */}
+            {/* Trigger Button - More cohesive and attached to sidebar edge when open */}
             <motion.button
                 onClick={toggleSidebar}
-                className="fixed top-20 left-6 z-[100] flex items-center justify-center sm:p-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                initial={false}
+                animate={{ 
+                    left: isOpen ? "108px" : "12px",
+                    rotate: isOpen ? 180 : 0,
+                    scale: isOpen ? 1 : 1.1
+                }}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className={cn(
+                    "fixed top-[100px] z-[110] flex items-center justify-center w-8 h-8 rounded-full border shadow-lg transition-colors duration-200",
+                    isOpen 
+                        ? "bg-[#1B1F23] border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500" 
+                        : "bg-indigo-600 border-indigo-400 text-white hover:bg-indigo-500"
+                )}
             >
-                <motion.div
-                    variants={iconVariants}
-                    animate={isOpen ? "open" : "closed"}
-                >
-                    <ChevronRight size={24} />
-                </motion.div>
+                <ChevronRight size={16} />
             </motion.button>
 
             {/* Sidebar */}
             <AnimatePresence>
-                <motion.div
-                    className="fixed inset-y-0 left-0 w-24 bg-gray-800/50  text-white flex flex-col shadow-2xl mt-24 rounded-r-xl overflow-hidden z-50"
-                    variants={sidebarVariants}
-                    initial="closed"
-                    animate={isOpen ? "open" : "closed"}
+                <motion.aside
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ 
+                        x: isOpen ? 0 : -80,
+                        opacity: 1,
+                        width: isOpen ? "96px" : "80px"
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className={cn(
+                        "fixed top-24 bottom-6 left-4 z-50 flex flex-col bg-[#1B1F23]/90 backdrop-blur-xl border border-zinc-800 shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-3xl overflow-hidden transition-colors duration-500",
+                        !isOpen && "border-transparent bg-transparent shadow-none pointer-events-none"
+                    )}
                 >
-                    <nav className="flex-1 overflow-y-auto py-8 px-2">
-                        <SidebarRoutes />
-                    </nav>
-                    <div className="border-t border-gray-700 py-4 px-2">
-                        <ul className="space-y-6">
-                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                                <Link href="/launchpad/settings" className="flex items-center justify-center hover:text-indigo-300 transition-colors duration-200">
-                                    <Settings size={24} />
+                    <div className={cn(
+                        "flex flex-col h-full w-full py-6 px-3 transition-opacity duration-300",
+                        !isOpen && "opacity-0"
+                    )}>
+                        {/* Top Section / Logo placeholder */}
+                        <div className="flex justify-center mb-8">
+                             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 p-[2px]">
+                                 <div className="w-full h-full bg-[#1B1F23] rounded-[14px] flex items-center justify-center">
+                                     <Rocket size={20} className="text-indigo-400" />
+                                 </div>
+                             </div>
+                        </div>
+
+                        {/* Navigation Section */}
+                        <nav className="flex-1 flex flex-col items-center gap-y-4 custom-scrollbar overflow-y-auto">
+                            <SidebarRoutes />
+                        </nav>
+
+                        {/* Bottom Utility Items */}
+                        <div className="mt-auto pt-6 flex flex-col items-center gap-y-6 border-t border-zinc-800/50">
+                            <motion.div whileHover={{ scale: 1.1, color: "#818cf8" }} className="text-zinc-400 transition-colors">
+                                <Link href="/launchpad/settings" onClick={() => setIsOpen(false)}>
+                                    <Settings size={22} />
                                 </Link>
-                            </motion.li>
-                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                                <Link
-                                    href="/admin"
-                                    className={cn("flex items-center justify-center hover:text-indigo-300 transition-colors duration-200")}
-                                >
-                                    <PersonStanding size={28} />
+                            </motion.div>
+                            <motion.div whileHover={{ scale: 1.1, color: "#818cf8" }} className="text-zinc-400 transition-colors">
+                                <Link href="/admin" onClick={() => setIsOpen(false)}>
+                                    <PersonStanding size={24} />
                                 </Link>
-                            </motion.li>
-                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                                <Link href="/help" className="flex items-center justify-center hover:text-indigo-300 transition-colors duration-200">
-                                    <HelpCircle size={24} />
+                            </motion.div>
+                            <motion.div whileHover={{ scale: 1.1, color: "#818cf8" }} className="text-zinc-400 transition-colors">
+                                <Link href="/help" onClick={() => setIsOpen(false)}>
+                                    <HelpCircle size={22} />
                                 </Link>
-                            </motion.li>
-                        </ul>
+                            </motion.div>
+                        </div>
                     </div>
-                </motion.div>
+                </motion.aside>
             </AnimatePresence>
 
-            {/* Overlay */}
+            {/* Overlay for mobile only */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="fixed inset-0 bg-black bg-opacity-50 lg:hidden"
+                        className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 lg:hidden"
                         onClick={toggleSidebar}
                     />
                 )}

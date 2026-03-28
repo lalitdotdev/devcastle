@@ -1,4 +1,4 @@
-import { ArrowBigDown, ArrowBigUp, Loader2, MessageSquare, Share2, UserCircle2 } from "lucide-react";
+import { Loader2, MessageSquare, Share2, UserCircle2 } from "lucide-react";
 import { Post, User, Vote } from "@prisma/client";
 
 import { CachedPost } from "../../../../../types/redis";
@@ -7,7 +7,6 @@ import EditorOutputContent from "@/components/EditorOutputContent";
 import { Metadata } from "next";
 import PostVoteServer from "@/components/post-vote/PostVoteServer";
 import { Suspense } from "react";
-import { buttonVariants } from "@/components/ui/Button";
 import { db } from "@/lib/db";
 import { formatTimeToNow } from "@/lib/utils";
 import { notFound } from "next/navigation";
@@ -124,12 +123,13 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                                         postId={post?.id ?? cachedPost!.id}
                                         initialVoteAmt={votesAmt}
                                         initialVote={currentVote}
+                                        layout="vertical"
                                     />
                                 </Suspense>
                             </div>
 
                             {/* Mobile/Tablet Vote Section - Sticky Top */}
-                            <div className="lg:hidden sticky top-0 z-10 bg-gradient-to-b from-zinc-900/95 to-zinc-900/80 backdrop-blur-md border-b border-zinc-800/50">
+                            <div className="lg:hidden sticky top-0 z-10 bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800/50">
                                 <div className="flex justify-center py-3">
                                     <Suspense fallback={<PostVoteShellMobile />}>
                                         {/* @ts-expect-error server component*/}
@@ -137,6 +137,7 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                                             postId={post?.id ?? cachedPost!.id}
                                             initialVoteAmt={votesAmt}
                                             initialVote={currentVote}
+                                            layout="horizontal"
                                         />
                                     </Suspense>
                                 </div>
@@ -160,8 +161,8 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                                 fallback={
                                     <div className="flex items-center justify-center py-8">
                                         <div className="flex flex-col items-center gap-2">
-                                            <Loader2 className="h-6 w-6 animate-spin text-blue-400" />
-                                            <p className="text-sm text-zinc-500">Loading comments...</p>
+                                            <Loader2 className="h-6 w-6 animate-spin text-indigo-400" />
+                                            <p className="text-sm text-zinc-500 font-medium">Loading comments...</p>
                                         </div>
                                     </div>
                                 }
@@ -179,56 +180,32 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
 
 function PostVoteShell() {
     return (
-        <div className="flex flex-col items-center gap-2 rounded-xl bg-zinc-800/50 p-2 backdrop-blur-sm ring-1 ring-zinc-700/50 shadow-lg">
-            <button
-                className={buttonVariants({
-                    variant: "ghost",
-                    className: "hover:bg-zinc-700/50 transition-all duration-200 hover:scale-110",
-                })}
-            >
-                <ArrowBigUp className="h-5 w-5 text-zinc-400" />
-            </button>
-
-            <div className="flex h-8 w-8 items-center justify-center">
-                <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
+        <div className="flex flex-col items-center gap-2 rounded-full bg-zinc-800/40 p-1 border border-zinc-700/30 shadow-sm py-3 w-9 overflow-hidden">
+            <div className="h-7 w-7 rounded-full bg-zinc-700/50 animate-pulse relative overflow-hidden">
+                <div className="absolute inset-0 animate-shimmer" />
             </div>
-
-            <button
-                className={buttonVariants({
-                    variant: "ghost",
-                    className: "hover:bg-zinc-700/50 transition-all duration-200 hover:scale-110",
-                })}
-            >
-                <ArrowBigDown className="h-5 w-5 text-zinc-400" />
-            </button>
+            <div className="h-4 w-5 rounded bg-zinc-700/50 animate-pulse relative overflow-hidden">
+                <div className="absolute inset-0 animate-shimmer" />
+            </div>
+            <div className="h-7 w-7 rounded-full bg-zinc-700/50 animate-pulse relative overflow-hidden">
+                <div className="absolute inset-0 animate-shimmer" />
+            </div>
         </div>
     );
 }
 
 function PostVoteShellMobile() {
     return (
-        <div className="flex items-center gap-4 px-4 py-2 rounded-full bg-zinc-800/50 backdrop-blur-sm ring-1 ring-zinc-700/50 shadow-lg">
-            <button
-                className={buttonVariants({
-                    variant: "ghost",
-                    className: "hover:bg-zinc-700/50 transition-all duration-200 hover:scale-110",
-                })}
-            >
-                <ArrowBigUp className="h-5 w-5 text-zinc-400" />
-            </button>
-
-            <div className="flex items-center justify-center w-12">
-                <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
+        <div className="flex items-center gap-2 px-2 py-1.5 rounded-full bg-zinc-800/40 border border-zinc-700/30 shadow-sm overflow-hidden">
+            <div className="h-7 w-7 rounded-full bg-zinc-700/50 animate-pulse relative overflow-hidden">
+                <div className="absolute inset-0 animate-shimmer" />
             </div>
-
-            <button
-                className={buttonVariants({
-                    variant: "ghost",
-                    className: "hover:bg-zinc-700/50 transition-all duration-200 hover:scale-110",
-                })}
-            >
-                <ArrowBigDown className="h-5 w-5 text-zinc-400" />
-            </button>
+            <div className="h-4 w-8 rounded bg-zinc-700/50 animate-pulse relative overflow-hidden">
+                <div className="absolute inset-0 animate-shimmer" />
+            </div>
+            <div className="h-7 w-7 rounded-full bg-zinc-700/50 animate-pulse relative overflow-hidden">
+                <div className="absolute inset-0 animate-shimmer" />
+            </div>
         </div>
     );
 }

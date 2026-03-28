@@ -3,7 +3,7 @@
 import { Activity, ArrowUpWideNarrow, BookOpen, Briefcase, Compass, Crown, FilePlus, Heart, HeartHandshake, HelpingHand, Newspaper, Package, Rocket, Settings, UserCog, User as UserIcon } from "lucide-react";
 import { Github, Library } from "lucide-react";
 import React, { useState } from 'react';
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetTrigger } from "./ui/sheet";
 
 import { FC } from "react";
 import { Icons } from "./Icons";
@@ -51,116 +51,120 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, username, isUserPremium
 
                         </div>
                     </SheetTrigger>
-                    <SheetContent className="w-[240px] md:w-[400px]  bg-[#1B1F23] text-gray-200 border border-gray-600 rounded-l-2xl p-4 text-xs md:text-sm overflow-hidden data-[state=closed]:animate-out">
-                        <div className="space-y-[2.2px] md:space-y-1">
+                    <SheetContent className="w-[240px] md:w-[400px] bg-[#1B1F23] text-gray-200 border border-gray-600 rounded-l-2xl p-0 flex flex-col h-full data-[state=closed]:animate-out overflow-hidden">
+                        <div className="flex flex-col h-full w-full">
+                            {/* Scrollable middle section */}
+                            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+                                <div className="space-y-[2.2px] md:space-y-1">
+                                    {/* Navigation links */}
+                                    {[
+                                        { href: `/u/${username}`, icon: UserIcon, label: "Your Profile" },
+                                        { href: "/dashboard", icon: UserCog, label: "Dashboard" },
+                                        { href: "/feed", icon: Activity, label: "Your Feed" },
+                                        { href: "/launchpad/new-product", icon: Icons.rabbit, label: "Submit a Product" },
+                                        { href: "/launchpad/my-products", icon: Package, label: "My Products" },
+                                        { href: "/launchpad/my-upvoted", icon: Heart, label: "Your Upvoted Products" },
+                                        { href: "/launchpad/settings", icon: Settings, label: "Settings" },
+                                        { href: "/network", icon: HeartHandshake, label: "Professional Network" },
+                                        { href: "/jobs/new", icon: FilePlus, label: "Post an Opportunity" },
+                                        { href: "/opportunities", icon: Compass, label: "Browse Opportunities" },
+                                        { href: "/feed/blogs", icon: Library, label: "Free Resources and Tools" },
+                                        { href: "/launchpad", icon: Rocket, label: "Creator Launchpad" },
+                                        { href: "/startups/catalog/feeds", icon: BookOpen, label: "Feed Reader / startup catalog" },
+                                        { href: "/startups/catalog/workatstartups", icon: Briefcase, label: "Work At Startups" },
+                                        { href: "/startups/catalog/jobstimeline", icon: Activity, label: "Jobs Timeline" },
+                                        {
+                                            href: "/startups/catalog/crunchbase-feed",
+                                            icon: Compass,
+                                            label: "Crunchbase Feed"
+                                        },
+                                        { href: "/startups/catalog/topstories", icon: ArrowUpWideNarrow, label: "Top Stories" },
+                                        { href: "/startups/catalog/phfeed", icon: Newspaper, label: "Feed Importer(Product Hunt)" },
+                                    ].map((item, index) => (
+                                        <React.Fragment key={item.href}>
+                                            <Link
+                                                href={item.href}
+                                                className={cn(
+                                                    "flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2 hover:bg-zinc-800"
+                                                )}
+                                                onClick={handleLinkClick}
+                                            >
+                                                <item.icon size={22} />
+                                                <span>{item.label}</span>
+                                            </Link>
 
-                            {/* Navigation links */}
-                            {[
-                                { href: `/u/${username}`, icon: UserIcon, label: "Your Profile" },
-                                { href: "/dashboard", icon: UserCog, label: "Dashboard" },
-                                { href: "/feed", icon: Activity, label: "Your Feed" },
-                                { href: "/launchpad/new-product", icon: Icons.rabbit, label: "Submit a Product" },
-                                { href: "/launchpad/my-products", icon: Package, label: "My Products" },
-                                { href: "/launchpad/my-upvoted", icon: Heart, label: "Your Upvoted Products" },
-                                { href: "/launchpad/settings", icon: Settings, label: "Settings" },
-                                { href: "/network", icon: HeartHandshake, label: "Professional Network" },
-                                { href: "/jobs/new", icon: FilePlus, label: "Post an Opportunity" },
-                                { href: "/opportunities", icon: Compass, label: "Browse Opportunities" },
-                                // { href: "/opportunities", icon: Briefcase, label: "Opportunities / OS Programs" },
-                                { href: "/feed/blogs", icon: Library, label: "Free Resources and Tools" },
-                                // { href: "/articles/categories/all", icon: Newspaper, label: "Articles" },
-                                { href: "/launchpad", icon: Rocket, label: "Creator Launchpad" },
-                                { href: "/startups/catalog/feeds", icon: BookOpen, label: "Feed Reader / startup catalog" },
-                                { href: "/startups/catalog/workatstartups", icon: Briefcase, label: "Work At Startups" },
-                                { href: "/startups/catalog/jobstimeline", icon: Activity, label: "Jobs Timeline" },
-                                {
-                                    href: "/startups/catalog/crunchbase-feed",
-                                    icon: Compass,
-                                    label: "Crunchbase Feed"
-
-
-                                },
-                                { href: "/startups/catalog/topstories", icon: ArrowUpWideNarrow, label: "Top Stories" },
-                                { href: "/startups/catalog/phfeed", icon: Newspaper, label: "Feed Importer(Product Hunt)" },
-
-                            ].map((item, index) => (
-                                <React.Fragment key={item.href}>
-                                    <Link
-                                        href={item.href}
-                                        className={cn(
-                                            "flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2"
-                                        )}
-                                        onClick={handleLinkClick}
-                                    >
-                                        <item.icon size={22} />
-                                        <span>{item.label}</span>
-                                    </Link>
-
-
-                                    {index === 2 || index === 6 || index === 9 ? (
-                                        <Separator className="bg-gray-700 my-4" />
-
-                                    ) : null}
-                                    {
-                                        index === 2 && (
-                                            <SheetDescription className="text-xs my-2">
-                                                Launchpad Section
-                                            </SheetDescription>
-                                        )
-                                    }
-                                    {index === 6 || index === 9 ? (
-                                        <SheetDescription className="text-xs my-2">
-                                            {index === 6 ? "Professional Connections and get Mentorship" : "Catalog and Archives to get you inspired"}
-                                        </SheetDescription>
-                                    ) : null}
-
-                                </React.Fragment>
-                            ))}
-
-                            <Separator className="bg-gray-700 " />
-
-                            <SheetFooter>
-                                <div
-                                    className="cursor-pointer justify-end bottom-0 my-auto left-0 flex-grow"
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        setOpen(false);
-                                        signOut({
-                                            callbackUrl: `${window.location.origin}/`,
-                                        });
-                                    }}
-                                >
-                                    Sign Out
+                                            {index === 2 || index === 6 || index === 9 ? (
+                                                <Separator className="bg-gray-700 my-4" />
+                                            ) : null}
+                                            {index === 2 && (
+                                                <SheetDescription className="text-xs my-2 px-2">
+                                                    Launchpad Section
+                                                </SheetDescription>
+                                            )}
+                                            {(index === 6 || index === 9) ? (
+                                                <SheetDescription className="text-xs my-2 px-2">
+                                                    {index === 6 ? "Professional Connections and get Mentorship" : "Catalog and Archives to get you inspired"}
+                                                </SheetDescription>
+                                            ) : null}
+                                        </React.Fragment>
+                                    ))}
                                 </div>
-                                {/* Premium Membership */}
-                                {isUserPremium ? (
-                                    <div className="flex items-center gap-2  w-fit p-2 rounded-md ">
-                                        <Crown size={22} className="text-yellow-400" />
-                                        <span>Premium Member</span>
+                            </div>
+
+                            {/* Pinned Bottom Section */}
+                            <div className="flex-shrink-0">
+                                <Separator className="bg-gray-700" />
+                                <div className="p-4 bg-zinc-900/80 backdrop-blur-sm">
+                                    <div className="flex flex-col w-full gap-4">
+                                        <div className="flex items-center justify-between w-full">
+                                            <div
+                                                className="cursor-pointer hover:text-white transition-colors font-medium"
+                                                onClick={(event) => {
+                                                    event.preventDefault();
+                                                    setOpen(false);
+                                                    signOut({
+                                                        callbackUrl: `${window.location.origin}/`,
+                                                    });
+                                                }}
+                                            >
+                                                Sign Out
+                                            </div>
+                                            {isUserPremium ? (
+                                                <div className="flex items-center gap-2 w-fit">
+                                                    <Crown size={22} className="text-yellow-400" />
+                                                    <span className="text-xs font-semibold">Premium</span>
+                                                </div>
+                                            ) : (
+                                                <Link
+                                                    href="/premium"
+                                                    onClick={handleLinkClick}
+                                                    className="flex items-center gap-2 p-1.5 px-3 rounded-md bg-indigo-600 hover:bg-indigo-700 transition-colors text-xs font-bold"
+                                                >
+                                                    <Rocket size={18} />
+                                                    <span>Upgrade</span>
+                                                </Link>
+                                            )}
+                                        </div>
+                                        <div className="flex gap-4 items-center justify-start border-t border-gray-800 pt-3">
+                                            <Link
+                                                href="https://github.com/lalitdotdev/devcastle"
+                                                target="_blank"
+                                                className="text-gray-400 hover:text-white transition-colors"
+                                                onClick={handleLinkClick}
+                                            >
+                                                <Github size={20} />
+                                            </Link>
+                                            <Link
+                                                href="/feedback"
+                                                className="text-gray-400 hover:text-white transition-colors"
+                                                onClick={handleLinkClick}
+                                            >
+                                                <HelpingHand size={20} />
+                                            </Link>
+                                        </div>
                                     </div>
-                                ) : (
-                                    <div className="flex items-center gap-2 p-2 rounded-md bg-gray-700">
-                                        <Rocket size={22} />
-                                        <span>Upgrade to Premium</span>
-                                    </div>
-                                )}
-                                <div className="flex gap-2">
-                                    <Link
-                                        href="https://github.com/lalitdotdev/devcastle"
-                                        className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2 hover:text-blue-800")}
-                                        onClick={handleLinkClick}
-                                    >
-                                        <Github size={24} />
-                                    </Link>
-                                    <Link
-                                        href=""
-                                        className={cn("flex items-center p-2 rounded-md transition-all duration-300 ease-in-out gap-2 hover:text-blue-800")}
-                                        onClick={handleLinkClick}
-                                    >
-                                        <HelpingHand size={26} />
-                                    </Link>
                                 </div>
-                            </SheetFooter>
+                            </div>
                         </div>
                     </SheetContent>
                 </Sheet>
