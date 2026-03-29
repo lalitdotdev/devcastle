@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global Overrides for Editor Content */
+.post-title {
+  word-break: break-all !important;
+  overflow-wrap: anywhere !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  display: block !important;
+}
+
+.link-card h3 {
+  color: #FFFFFF !important;
+}
+
+.link-card p {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.link-card .text-zinc-500 {
+  color: #71717a !important;
+}
+
 @layer utilities {
   *::-webkit-scrollbar {
     width: 6px; /* Adjust width as needed */
