@@ -108,7 +108,7 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
                                     </button>
                                 </div>
                             </div>
-                            <h1 className="mt-4 text-xl sm:text-2xl md:text-3xl font-bold text-zinc-100 tracking-tight">
+                            <h1 className="post-title mt-4 text-xl sm:text-2xl md:text-3xl font-bold text-zinc-100 tracking-tight" style={{ wordBreak: 'break-all', overflowWrap: 'anywhere', whiteSpace: 'normal', display: 'block' }}>
                                 {post?.title ?? cachedPost?.title}
                             </h1>
                         </div>
@@ -145,9 +145,7 @@ const CommunityPostPage = async ({ params }: CommunityPostPageProps) => {
 
                             {/* Main Content */}
                             <div className="p-4 sm:p-6 lg:pl-24">
-                                <div className="prose prose-invert prose-zinc max-w-none">
-                                    <EditorOutputContent content={post?.content ?? (cachedPost ? JSON.parse(cachedPost.content) : null)} />
-                                </div>
+                                <EditorOutputContent content={post?.content ?? (cachedPost ? JSON.parse(cachedPost.content) : null)} />
                             </div>
                         </div>
 

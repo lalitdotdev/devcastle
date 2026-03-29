@@ -2,38 +2,45 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-interface CustomLinkRendererProps {
-    href: string;
-    children?: React.ReactNode;
-    meta?: {
-        title?: string;
-        description?: string;
-        image?: {
-            url: string;
-        };
-    };
-}
 
-const CustomLinkRenderer: React.FC<CustomLinkRendererProps> = ({ href, children, meta }) => {
+const CustomLinkRenderer: React.FC<{ data: any; children?: React.ReactNode }> = ({ data, children }) => {
+    const href = data.link || data.href || "";
+    const meta = data.meta;
     const isInternal = href.startsWith('/') || href.startsWith('#');
-
-    const linkStyle = {
-        color: '#3b82f6', // blue-500
-        textDecoration: 'none',
-        borderBottom: '1px solid currentColor',
-        transition: 'opacity 0.2s ease-in-out',
-    };
 
     const linkContent = (
         <>
             {meta ? (
-                <div className="link-card" style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '12px', maxWidth: '400px' }}>
-                    {meta.image && <Image src={meta.image.url} alt={meta.title || ''} style={{ maxWidth: '100%', height: 'auto', marginBottom: '8px' }} height={72} width={72} />}
-                    <h3 style={{ margin: '0 0 4px', fontSize: '16px', fontWeight: 'bold' }}>{meta.title || href}</h3>
-                    {meta.description && <p style={{ margin: '0', fontSize: '14px', color: '#6b7280' }}>{meta.description}</p>}
+                <div className="link-card not-prose group flex flex-col sm:flex-row gap-4 border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800/80 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.1)] max-w-2xl my-6">
+                    {meta.image && (
+                        <div className="relative w-full sm:w-48 h-32 sm:h-full min-h-[140px]">
+                            <Image 
+                                src={meta.image.url} 
+                                alt={meta.title || ''} 
+                                className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                                fill
+                                sizes="(max-width: 768px) 100vw, 192px"
+                            />
+                        </div>
+                    )}
+                    <div className="flex flex-col justify-center p-5 pe-6 flex-1 min-w-0">
+                        <h3 className="line-clamp-2 text-[15px] font-semibold !text-white group-hover:!text-purple-400 transition-colors !break-all leading-snug" style={{ color: 'white' }}>
+                            {meta.title || href}
+                        </h3>
+                        {meta.description && (
+                            <p className="line-clamp-2 mt-2 text-[13px] !text-white/70 leading-relaxed break-words" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                                {meta.description}
+                            </p>
+                        )}
+                        <div className="mt-4 flex items-center gap-2">
+                            <span className="text-[10px] font-medium tracking-wider uppercase text-zinc-500 py-0.5 px-2 rounded-full border border-zinc-800 bg-zinc-900">
+                                {new URL(href).hostname}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             ) : (
-                <span style={linkStyle}>
+                <span className="text-blue-400 dark:text-blue-300 hover:text-blue-500 dark:hover:text-blue-200 underline underline-offset-4 decoration-current/30 hover:decoration-current transition-all duration-200 break-all">
                     {children || href}
                 </span>
             )}
@@ -41,15 +48,22 @@ const CustomLinkRenderer: React.FC<CustomLinkRendererProps> = ({ href, children,
     );
 
     if (isInternal) {
-        return <Link href={href} passHref legacyBehavior><a style={linkStyle}>{linkContent}</a></Link>;
+        return (
+            <Link href={href} className="inline-block transition-opacity hover:opacity-80">
+                {linkContent}
+            </Link>
+        );
     }
 
     return (
-        <a href={href} target="_blank" rel="noopener noreferrer" style={linkStyle}>
+        <a 
+            href={href} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="inline-block transition-opacity hover:opacity-80"
+        >
             {linkContent}
-            <span style={{ position: 'absolute', width: '1px', height: '1px', padding: '0', margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: '0' }}>
-                (opens in new tab)
-            </span>
+            <span className="sr-only">(opens in new tab)</span>
         </a>
     );
 };

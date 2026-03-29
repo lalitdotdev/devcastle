@@ -79,14 +79,12 @@ const Post: FC<PostProps> = ({
 
                 {/* Content Section */}
                 <a href={`/cb/${communityName}/post/${post.id}`} className="block">
-                    <h1 className="mb-3 text-xl font-semibold text-white transition-colors hover:text-purple-400">
+                    <h1 className="post-title mb-3 text-xl font-semibold text-white transition-colors hover:text-purple-400" style={{ wordBreak: 'break-all', overflowWrap: 'anywhere', whiteSpace: 'normal', display: 'block' }}>
                         {post.title}
                     </h1>
 
                     <div ref={pRef} className="relative max-h-32 overflow-hidden">
-                        <div className="prose prose-invert max-w-none text-sm text-zinc-300">
-                            <EditorOutputContent content={post.content} />
-                        </div>
+                        <EditorOutputContent content={post.content} />
                         <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/40 to-transparent" />
                     </div>
                 </a>
