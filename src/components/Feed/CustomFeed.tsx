@@ -7,28 +7,19 @@ const CustomFeed = async () => {
     const session = await getAuthSession();
 
     const followedCommunities = await db.subscription.findMany({
-        where: {
-            userId: session?.user?.id,
-        },
-        include: {
-            community: true,
-        },
+        where: { userId: session?.user?.id },
+        include: { community: true },
     });
 
     const posts = await db.post.findMany({
         where: {
             community: {
                 name: {
-                    in: followedCommunities.map(
-                        (followedCommunity) => followedCommunity.community.id
-                    ),
+                    in: followedCommunities.map((fc) => fc.community.id),
                 },
             },
         },
-
-        orderBy: {
-            createdAt: "desc",
-        },
+        orderBy: { createdAt: "desc" },
         include: {
             votes: true,
             author: true,

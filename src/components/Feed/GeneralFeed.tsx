@@ -4,16 +4,13 @@ import { db } from "@/lib/db";
 
 const GeneralFeed = async () => {
     const posts = await db.post.findMany({
-        orderBy: {
-            createdAt: "desc",
-        },
+        orderBy: { createdAt: "desc" },
         include: {
             votes: true,
             author: true,
             comments: true,
             community: true,
             bookmarks: true,
-
         },
         take: INFINITE_SCROLLING_PAGINATION_RESULTS,
     });

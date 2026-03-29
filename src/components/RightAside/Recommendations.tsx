@@ -1,14 +1,12 @@
 "use client"
 
-import { Crown, Plus, Users } from 'lucide-react';
+import { Crown, Plus, Users, Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { joinCommunity, leaveCommunity } from '@/app/feed/actions';
-
-import { Button } from '../ui/Button';
 import CommunityAvatar from '../Avatars/CommunityAvatar';
 import Link from 'next/link';
-import { Separator } from '../ui/separator';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import { useCustomToast } from '@/hooks/use-custom-toast';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -16,9 +14,7 @@ import { useSession } from 'next-auth/react';
 type Community = {
     id: string
     name: string
-    _count: {
-        subscribers: number
-    }
+    _count: { subscribers: number }
 }
 
 interface RecommendationsProps {
@@ -26,28 +22,20 @@ interface RecommendationsProps {
     subscribedCommunityIds: string[]
 }
 
-const Recommendations = ({
-    communities,
-    subscribedCommunityIds: initialSubscribedIds,
+// Crown color per rank
+const crownColors = ['text-yellow-400', 'text-zinc-400', 'text-amber-700'];
 
-}: RecommendationsProps) => {
+const Recommendations = ({ communities, subscribedCommunityIds: initialSubscribedIds }: RecommendationsProps) => {
     const [subscribedIds, setSubscribedIds] = useState(initialSubscribedIds)
-    const [isLoading, setIsLoading] = useState<string | null>(null)
+    const [loadingId, setLoadingId] = useState<string | null>(null)
     const router = useRouter()
-    const { loginToast } = useCustomToast();
-
-    const { data: session } = useSession();
-
+    const { loginToast } = useCustomToast()
+    const { data: session } = useSession()
 
     const handleJoinLeave = async (communityId: string) => {
-        if (!session) {
-            return loginToast()
-        }
-
-
+        if (!session) return loginToast()
         try {
-            setIsLoading(communityId)
-
+            setLoadingId(communityId)
             if (subscribedIds.includes(communityId)) {
                 await leaveCommunity(communityId)
                 setSubscribedIds(prev => prev.filter(id => id !== communityId))
@@ -55,109 +43,119 @@ const Recommendations = ({
                 await joinCommunity(communityId)
                 setSubscribedIds(prev => [...prev, communityId])
             }
-
             router.refresh()
         } catch (error) {
             console.error('Error:', error)
         } finally {
-            setIsLoading(null)
+            setLoadingId(null)
         }
     }
+
     return (
         <div className="hidden lg:block">
-            <div className="sticky top-0 md:top-24 h-fit">
-                <div className="rounded-lg border border-gray-800 bg-zinc-900/50 backdrop-blur-sm">
-                    {/* Header section with background */}
-                    <div className="relative h-32 rounded-t-lg overflow-hidden">
-                        <div className="absolute inset-0 bg-castle-art bg-cover bg-center" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90" />
-                        <div className="absolute bottom-4 left-4">
-                            <h2 className="text-xl font-bold text-white">Popular Castles</h2>
-                            <p className="text-sm text-gray-300">Join thriving communities</p>
+            <div className="sticky top-24 h-fit">
+                <div className="rounded-2xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm overflow-hidden">
+
+                    {/* ── Header ── */}
+                    <div className="relative h-28 overflow-hidden">
+                        {/* Background art */}
+                        <div className="absolute inset-0 bg-castle-art bg-cover bg-center opacity-30" />
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-violet-900/20 via-zinc-900/60 to-zinc-900/95" />
+                        {/* Ambient glow */}
+                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 h-24 w-48 rounded-full bg-violet-500/15 blur-2xl" />
+
+                        <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                            <div>
+                                <h2 className="text-sm font-semibold text-zinc-100">Popular Castles</h2>
+                                <p className="text-[11px] text-zinc-500 mt-0.5">Join thriving communities</p>
+                            </div>
+                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-violet-500/20 bg-violet-500/10 text-[10px] font-medium text-violet-400">
+                                <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
+                                {communities.length} castles
+                            </span>
                         </div>
                     </div>
 
-                    <Separator className="bg-gray-800" />
+                    {/* ── Community list ── */}
+                    <div className="p-3 space-y-1">
+                        {communities.map((community, index) => {
+                            const isSubscribed = subscribedIds.includes(community.id)
+                            const isLoading = loadingId === community.id
 
-                    {/* Communities list */}
-                    <div className="p-4">
-                        <ul className="space-y-4">
-                            {communities.map((community, index) => (
-                                <li
+                            return (
+                                <motion.div
                                     key={community.id}
-                                    className={cn(
-                                        "group flex items-center justify-between p-2 rounded-lg",
-                                        "hover:bg-gray-800/40 transition-colors duration-200"
-                                    )}
+                                    initial={{ opacity: 0, y: 6 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.04, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                                    className="group flex items-center gap-3 p-2.5 rounded-xl hover:bg-zinc-800/50 transition-all duration-200"
                                 >
-                                    <Link
-                                        href={`/cb/${community.name}`}
-                                        className="flex items-center space-x-3 flex-1"
-                                    >
-                                        <div className="relative">
-                                            <CommunityAvatar
-                                                seed={community.name}
-                                                classNames="w-10 h-10 rounded-lg border-2 border-gray-700"
-                                            />
-                                            {index < 3 && (
-                                                <Crown
-                                                    size={14}
-                                                    className={cn(
-                                                        "absolute -top-1 -right-1",
-                                                        index === 0 ? "text-yellow-500" :
-                                                            index === 1 ? "text-gray-400" :
-                                                                "text-bronze-500"
-                                                    )}
-                                                />
-                                            )}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-gray-100 truncate">
-                                                {community.name}
-                                            </p>
-                                            {community._count && (
-                                                <div className="flex items-center text-xs text-gray-400">
-                                                    <Users size={12} className="mr-1" />
-                                                    {community._count.subscribers} members
-                                                </div>
-                                            )}
-                                        </div>
+                                    {/* Avatar */}
+                                    <Link href={`/cb/${community.name}`} className="relative shrink-0">
+                                        <CommunityAvatar seed={community.name} classNames="w-9 h-9 rounded-xl border border-zinc-800" />
+                                        {index < 3 && (
+                                            <Crown size={11} className={cn("absolute -top-1 -right-1 drop-shadow-sm", crownColors[index])} />
+                                        )}
                                     </Link>
 
-                                    <Button
-                                        onClick={() => handleJoinLeave(community.id)}
-                                        disabled={isLoading === community.id}
-                                        className={`px-4 py-2 rounded-full text-sm font-medium ${subscribedIds.includes(community.id)
-                                            ? 'bg-gray-200 hover:bg-gray-300'
-                                            : 'bg-blue-500 text-white hover:bg-blue-600'
-                                            }`}
-                                    >
-                                        {isLoading === community.id
-                                            ? <span className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin" />
-                                            : subscribedIds.includes(community.id)
-                                                ? 'Leave'
-                                                : 'Join'}
-                                    </Button>
-                                </li>
-                            ))}
-                        </ul>
+                                    {/* Name + count */}
+                                    <Link href={`/cb/${community.name}`} className="flex-1 min-w-0">
+                                        <p className="text-xs font-medium text-zinc-200 group-hover:text-white truncate transition-colors">
+                                            {community.name}
+                                        </p>
+                                        {community._count && (
+                                            <div className="flex items-center gap-1 text-[10px] text-zinc-600 mt-0.5">
+                                                <Users size={9} />
+                                                {community._count.subscribers.toLocaleString()} members
+                                            </div>
+                                        )}
+                                    </Link>
 
-                        {/* Create community button */}
-                        <div className="mt-6">
-                            <Link href="/cb/create">
-                                <Button
-                                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-lg h-9"
-                                >
-                                    <Plus size={18} className="mr-2" />
-                                    Create a Castle
-                                </Button>
-                            </Link>
-                        </div>
+                                    {/* Join / Leave */}
+                                    <button
+                                        onClick={() => handleJoinLeave(community.id)}
+                                        disabled={isLoading}
+                                        className={cn(
+                                            "shrink-0 flex items-center justify-center h-7 px-3 rounded-lg text-[11px] font-semibold transition-all duration-200",
+                                            isSubscribed
+                                                ? "border border-zinc-700 bg-transparent text-zinc-400 hover:border-red-500/40 hover:text-red-400 hover:bg-red-500/5"
+                                                : "border border-violet-500/40 bg-violet-500/10 text-violet-300 hover:bg-violet-500/20 hover:border-violet-500/60",
+                                            isLoading && "opacity-50 cursor-not-allowed"
+                                        )}
+                                    >
+                                        {isLoading
+                                            ? <Loader2 className="h-3 w-3 animate-spin" />
+                                            : isSubscribed ? 'Leave' : 'Join'
+                                        }
+                                    </button>
+                                </motion.div>
+                            )
+                        })}
+                    </div>
+
+                    {/* ── Divider ── */}
+                    <div className="mx-3 border-t border-zinc-800/60" />
+
+                    {/* ── Create CTA ── */}
+                    <div className="p-3">
+                        <Link
+                            href="/cb/create"
+                            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl
+                                bg-gradient-to-r from-violet-600 to-fuchsia-600
+                                hover:from-violet-500 hover:to-fuchsia-500
+                                text-white text-xs font-semibold
+                                shadow-lg shadow-violet-900/30
+                                transition-all duration-200"
+                        >
+                            <Plus className="h-3.5 w-3.5" />
+                            Create a Castle
+                        </Link>
                     </div>
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Recommendations;
+export default Recommendations

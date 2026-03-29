@@ -1,16 +1,18 @@
 'use client'
 
-import { ArrowBigUpDash, ArrowUpRight, Link as LinkIcon, MessageCircle, Rocket } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import {
+    ArrowUpRight,
+    Link as LinkIcon,
+    Rocket,
+    TrendingUp,
+    RefreshCw,
+    Calendar,
+} from 'lucide-react'
+import React, { useEffect, useRef, useState } from 'react'
 import { fetchAndStoreProductHuntPosts, getProductHuntPosts } from '@/app/feed/actions/getProductHuntPosts'
-
-import { Badge } from '../ui/badge'
-import Banner from '../banner'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Separator } from '../ui/separator'
-import { StatefulButton } from './Stateful-btn'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useSpring, useInView } from 'framer-motion'
 import { toast } from 'sonner'
 
 interface ProductHuntPost {
@@ -26,204 +28,284 @@ interface ProductHuntPost {
     website: string | null
 }
 
+// ── Accent colors cycling deterministically ───────────────────────────────────
+const ACCENTS = [
+    { dot: 'bg-orange-400',   tag: 'bg-orange-500/10 text-orange-300 border-orange-500/20',   bar: 'from-orange-500',   glow: 'group-hover:shadow-orange-500/10'  },
+    { dot: 'bg-violet-400',   tag: 'bg-violet-500/10 text-violet-300 border-violet-500/20',   bar: 'from-violet-500',   glow: 'group-hover:shadow-violet-500/10'  },
+    { dot: 'bg-rose-400',     tag: 'bg-rose-500/10 text-rose-300 border-rose-500/20',         bar: 'from-rose-500',     glow: 'group-hover:shadow-rose-500/10'    },
+    { dot: 'bg-cyan-400',     tag: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20',         bar: 'from-cyan-500',     glow: 'group-hover:shadow-cyan-500/10'    },
+    { dot: 'bg-emerald-400',  tag: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20', bar: 'from-emerald-500', glow: 'group-hover:shadow-emerald-500/10' },
+    { dot: 'bg-amber-400',    tag: 'bg-amber-500/10 text-amber-300 border-amber-500/20',      bar: 'from-amber-500',    glow: 'group-hover:shadow-amber-500/10'   },
+]
+
+// ── Loading skeleton ──────────────────────────────────────────────────────────
+function PostSkeleton() {
+    return (
+        <div className="pl-8 space-y-3">
+            <div className="absolute left-[5px] top-0 bottom-0 w-px bg-zinc-800/60 rounded-full" />
+            {Array(4).fill(0).map((_, i) => (
+                <div key={i} className="flex gap-4 p-5 rounded-2xl border border-zinc-800/50 bg-zinc-900/30 animate-pulse" style={{ animationDelay: `${i * 80}ms` }}>
+                    <div className="h-14 w-14 rounded-xl bg-zinc-800 shrink-0" />
+                    <div className="flex-1 space-y-2.5">
+                        <div className="h-4 bg-zinc-800 rounded-full w-1/3" />
+                        <div className="h-3 bg-zinc-800/70 rounded-full w-2/3" />
+                        <div className="flex gap-2">
+                            <div className="h-6 w-14 bg-zinc-800/60 rounded-full" />
+                            <div className="h-6 w-14 bg-zinc-800/60 rounded-full" />
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+// ── Single post card ──────────────────────────────────────────────────────────
+function PostCard({ post, index }: { post: ProductHuntPost; index: number }) {
+    const ref = useRef<HTMLDivElement>(null)
+    const isInView = useInView(ref, { once: true, margin: '0px 0px -60px 0px' })
+    const accent = ACCENTS[index % ACCENTS.length]
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, x: -16 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.35), ease: [0.22, 1, 0.36, 1] }}
+            className="relative pl-8"
+        >
+            {/* Timeline dot */}
+            <div className="absolute left-0 top-5 z-10">
+                <motion.div
+                    initial={{ scale: 0 }}
+                    animate={isInView ? { scale: 1 } : {}}
+                    transition={{ delay: Math.min(index * 0.05, 0.35) + 0.1, duration: 0.25 }}
+                    className="h-3 w-3 rounded-full border-2 border-zinc-900 bg-zinc-950 flex items-center justify-center"
+                >
+                    <div className={`h-1.5 w-1.5 rounded-full ${accent.dot}`} />
+                </motion.div>
+            </div>
+
+            {/* Card */}
+            <article className={`group relative mb-3 rounded-2xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm hover:border-zinc-700/70 hover:bg-zinc-900/70 hover:shadow-xl ${accent.glow} transition-all duration-300`}>
+                {/* Left accent stripe */}
+                <div className={`absolute left-0 top-4 bottom-4 w-[3px] rounded-full bg-gradient-to-b ${accent.bar} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+
+                <div className="flex items-start gap-4 p-4">
+                    {/* Thumbnail */}
+                    <div className="shrink-0 h-14 w-14 rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900">
+                        {post.thumbnailUrl ? (
+                            <Image src={post.thumbnailUrl} alt={post.name} width={56} height={56} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                                <Rocket className="h-5 w-5 text-zinc-700" />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0 space-y-2">
+                        <div className="flex items-start justify-between gap-3">
+                            <h3 className="text-sm font-semibold text-zinc-200 group-hover:text-white transition-colors leading-snug">
+                                {post.name}
+                            </h3>
+                            <a
+                                href={post.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="View on Product Hunt"
+                                className="shrink-0 flex items-center justify-center h-6 w-6 rounded-lg border border-zinc-800 bg-zinc-900/80 text-zinc-600 hover:text-zinc-200 hover:border-zinc-600 transition-all duration-200 opacity-0 group-hover:opacity-100"
+                            >
+                                <ArrowUpRight className="h-3 w-3" />
+                            </a>
+                        </div>
+
+                        <p className="text-[11px] text-zinc-500 leading-relaxed line-clamp-2">{post.tagline}</p>
+
+                        {/* Meta row */}
+                        <div className="flex flex-wrap items-center gap-3 text-[11px] text-zinc-600">
+                            <span className="flex items-center gap-1">
+                                <TrendingUp className="h-3 w-3" />
+                                {post.votesCount} upvotes
+                            </span>
+                            <span className="h-3 w-px bg-zinc-800" />
+                            <span className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </span>
+                            {post.website && (
+                                <>
+                                    <span className="h-3 w-px bg-zinc-800" />
+                                    <Link href={post.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-zinc-300 transition-colors duration-200">
+                                        <LinkIcon className="h-3 w-3" />
+                                        Website
+                                    </Link>
+                                </>
+                            )}
+                        </div>
+
+                        {/* Topic tags */}
+                        {post.topics.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 pt-0.5">
+                                {post.topics.slice(0, 3).map((topic) => (
+                                    <span key={topic.name} className={`inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-full border ${accent.tag}`}>
+                                        {topic.name}
+                                    </span>
+                                ))}
+                                {post.topics.length > 3 && (
+                                    <span className="text-[10px] text-zinc-700 px-1.5 py-0.5">+{post.topics.length - 3}</span>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </article>
+        </motion.div>
+    )
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
 export default function ProductHuntFeed() {
     const [posts, setPosts] = useState<ProductHuntPost[]>([])
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
     const [isFeedVisible, setIsFeedVisible] = useState(false)
+    const containerRef = useRef<HTMLDivElement>(null)
 
-    // Load posts from localStorage on component mount
     useEffect(() => {
-        const storedPosts = localStorage.getItem('productHuntPosts')
-        if (storedPosts) {
-            setPosts(JSON.parse(storedPosts))
-            setIsFeedVisible(true)
-        }
+        const stored = localStorage.getItem('productHuntPosts')
+        if (stored) { setPosts(JSON.parse(stored)); setIsFeedVisible(true) }
     }, [])
 
     const fetchPosts = async () => {
-        try {
-            const fetchedPosts = await getProductHuntPosts()
-            setPosts(fetchedPosts)
-            setIsFeedVisible(true)
-
-            // Store the fetched posts in localStorage for persistence
-            localStorage.setItem('productHuntPosts', JSON.stringify(fetchedPosts))
-            // console.log(`Fetched ${fetchedPosts.length} posts from Product Hunt and stored in localStorage`)
-
-        } catch (err) {
-            setError('Failed to fetch posts. Please try again.')
-            console.error(err)
-        }
+        const fetched = await getProductHuntPosts()
+        setPosts(fetched)
+        setIsFeedVisible(true)
+        localStorage.setItem('productHuntPosts', JSON.stringify(fetched))
     }
 
-    const handleImportFeed = async () => {
+    const handleImport = async () => {
         setIsLoading(true)
-        setError(null)
         try {
             const result = await fetchAndStoreProductHuntPosts()
             if (result.success) {
                 toast.promise(fetchPosts(), {
-                    loading: 'Fetching feed from Product Hunt...',
-                    success: 'Product Hunt feed imported successfully ',
-                    error: 'Failed to fetch posts. Please try again.',
-
+                    loading: 'Fetching from Product Hunt…',
+                    success: 'Feed imported successfully!',
+                    error: 'Failed to fetch posts.',
                 })
-                await fetchPosts()
             } else {
                 toast.error(result.message)
             }
-        } catch (err) {
+        } catch {
             toast.error('Error importing Product Hunt feed')
-            setError('Failed to import feed. Please try again.')
-            console.error(err)
         } finally {
             setIsLoading(false)
         }
     }
 
+    // Scroll-driven timeline fill
+    const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] })
+    const scaleY = useSpring(scrollYProgress, { stiffness: 80, damping: 20, restDelta: 0.001 })
+
     return (
-        <div className="mx-auto space-y-8 text-gray-200">
+        <div className="space-y-6 text-zinc-100">
+            {/* ── Header card ── */}
+            <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="flex items-center gap-4 rounded-2xl border border-zinc-800/60 p-4 bg-zinc-900/40 backdrop-blur-sm"
+            >
+                <div className="relative shrink-0">
+                    <div className="absolute inset-0 rounded-xl bg-orange-500/20 blur-md" />
+                    <div className="relative h-11 w-11 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden">
+                        <Image src="/assets/images/product-hunt-logo.png" alt="Product Hunt" width={40} height={40} className="object-contain" />
+                    </div>
+                </div>
+
+                <div className="flex-1 min-w-0">
+                    <h2 className="text-sm font-semibold text-zinc-100">Product Hunt Feed</h2>
+                    <p className="text-xs text-zinc-500 mt-0.5">Trending products and startups</p>
+                </div>
+
+                {/* Import / re-import button */}
+                <button
+                    onClick={handleImport}
+                    disabled={isLoading}
+                    className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold
+                        bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500
+                        text-white shadow-lg shadow-orange-900/30
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                        transition-all duration-200"
+                >
+                    {isLoading ? (
+                        <RefreshCw className="h-4 w-4 animate-spin" />
+                    ) : (
+                        <RefreshCw className="h-4 w-4" />
+                    )}
+                    {posts.length > 0 ? 'Refresh' : 'Import Feed'}
+                </button>
+            </motion.div>
+
+            {/* ── Info banner ── */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="w-full flex  items-center gap-4 md:rounded-lg tracking-tight z-0  rounded-lg border border-gray-800 p-4 bg-zinc-900/50 overflow-hidden hover:bg-zinc-900 transition-colors duration-300  backdrop-blur-3xl justify-between"
+                transition={{ delay: 0.15 }}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-orange-500/20 bg-orange-500/5 text-[12px] text-orange-300"
             >
-                <div className="flex items-center gap-2">
-                    <Image
-                        src="/assets/images/product-hunt-logo.png"
-                        alt="Product Hunt"
-
-                        width={64}
-                        height={64}
-                        className="animate-gradient transition-all delay-200"
-                    />
-                    <h1 className="font-normal text-2xl md:text-3xl text-gray-400">
-                        Product Hunt Feed
-                    </h1>
-
-                </div>
-
-                <StatefulButton
-                    onClickAsync={handleImportFeed}
-                    statusLoading='Feed importing ...'
-                    statusSuccess='Feed imported successfully!'
-                    disabled={posts.length > 0}
-                    className="p-6 text-sm font-medium  text-white transition-colors duration-300 border border-slate-500 bg-[#9945FF] min-w-fit"
-                >
-                    Import feed
-                </StatefulButton>
+                <Rocket className="h-4 w-4 shrink-0" />
+                Discover the latest trending products and startups from Product Hunt!
             </motion.div>
 
-            {error && (
-                <motion.p
-                    className="text-red-400 text-center"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    {error}
-                </motion.p>
+            {/* ── Feed list with scroll timeline ── */}
+            {isFeedVisible && posts.length > 0 && (
+                <div ref={containerRef} className="relative">
+                    {/* Timeline track */}
+                    <div className="absolute left-[5px] top-0 bottom-0 w-px pointer-events-none">
+                        <div className="absolute inset-0 bg-zinc-800/50 rounded-full" />
+                        <motion.div
+                            className="absolute top-0 left-0 right-0 origin-top rounded-full bg-gradient-to-b from-orange-500 via-rose-500 to-violet-500"
+                            style={{ scaleY }}
+                        />
+                        <motion.div
+                            className="absolute left-1/2 -translate-x-1/2 w-3 h-3 -ml-[5px]"
+                            style={{ top: scrollYProgress }}
+                        >
+                            <div className="absolute inset-0 rounded-full bg-orange-400 blur-[8px] opacity-80 animate-pulse" />
+                            <div className="relative h-full w-full rounded-full bg-white border border-orange-300/60 shadow-lg shadow-orange-500/30" />
+                        </motion.div>
+                    </div>
+
+                    {/* Posts */}
+                    <div className="space-y-1">
+                        {posts.map((post, i) => <PostCard key={post.id} post={post} index={i} />)}
+                    </div>
+
+                    {/* End cap */}
+                    <div className="pl-8 pt-3 pb-2">
+                        <div className="flex items-center gap-3 text-[11px] text-zinc-700">
+                            <div className="h-px flex-1 bg-gradient-to-r from-zinc-800 to-transparent" />
+                            <span className="px-2 py-1 rounded-full border border-zinc-800 bg-zinc-900/60">
+                                {posts.length} product{posts.length !== 1 ? 's' : ''}
+                            </span>
+                            <div className="h-px flex-1 bg-gradient-to-l from-zinc-800 to-transparent" />
+                        </div>
+                    </div>
+                </div>
             )}
 
-
-            <Banner
-                variant={'success'}
-                label='Discover the latest trending products and startups from Product Hunt! 🚀.'
-
-            />
-            <Separator className='bg-zinc-700 my-4' />
-
-            {isFeedVisible && posts.length > 0 && (
-                <motion.ul
-                    className="space-y-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    {posts.map((post) => (
-                        <motion.li
-                            key={post.id}
-                            className="bg-zinc-900/50 border border-gray-700 rounded-md overflow-hidden hover:bg-zinc-900 transition-colors duration-300"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                        >
-                            <div className="p-4 flex items-center space-x-4">
-                                <div className="flex-shrink-0 w-16 h-16 bg-gray-700 rounded-md">
-                                    {post.thumbnailUrl && (
-                                        <Image
-                                            src={post.thumbnailUrl}
-                                            alt={post.name}
-                                            className="object-cover w-full h-full rounded-md"
-                                            width={64}
-                                            height={64}
-                                        />
-                                    )}
-                                </div>
-                                <div className="flex-grow">
-                                    <h3 className="text-lg font-semibold text-white">{post.name}</h3>
-                                    <p className="text-sm text-gray-400">{post.tagline}</p>
-                                    <div className="mt-2 flex items-center space-x-4 text-sm text-gray-400">
-                                        <span className="flex items-center">
-                                            <ArrowBigUpDash className="w-4 h-4 mr-1" />
-                                            {post.votesCount}
-                                        </span>
-                                        <span className="flex items-center">
-                                            <MessageCircle className="w-4 h-4 mr-1" />
-                                            {new Date(post.createdAt).toLocaleDateString()}
-                                        </span>
-                                        {post.website && (
-                                            <Link
-                                                href={post.website}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center hover:text-orange-500 transition-colors duration-300"
-                                            >
-                                                <LinkIcon className="w-4 h-4 mr-1" />
-                                                Website
-                                            </Link>
-                                        )}
-                                        <motion.div
-                                            className="hidden sm:flex shrink-0 justify-between gap-2"
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            transition={{ duration: 0.5, delay: 0.2 }}
-                                        >
-                                            {post.topics.slice(0, 2).map((topic) => (
-                                                <Badge
-                                                    key={topic.name}
-                                                    variant="secondary"
-                                                    className="bg-transparent border border-zinc-700 text-zinc-400 hover:bg-zinc-700/40 hover:text-white text-[0.6rem]"
-                                                >
-                                                    {topic.name}
-                                                </Badge>
-                                            ))}
-                                        </motion.div>
-                                    </div>
-                                </div>
-                                <a
-                                    href={post.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex-shrink-0 transition-colors duration-300 relative overflow-hidden h-fit w-fit group"
-                                >
-                                    <ArrowUpRight
-                                        className="group-hover:-translate-y-5 group-hover:translate-x-5 duration-500 transition-transform ease-in-out-circ fill-light-gray"
-                                        color="gray"
-                                    />
-                                    <ArrowUpRight
-                                        className="absolute top-0 group-hover:translate-x-0 duration-500 group-hover:translate-y-0 transition-all ease-in-out-circ translate-y-5 -translate-x-5 fill-light-gray"
-                                        color="gray"
-                                    >
-                                        <Rocket className="w-4 h-4 text-yellow-400" />
-                                    </ArrowUpRight>
-                                </a>
-                            </div>
-                        </motion.li>
-                    ))}
-                </motion.ul>
+            {/* Empty / pre-import state */}
+            {!isFeedVisible && !isLoading && (
+                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-4 py-20 text-center">
+                    <div className="h-14 w-14 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                        <Rocket className="h-6 w-6 text-zinc-600" />
+                    </div>
+                    <div>
+                        <p className="text-zinc-400 font-medium text-sm">No feed imported yet</p>
+                        <p className="text-zinc-600 text-xs mt-1">Click "Import Feed" to load today's trending products.</p>
+                    </div>
+                </motion.div>
             )}
         </div>
     )
