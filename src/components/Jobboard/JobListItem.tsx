@@ -10,13 +10,11 @@ import {
     Link as LinkIcon,
     Mail,
     MapPin,
-    Tags
+    Tags,
+    ArrowUpRight,
+    DollarSign,
 } from "lucide-react";
-import { Card, CardContent } from "../ui/Card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "../ui/Button";
 import Image from "next/image";
 import Link from "next/link";
 import React from 'react';
@@ -24,7 +22,6 @@ import compLogoPlaceholder from "@/assets/complogo.png";
 import { formatTimeToNow } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 
-// Updated interface to match Prisma types
 interface JobListItemProps {
     job: {
         id: string;
@@ -53,140 +50,182 @@ interface JobListItemProps {
     };
 }
 
-// Wrapper component to handle the link and card together
-export const JobListItemWrapper: React.FC<JobListItemProps> = ({ job }) => {
-    return (
-        <Link href={`/jobs/${job.slug}`} className="block no-underline">
-            <JobListItem job={job} />
-        </Link>
-    );
+// ── Status badge ──────────────────────────────────────────────────────────────
+const statusConfig = {
+    approved: { label: "Approved", classes: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20" },
+    pending:  { label: "Pending",  classes: "bg-amber-500/10 text-amber-300 border-amber-500/20"   },
+    draft:    { label: "Draft",    classes: "bg-zinc-500/10 text-zinc-400 border-zinc-700"          },
 };
 
-// Main JobListItem component
+function getStatus(job: JobListItemProps["job"]) {
+    if (job.approved) return statusConfig.approved;
+    if (job.isPublished) return statusConfig.pending;
+    return statusConfig.draft;
+}
+
+// ── Salary formatter ──────────────────────────────────────────────────────────
+function formatSalary(salary: number) {
+    if (!salary) return null;
+    return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(salary);
+}
+
+// ── Wrapper (keeps JobResults link-free at the row level) ─────────────────────
+export const JobListItemWrapper: React.FC<JobListItemProps> = ({ job }) => {
+    return <JobListItem job={job} />;
+};
+
+// ── Main item ─────────────────────────────────────────────────────────────────
 export default function JobListItem({ job }: JobListItemProps) {
     const { data: session } = useSession();
     const isJobCreator = session?.user?.id === job.userId;
+    const status = getStatus(job);
+    const salary = formatSalary(job.salary);
 
-    const statusBadgeColor = job.approved
-        ? "bg-green-500"
-        : job.isPublished
-            ? "bg-yellow-500"
-            : "bg-red-500";
-
-    const jobMetadata = [
-        { Icon: Briefcase, text: job.type, tooltip: "Job Type" },
-        { Icon: MapPin, text: job.locationType, tooltip: "Location Type" },
-        { Icon: Globe2, text: job.location || "Worldwide", tooltip: "Location" },
-        { Icon: Building2, text: job.workMode || "Not specified", tooltip: "Work Mode" },
-        { Icon: GraduationCap, text: job.yearsOfExperience || "Not specified", tooltip: "Experience Required" },
+    const metaItems = [
+        { Icon: Briefcase,     text: job.type,                          tooltip: "Job Type"            },
+        { Icon: MapPin,        text: job.locationType,                  tooltip: "Location Type"       },
+        { Icon: Globe2,        text: job.location || "Worldwide",       tooltip: "Location"            },
+        { Icon: Building2,     text: job.workMode || "Not specified",   tooltip: "Work Mode"           },
+        { Icon: GraduationCap, text: job.yearsOfExperience || "Open",   tooltip: "Experience Required" },
     ];
 
     return (
-        <Card className="group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 border-zinc-700">
-            <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row gap-6">
-                    {/* Company Logo Section */}
-                    <div className="flex-shrink-0">
-                        <div className="relative w-20 h-20 md:w-24 md:h-24 overflow-hidden rounded-lg group-hover:scale-105 transition-transform duration-300">
-                            <Image
-                                src={job.companyLogoUrl || compLogoPlaceholder}
-                                alt={job.companyName}
-                                fill
-                                className="object-cover"
-                            />
+        <div className="p-5">
+            <div className="flex items-start gap-4">
+
+                {/* ── Company logo ── */}
+                <div className="shrink-0 h-12 w-12 rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900">
+                    <Image
+                        src={job.companyLogoUrl || compLogoPlaceholder}
+                        alt={job.companyName}
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                    />
+                </div>
+
+                {/* ── Main content ── */}
+                <div className="flex-1 min-w-0 space-y-3">
+
+                    {/* Title row */}
+                    <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                            <h2 className="text-sm font-semibold text-zinc-200 group-hover:text-white transition-colors leading-snug truncate">
+                                {job.title}
+                            </h2>
+                            <p className="text-xs text-zinc-500 mt-0.5">{job.companyName}</p>
+                        </div>
+
+                        {/* Badges */}
+                        <div className="shrink-0 flex items-center gap-2">
+                            <span className={`inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-full border ${status.classes}`}>
+                                {status.label}
+                            </span>
+                            {job.category && (
+                                <span className="hidden sm:inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-full border border-violet-500/20 bg-violet-500/10 text-violet-300">
+                                    {job.category.name}
+                                </span>
+                            )}
+                            {/* Arrow — revealed on hover from parent card */}
+                            <div className="flex items-center justify-center h-6 w-6 rounded-lg border border-zinc-800 bg-zinc-900/80 text-zinc-600 hover:text-zinc-200 hover:border-zinc-600 transition-all duration-200 opacity-0 group-hover:opacity-100">
+                                <ArrowUpRight className="h-3 w-3" />
+                            </div>
                         </div>
                     </div>
 
-                    {/* Main Content Section */}
-                    <div className="flex-grow space-y-4">
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <h2 className="text-2xl font-semibold text-blue-400 group-hover:text-blue-300 transition-colors">
-                                    {job.title}
-                                </h2>
-                                <h3 className="text-lg text-zinc-300 font-medium">{job.companyName}</h3>
-                            </div>
+                    {/* Short description */}
+                    {job.short_description && (
+                        <p className="text-[11px] text-zinc-500 leading-relaxed line-clamp-2">
+                            {job.short_description}
+                        </p>
+                    )}
 
-                            <div className="flex gap-2">
-                                <Badge variant="secondary" className={`${statusBadgeColor} text-white`}>
-                                    {job.approved ? "Approved" : job.isPublished ? "Pending" : "Draft"}
-                                </Badge>
-                                {job.category && (
-                                    <Badge variant="outline" className="border-blue-500 text-blue-400">
-                                        {job.category.name}
-                                    </Badge>
-                                )}
-                            </div>
-                        </div>
-
-                        {job.short_description && (
-                            <p className="text-zinc-400 line-clamp-2 w-fit">{job.short_description}</p>
+                    {/* Metadata chips */}
+                    <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+                        {metaItems.map(({ Icon, text, tooltip }, i) => (
+                            <Tooltip key={i}>
+                                <TooltipTrigger asChild>
+                                    <span className="inline-flex items-center gap-1 text-[11px] text-zinc-600 hover:text-zinc-400 transition-colors cursor-default">
+                                        <Icon className="h-3 w-3 shrink-0" />
+                                        {text}
+                                    </span>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" className="text-xs bg-zinc-900 border-zinc-800 text-zinc-300">
+                                    {tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
+                        {salary && (
+                            <span className="inline-flex items-center gap-1 text-[11px] text-emerald-500">
+                                <DollarSign className="h-3 w-3 shrink-0" />
+                                {salary}
+                            </span>
                         )}
+                    </div>
 
-                        {/* Metadata Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                            {jobMetadata.map(({ Icon, text, tooltip }, index) => (
-                                <Tooltip key={index}>
-                                    <TooltipTrigger>
-                                        <div className="flex items-center gap-2 text-zinc-400 hover:text-blue-400 transition-colors">
-                                            <Icon className="w-4 h-4" />
-                                            <span className="text-sm">{text}</span>
-                                        </div>
-                                    </TooltipTrigger>
-                                    <TooltipContent>{tooltip}</TooltipContent>
-                                </Tooltip>
+                    {/* Tags */}
+                    {job.tags && job.tags.length > 0 && (
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <Tags className="h-3 w-3 text-zinc-700 shrink-0" />
+                            {job.tags.slice(0, 5).map((tag) => (
+                                <span key={tag.id} className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-zinc-800 bg-zinc-900/60 text-zinc-500">
+                                    {tag.name}
+                                </span>
                             ))}
+                            {job.tags.length > 5 && (
+                                <span className="text-[10px] text-zinc-700">+{job.tags.length - 5}</span>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Footer row */}
+                    <div className="flex items-center justify-between pt-1 border-t border-zinc-800/60">
+                        {/* Apply actions */}
+                        <div className="flex items-center gap-3">
+                            {job.applicationEmail && (
+                                <a
+                                    href={`mailto:${job.applicationEmail}`}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="inline-flex items-center gap-1.5 text-[11px] text-zinc-500 hover:text-violet-300 transition-colors duration-200"
+                                >
+                                    <Mail className="h-3 w-3" />
+                                    Email
+                                </a>
+                            )}
+                            {job.applicationUrl && (
+                                <a
+                                    href={job.applicationUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="inline-flex items-center gap-1.5 text-[11px] text-zinc-500 hover:text-violet-300 transition-colors duration-200"
+                                >
+                                    <LinkIcon className="h-3 w-3" />
+                                    Apply online
+                                </a>
+                            )}
                         </div>
 
-                        {/* Tags Section */}
-                        {job.tags && job.tags.length > 0 && (
-                            <div className="flex items-center gap-2">
-                                <Tags className="w-4 h-4 text-zinc-400" />
-                                <div className="flex gap-2 flex-wrap">
-                                    {job.tags.map((tag) => (
-                                        <Badge key={tag.id} variant="secondary" className="bg-zinc-700">
-                                            {tag.name}
-                                        </Badge>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Actions Section */}
-                        <div className="flex items-center justify-between pt-4">
-                            <div className="flex gap-4">
-                                {job.applicationEmail && (
-                                    <Button variant="ghost" className="text-zinc-400 hover:text-blue-400">
-                                        <Mail className="w-4 h-4 mr-2" />
-                                        Apply via Email
-                                    </Button>
-                                )}
-                                {job.applicationUrl && (
-                                    <Link className="text-zinc-400 hover:text-blue-400 flex justify-center items-center" href={job.applicationUrl}>
-                                        <LinkIcon className="w-4 h-4 mr-2" />
-                                        Apply Online
-                                    </Link>
-                                )}
-                            </div>
-
-                            <div className="flex items-center gap-4">
-                                {isJobCreator && (
-                                    <Link href={`/jobs/edit/${job.id}`}>
-                                        <Button variant="subtle" className="border-zinc-700 hover:border-blue-500">
-                                            <Edit className="w-4 h-4 mr-2" />
-                                            Edit
-                                        </Button>
-                                    </Link>
-                                )}
-                                <div className="text-zinc-400 flex items-center">
-                                    <Clock className="w-4 h-4 mr-2" />
-                                    <span className="text-sm">{formatTimeToNow(job.createdAt)}</span>
-                                </div>
-                            </div>
+                        {/* Right: edit + time */}
+                        <div className="flex items-center gap-3">
+                            {isJobCreator && (
+                                <Link
+                                    href={`/jobs/edit/${job.id}`}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="inline-flex items-center gap-1.5 text-[11px] text-zinc-600 hover:text-zinc-300 transition-colors duration-200"
+                                >
+                                    <Edit className="h-3 w-3" />
+                                    Edit
+                                </Link>
+                            )}
+                            <span className="inline-flex items-center gap-1 text-[11px] text-zinc-700">
+                                <Clock className="h-3 w-3" />
+                                {formatTimeToNow(job.createdAt)}
+                            </span>
                         </div>
                     </div>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 }
