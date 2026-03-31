@@ -1,7 +1,7 @@
 "use client"
 import { Castle, ChevronLeft, Loader2, Sparkles, Users, Wand2 } from 'lucide-react';
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence as _AP} from 'framer-motion';
 
 import { CreateCommunityPayload } from '@/lib/validators/community';
 import axios from 'axios';
@@ -12,6 +12,8 @@ import { useRouter } from 'next/navigation';
 
 const MAX_NAME = 21;
 const MAX_DESC = 60;
+
+const AnimatePresence = _AP as any;
 
 const Page = () => {
     const [communityName,        setCommunityName]        = useState('');
