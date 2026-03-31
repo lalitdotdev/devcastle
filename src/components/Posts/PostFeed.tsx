@@ -4,7 +4,6 @@ import { FC, useEffect, useRef } from "react";
 import { ExtendedPost } from "@/types/db.d";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import Post from "./Post";
-import { PostSkeleton } from "./Skeleton";
 import axios from "axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useIntersection } from "@mantine/hooks";
@@ -19,7 +18,7 @@ interface PostFeedProps {
 // ── Skeleton placeholder ──────────────────────────────────────────────────────
 function FeedSkeleton() {
     return (
-        <div className="pl-8 space-y-3">
+        <div className="space-y-3">
             {Array(3).fill(0).map((_, i) => (
                 <div
                     key={i}
@@ -124,7 +123,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
                     className="absolute left-1/2 -translate-x-1/2 w-3 h-3 -ml-[5px]"
                     style={{ top: scrollYProgress }}
                 >
-                    <div className="absolute inset-0 rounded-full bg-violet-400 blur-[8px] opacity-80 animate-pulse" />
+                    <div className="absolute inset-0 rounded-full bg-violet-400 blur-[8px] opacity-80" />
                     <div className="relative h-full w-full rounded-full bg-white border border-violet-300/60 shadow-lg shadow-violet-500/30" />
                 </motion.div>
             </div>
@@ -150,16 +149,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
                     const dotColor = dotColors[index % dotColors.length];
 
                     const PostWrapper = ({ children }: { children: React.ReactNode }) => (
-                        <motion.li
-                            initial={{ opacity: 0, x: -16 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{
-                                duration: 0.4,
-                                delay: Math.min(index * 0.05, 0.35),
-                                ease: [0.22, 1, 0.36, 1],
-                            }}
-                            className="relative"
-                        >
+                       <li key={post.id} className="relative">
                             {/* Timeline dot */}
                             <div className="absolute -left-[27px] top-5 z-10 flex items-center justify-center">
                                 <motion.div
@@ -172,7 +162,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
                                 </motion.div>
                             </div>
                             {children}
-                        </motion.li>
+                        </li>
                     );
 
                     if (index === posts.length - 1) {
@@ -210,7 +200,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
 
                 {isFetchingNextPage && (
                     <li className="relative">
-                        <div className="absolute -left-[27px] top-5 z-10 h-3 w-3 rounded-full border-2 border-zinc-900 bg-zinc-800 animate-pulse" />
+                        <div className="absolute -left-[27px] top-5 z-10 h-3 w-3 rounded-full border-2 border-zinc-900 bg-zinc-800 " />
                         <FeedSkeleton />
                     </li>
                 )}

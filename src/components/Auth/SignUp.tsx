@@ -1,37 +1,73 @@
 import { FC } from "react";
-
 import Link from "next/link";
+import { TerminalSquare, Github } from "lucide-react";
 import UserAuthForm from "./UserAuthForm";
-import { Icons } from "../Icons";
+import UserForm from "./Useform";
 
-const SignUp: FC = ({}) => {
-  return (
-    <div className="container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]bg-[#262a35] text-gray-400">
-      <div className="flex flex-col space-y-2 text-center ">
-        {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
+const SignUp: FC = () => {
+    return (
+        <div className="min-h-screen bg-[#0d0d0f] flex items-center justify-center px-4 py-20">
+            {/* Ambient blobs */}
+            <div className="fixed inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute -top-40 left-1/4 h-[500px] w-[500px] rounded-full bg-violet-600/5 blur-[120px]" />
+                <div className="absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-fuchsia-600/5 blur-[100px]" />
+            </div>
 
-        <p className="text-sm max-w-xs mx-auto">
-          By signing up on our platform, you agree to the User Agreement and
-          Sign-in Policy, ensuring account security, responsible use, and data
-          protection.
-        </p>
+            <div className="relative w-full max-w-sm">
+                {/* Card */}
+                <div className="rounded-2xl border border-zinc-800/60 bg-zinc-900/60 backdrop-blur-xl shadow-2xl shadow-black/40 overflow-hidden">
+                    {/* Top accent */}
+                    <div className="h-px bg-gradient-to-r from-transparent via-violet-500/50 to-transparent" />
 
-        {/* SignIn form */}
+                    <div className="p-7 sm:p-8 space-y-7">
+                        {/* ── Brand header ── */}
+                        <div className="text-center space-y-3">
+                            <Link href="/" className="inline-flex items-center justify-center h-12 w-12 rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 shadow-lg shadow-violet-900/40 mx-auto">
+                                <TerminalSquare className="h-6 w-6 text-white" />
+                            </Link>
+                            <div>
+                                <h1 className="text-lg font-semibold text-zinc-100">
+                                    Join DevCastle
+                                </h1>
+                                <p className="text-xs text-zinc-500 mt-1 leading-relaxed max-w-xs mx-auto">
+                                    A platform built by developers, for developers.
+                                    Connect, build, and ship.
+                                </p>
+                            </div>
+                        </div>
 
-        <UserAuthForm />
+                        {/* ── OAuth ── */}
+                        <div className="space-y-2">
+                            <UserAuthForm />
+                        </div>
 
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          Already a curious guy?{" "}
-          <Link
-            href="/sign-in"
-            className="hover:text-brand text-sm underline underline-offset-4"
-          >
-            Sign In
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
+                        {/* ── Divider ── */}
+                        <div className="flex items-center gap-3">
+                            <div className="h-px flex-1 bg-zinc-800" />
+                            <span className="text-[10px] font-medium text-zinc-600 uppercase tracking-wider">
+                                or continue with email
+                            </span>
+                            <div className="h-px flex-1 bg-zinc-800" />
+                        </div>
+
+                        {/* ── Email form ── */}
+                        <UserForm />
+                    </div>
+                </div>
+
+                {/* Already have an account */}
+                <p className="text-center text-xs text-zinc-600 mt-5">
+                    Already have an account?{" "}
+                    <Link
+                        href="/sign-in"
+                        className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
+                    >
+                        Sign in
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
 };
 
 export default SignUp;
