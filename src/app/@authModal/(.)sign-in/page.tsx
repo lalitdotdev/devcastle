@@ -2,7 +2,7 @@
 
 import CloseModal from "@/components/Auth/CloseModal";
 import Image from "next/image";
-import SignIn from "@/components/Auth/SignIn";
+import SignIn from "@/components/Auth/Useform";
 import UserAuthForm from "@/components/Auth/UserAuthForm";
 
 const page = ({ }) => {

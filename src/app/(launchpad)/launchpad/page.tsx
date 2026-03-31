@@ -5,8 +5,6 @@ const LauchPadPage = async () => {
 
     const activeProducts = await getActiveProducts();
 
-    console.log(activeProducts, 'active products here')
-
 
     return (
         <>

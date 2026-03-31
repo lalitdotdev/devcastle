@@ -2,8 +2,14 @@
 
 import { Briefcase, LucideIcon, MessageSquare, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { useState } from "react";
+import { motion, AnimatePresence as _AP, LayoutGroup } from "framer-motion";
+
+
+const AnimatePresence = _AP as any;
+
+
+
 
 type Tab = {
     title: string;
@@ -41,6 +47,8 @@ export const HomeFeedTabs = ({
     return (
         <div className="w-full">
             {/* ── Tab strip ── */}
+            <LayoutGroup id="feed-tabs">
+
             <div className={cn(
                 "relative flex items-center gap-1 p-1 rounded-2xl",
                 "bg-zinc-900/60 border border-zinc-800/60 backdrop-blur-sm",
@@ -67,6 +75,8 @@ export const HomeFeedTabs = ({
                         >
                             {/* Active pill */}
                             {isActive && (
+                                <AnimatePresence mode="wait">
+
                                 <motion.div
                                     layoutId="active-feed-tab"
                                     className={cn(
@@ -77,6 +87,8 @@ export const HomeFeedTabs = ({
                                     )}
                                     transition={{ type: "spring", bounce: 0.2, duration: 0.45 }}
                                 />
+                                </AnimatePresence>
+
                             )}
 
                             <span className="relative flex items-center gap-2">
@@ -87,6 +99,8 @@ export const HomeFeedTabs = ({
                     );
                 })}
             </div>
+
+            </LayoutGroup>
 
             {/* ── Active content ── */}
             <div className={cn("relative mt-5 w-full", contentClassName)}>
