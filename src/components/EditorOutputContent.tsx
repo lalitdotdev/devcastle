@@ -15,10 +15,12 @@ const CustomCodeRenderer: any = dynamic(() => import("./renderers/CustomCodeRend
 const CustomImageRenderer: any = dynamic(() => import("./renderers/CustomImageRenderer"), { ssr: false });
 const CustomLinkRenderer: any = dynamic(() => import("./renderers/EditorCustomLink"), { ssr: false });
 const CustomAlertRenderer: any = dynamic(() => import("./renderers/CustomAlertRenderer"), { ssr: false });
-
 const Output: any = dynamic(
-    async () => (await import("editorjs-react-renderer")).default,
-    { ssr: false }
+  async () => {
+    const mod = await import("editorjs-react-renderer");
+    return mod.default || mod; // ✅ handles both cases
+  },
+  { ssr: false }
 );
 
 interface EditorOutputContentProps {
