@@ -1,3 +1,4 @@
+"use client"
 import { CheckCircle, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import H1 from "@/components/h1";
