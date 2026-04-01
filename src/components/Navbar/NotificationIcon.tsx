@@ -1,240 +1,237 @@
 "use client"
 
-import { BellRing, CheckCircle, Clock } from "lucide-react";
+import { Bell, CheckCheck, Clock, Inbox } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/Button";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { motion, AnimatePresence as _AP } from "framer-motion";
 import { markAllNotificationsAsRead } from "@/lib/launchpad-server-actions/server-actions";
 
+
+
+const AnimatePresence = _AP as any;
 interface NotificationIconProps {
     notifications?: any[];
 }
 
+function timeAgo(date: string) {
+    const diff = Date.now() - new Date(date).getTime();
+    const s = diff / 1000;
+    if (s < 60)         return "Just now";
+    if (s < 3600)       return `${Math.floor(s / 60)}m ago`;
+    if (s < 86400)      return `${Math.floor(s / 3600)}h ago`;
+    return `${Math.floor(s / 86400)}d ago`;
+}
+
+// Accent dot per index — same cycling palette as the rest of the system
+const DOT_COLORS = [
+    "bg-violet-400", "bg-cyan-400", "bg-fuchsia-400",
+    "bg-amber-400",  "bg-emerald-400", "bg-rose-400",
+];
+
 const NotificationIcon: React.FC<NotificationIconProps> = ({ notifications = [] }) => {
-    const [unreadNotifications, setUnreadNotifications] = useState(
-        notifications.filter((notification) => notification.status === "UNREAD").length
+    const [unread, setUnread] = useState(
+        notifications.filter((n) => n.status === "UNREAD").length
     );
     const [isOpen, setIsOpen] = useState(false);
-    const [animate, setAnimate] = useState(false);
+    const [wiggle, setWiggle] = useState(false);
 
+    // Subtle wiggle every 5s when there are unread notifications
     useEffect(() => {
-        const interval = setInterval(() => {
-            setAnimate(prev => !prev);
-        }, 4000);
-        return () => clearInterval(interval);
-    }, []);
-
-    const timeAgo = (date: string) => {
-        const now = new Date();
-        const time = new Date(date);
-        const diff = now.getTime() - time.getTime();
-        const seconds = diff / 1000;
-        const minutes = seconds / 60;
-        const hours = minutes / 60;
-        const days = hours / 24;
-
-        if (seconds < 60) return "Just now";
-        if (minutes < 60) return `${Math.floor(minutes)}m ago`;
-        if (hours < 24) return `${Math.floor(hours)}h ago`;
-        return `${Math.floor(days)}d ago`;
-    };
+        if (unread === 0) return;
+        const id = setInterval(() => {
+            setWiggle(true);
+            setTimeout(() => setWiggle(false), 600);
+        }, 5000);
+        return () => clearInterval(id);
+    }, [unread]);
 
     const handleMarkAllAsRead = async () => {
         try {
             await markAllNotificationsAsRead();
-            setUnreadNotifications(0);
-        } catch (error) {
-            console.log(error);
+            setUnread(0);
+        } catch (err) {
+            console.error(err);
         }
     };
 
     return (
-        <TooltipProvider>
-            <Sheet onOpenChange={setIsOpen}>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <SheetTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                className={`
-                                    relative group
-                                    hover:bg-zinc-800/50
-                                    transition-all duration-300
-                                    ${isOpen ? 'bg-zinc-800/50' : ''}
-                                `}
-                            >
-                                <div className={`
-                                    relative
-                                    ${unreadNotifications > 0 && animate ? 'animate-wiggle' : ''}
-                                `}>
-                                    <BellRing className={`
-                                        h-6 w-6
-                                        transition-all duration-300
-                                        ${isOpen ? 'text-teal-400' : 'text-zinc-200'}
-                                        group-hover:text-teal-400
-                                    `} />
-                                    {unreadNotifications > 0 && (
-                                        <Badge
-                                            className={`
-                                                absolute -top-1 -right-1
-                                                h-5 w-5
-                                                flex items-center justify-center
-                                                p-0
-                                                bg-gradient-to-r from-red-500 to-red-600
-                                                shadow-lg shadow-red-500/20
-                                                border border-red-400/20
-                                                transition-transform duration-300
-                                                group-hover:scale-110
-                                            `}
-                                        >
-                                            {unreadNotifications}
-                                        </Badge>
-                                    )}
-                                </div>
-                            </Button>
-                        </SheetTrigger>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>View notifications</p>
-                    </TooltipContent>
-                </Tooltip>
-
-                <SheetContent
-                    className="w-80 sm:w-96 border-l border-zinc-800 bg-zinc-900 /95 backdrop-blur-sm"
+        <Sheet onOpenChange={setIsOpen}>
+            {/* ── Trigger ── */}
+            <SheetTrigger asChild>
+                <button
+                    aria-label="Notifications"
+                    className={`relative flex items-center justify-center h-8 w-8 rounded-lg border transition-all duration-200
+                        ${isOpen
+                            ? "border-violet-500/40 bg-violet-500/10 text-violet-400"
+                            : "border-zinc-800 bg-zinc-900/60 text-zinc-600 hover:text-zinc-200 hover:border-zinc-700"
+                        }`}
                 >
-                    <SheetHeader className="pb-4 space-y-4">
-                        <div className="flex justify-between items-center">
-                            <SheetTitle className="text-zinc-100 flex items-center gap-2">
-                                <BellRing className="h-5 w-5 text-teal-500" />
-                                Notifications
-                                {unreadNotifications > 0 && (
-                                    <Badge variant="default" className="bg-zinc-800">
-                                        {unreadNotifications} new
-                                    </Badge>
-                                )}
-                            </SheetTitle>
+                    <motion.div
+                        animate={wiggle ? { rotate: [0, 12, -12, 6, 0] } : {}}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <Bell className="h-3.5 w-3.5" />
+                    </motion.div>
 
-                        </div>
-                        <SheetDescription className="text-zinc-400">
-                            Stay updated with your latest activity
-                        </SheetDescription>
-                    </SheetHeader>
-
-                    {unreadNotifications > 0 && (
-                        <div className="relative mb-4">
-                            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-transparent rounded-lg blur-lg" />
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={handleMarkAllAsRead}
-                                className="w-full relative bg-zinc-900/50 border border-zinc-800 text-teal-400 hover:text-teal-300 hover:bg-zinc-800/50"
+                    {/* Unread badge */}
+                    <AnimatePresence>
+                        {unread > 0 && (
+                            <motion.span
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                exit={{ scale: 0 }}
+                                className="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 rounded-full
+                                    bg-gradient-to-br from-violet-600 to-fuchsia-600
+                                    text-[9px] font-bold text-white
+                                    border border-zinc-950 shadow-sm"
                             >
-                                <CheckCircle className="h-4 w-4 mr-2" />
-                                Mark all as read
-                            </Button>
-                        </div>
-                    )}
+                                {unread > 9 ? "9+" : unread}
+                            </motion.span>
+                        )}
+                    </AnimatePresence>
+                </button>
+            </SheetTrigger>
 
-                    <ScrollArea className="h-[calc(100vh-8rem)] pr-4">
-                        {notifications?.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center h-40 text-zinc-500">
-                                <div className="relative p-4 rounded-full bg-zinc-800/50 mb-4">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-zinc-500/10 rounded-full blur-xl" />
-                                    <BellRing className="h-8 w-8 text-zinc-400 relative" />
-                                </div>
-                                <p className="font-medium">No notifications yet</p>
-                                <p className="text-sm text-zinc-600">We&apos;ll notify you when something arrives</p>
+            {/* ── Drawer ── */}
+            <SheetContent
+                side="right"
+                className="w-[300px] sm:w-[340px] bg-[#0d0d0f] border-l border-zinc-800/60 p-0 flex flex-col"
+            >
+                {/* Top accent */}
+                <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
+
+                {/* ── Header ── */}
+                <div className="px-5 pt-5 pb-4 shrink-0">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                            <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white shrink-0">
+                                <Bell className="h-4 w-4" />
                             </div>
-                        ) : (
-                            <div className="space-y-3">
-                                {notifications?.map((notification, index) => (
-                                    <div
+                            <div>
+                                <p className="text-sm font-semibold text-zinc-100 leading-tight">Notifications</p>
+                                <p className="text-[11px] text-zinc-600 mt-0.5">
+                                    {unread > 0 ? `${unread} unread` : "All caught up"}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Mark all read */}
+                        <AnimatePresence>
+                            {unread > 0 && (
+                                <motion.button
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    onClick={handleMarkAllAsRead}
+                                    className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg
+                                        border border-zinc-800 bg-zinc-900/60 text-zinc-600
+                                        hover:border-violet-500/30 hover:text-violet-400 hover:bg-violet-500/5
+                                        text-[11px] font-medium transition-all duration-200"
+                                >
+                                    <CheckCheck className="h-3 w-3" />
+                                    Mark read
+                                </motion.button>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </div>
+
+                <div className="mx-5 border-t border-zinc-800/60 shrink-0" />
+
+                {/* ── Notification list ── */}
+                <ScrollArea className="flex-1 px-3 py-3">
+                    {notifications.length === 0 ? (
+                        /* Empty state */
+                        <div className="flex flex-col items-center gap-3 py-16 text-center">
+                            <div className="h-14 w-14 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                                <Inbox className="h-6 w-6 text-zinc-700" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-zinc-400">All clear</p>
+                                <p className="text-[11px] text-zinc-600 mt-0.5 leading-relaxed">
+                                    No notifications yet.<br />We&apos;ll let you know when something arrives.
+                                </p>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="space-y-1">
+                            {notifications.map((notification, i) => {
+                                const isUnread = notification.status === "UNREAD";
+                                const dotColor = DOT_COLORS[i % DOT_COLORS.length];
+
+                                return (
+                                    <motion.div
                                         key={notification.id}
-                                        className={`
-                                            group
-                                            p-4 rounded-lg
-                                            transition-all duration-300
-                                            hover:translate-x-1
-                                            ${notification.status === "UNREAD"
-                                                ? 'bg-gradient-to-r from-zinc-800/80 to-zinc-800/40 border border-zinc-700/50'
-                                                : 'bg-zinc-900/30 hover:bg-zinc-800/30'
-                                            }
-                                        `}
-                                        style={{
-                                            animation: `fadeIn 0.5s ease-out ${index * 0.1}s`
+                                        initial={{ opacity: 0, x: -12 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{
+                                            duration: 0.3,
+                                            delay: Math.min(i * 0.04, 0.3),
+                                            ease: [0.22, 1, 0.36, 1],
                                         }}
+                                        className={`group relative flex items-start gap-3 p-3 rounded-xl cursor-default
+                                            transition-all duration-200
+                                            ${isUnread
+                                                ? "border border-zinc-800/80 bg-zinc-900/60 hover:border-zinc-700/80 hover:bg-zinc-900/80"
+                                                : "hover:bg-zinc-900/40"
+                                            }`}
                                     >
-                                        <div className="flex items-start gap-3">
-                                            <div className="relative">
+                                        {/* Left accent bar (unread only) */}
+                                        {isUnread && (
+                                            <div className={`absolute left-0 top-3 bottom-3 w-[2px] rounded-full ${dotColor} opacity-70`} />
+                                        )}
+
+                                        {/* Avatar */}
+                                        <div className="relative shrink-0 mt-0.5">
+                                            <div className="h-8 w-8 rounded-xl overflow-hidden border border-zinc-800">
                                                 <Image
                                                     src={notification.profilePicture}
                                                     alt="Profile"
-                                                    width={40}
-                                                    height={40}
-                                                    className="rounded-full h-10 w-10 object-cover ring-2 ring-zinc-800 group-hover:ring-teal-500/30 transition-all duration-300"
+                                                    width={32}
+                                                    height={32}
+                                                    className="w-full h-full object-cover"
                                                 />
-                                                {notification.status === "UNREAD" && (
-                                                    <div className="absolute -top-1 -right-1 h-3 w-3 bg-teal-500 rounded-full ring-2 ring-zinc-900" />
-                                                )}
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className={`
-                                                    text-sm mb-1
-                                                    ${notification.status === "UNREAD"
-                                                        ? 'text-zinc-100 font-medium'
-                                                        : 'text-zinc-400'
-                                                    }
-                                                `}>
-                                                    {notification.body}
-                                                </p>
-                                                <div className="flex items-center gap-2 text-xs text-zinc-500">
-                                                    <Clock className="h-3 w-3" />
-                                                    {notification.createdAt && timeAgo(notification.createdAt)}
-                                                </div>
-                                            </div>
+                                            {isUnread && (
+                                                <div className={`absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ${dotColor} border-2 border-zinc-950`} />
+                                            )}
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </ScrollArea>
 
-                    <style jsx global>{`
-                        @keyframes fadeIn {
-                            from { opacity: 0; transform: translateY(10px); }
-                            to { opacity: 1; transform: translateY(0); }
-                        }
-                        @keyframes wiggle {
-                            0% { transform: rotate(0deg); }
-                            25% { transform: rotate(10deg); }
-                            50% { transform: rotate(-10deg); }
-                            75% { transform: rotate(5deg); }
-                            100% { transform: rotate(0deg); }
-                        }
-                        .animate-wiggle {
-                            animation: wiggle 0.5s ease-in-out;
-                        }
-                    `}</style>
-                </SheetContent>
-            </Sheet>
-        </TooltipProvider>
+                                        {/* Content */}
+                                        <div className="flex-1 min-w-0 space-y-1">
+                                            <p className={`text-xs leading-snug ${isUnread ? "text-zinc-200 font-medium" : "text-zinc-500"}`}>
+                                                {notification.body}
+                                            </p>
+                                            <span className="flex items-center gap-1 text-[10px] text-zinc-700">
+                                                <Clock className="h-2.5 w-2.5" />
+                                                {notification.createdAt && timeAgo(notification.createdAt)}
+                                            </span>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </ScrollArea>
+
+                {/* ── Footer ── */}
+                {notifications.length > 0 && (
+                    <div className="shrink-0 px-5 py-4 border-t border-zinc-800/60">
+                        <div className="flex items-center gap-3 text-[10px] text-zinc-700">
+                            <div className="h-px flex-1 bg-gradient-to-r from-zinc-800 to-transparent" />
+                            <span>{notifications.length} total</span>
+                            <div className="h-px flex-1 bg-gradient-to-l from-zinc-800 to-transparent" />
+                        </div>
+                    </div>
+                )}
+            </SheetContent>
+        </Sheet>
     );
 };
 

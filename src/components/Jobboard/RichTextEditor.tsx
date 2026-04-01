@@ -23,7 +23,7 @@ const RichTextEditor = forwardRef<any, EditorProps>(function RichTextEditor(prop
                     "prose max-w-none dark:prose-invert focus:outline-none",
                     "min-h-[200px] px-4 py-3 rounded-md border border-input bg-background",
                     "transition-colors focus-visible:outline-none focus-visible:ring-2",
-                    "focus-visible:ring-ring focus-visible:ring-offset-2 text-black",
+                    "focus-visible:ring-ring focus-visible:ring-offset-2",
                     props.editorClassName
                 )}
                 toolbar={{

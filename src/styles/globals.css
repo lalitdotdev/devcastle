@@ -12,7 +12,7 @@
 }
 
 .link-card h3 {
-  color: #FFFFFF !important;
+  color: #ffffff !important;
 }
 
 .link-card p {
@@ -65,19 +65,35 @@
   }
 
   @keyframes pulse-subtle {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.9; transform: scale(1.02); }
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
   }
   .animate-pulse-subtle {
     animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
   }
   .animate-shimmer {
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent
+    );
     background-size: 200% 100%;
     animation: shimmer 2s infinite linear;
   }
@@ -151,6 +167,60 @@
   }
 }
 
+/* ================= GLOBAL.CSS (CLEANED DESIGN SYSTEM) ================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500&display=swap");
+
+/* ===== BACKGROUND ===== */
+.jb-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.jb-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      rgba(65, 105, 232, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(65, 105, 232, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ===== HERO ===== */
+.jb-hero {
+  padding: 60px 0;
+}
+
+.jb-title {
+  font-family: "Syne", sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 900;
+}
+
+.jb-gradient {
+  background: linear-gradient(90deg, var(--accent), var(--teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.jb-sub {
+  color: var(--muted);
+  max-width: 500px;
+}
+
+/* ===== CARD ===== */
+.jb-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.jb-card-header {
+  padding: 16px 20px;
+}
 @layer base {
   * {
     @apply border-border;
