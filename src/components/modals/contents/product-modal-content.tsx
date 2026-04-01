@@ -12,6 +12,9 @@ import ShareProductModalContent from "./share-product-modal-content";
 import { StatefulButton } from "@/components/Feed/Stateful-btn";
 import { toast } from "sonner";
 import { useState } from "react";
+import { motion , AnimatePresence as _AP } from "framer-motion";
+
+const AnimatePresence = _AP as any;
 
 interface ProductModalContentProps {
     currentProduct: any;
@@ -96,178 +99,173 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
 
 
     return (
-        <div className="h-full">
-            <div className="md:w-4/5 mx-auto">
+            <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black text-white px-4 py-10">
+      <div className="max-w-4xl mx-auto space-y-8">
+
+        {/* HEADER */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="flex items-center gap-4">
+            <Image
+              src={currentProduct.logo}
+              alt="logo"
+              width={80}
+              height={80}
+              className="rounded-2xl border border-white/10 shadow-lg bg-white/5"
+            />
+
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">{currentProduct.name}</h1>
+              <p className="text-zinc-400">{currentProduct.headline}</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ACTION BAR */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex flex-wrap gap-3 items-center"
+        >
+          <button
+            onClick={() => window.open(currentProduct.website, "_blank")}
+            className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-black font-semibold transition-all hover:scale-105"
+          >
+            Visit Website
+          </button>
+
+          <button
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all ${
+              hasUpvoted
+                ? "bg-gradient-to-r from-pink-500 to-red-500 text-white border-transparent"
+                : "border-white/10 hover:bg-white/5"
+            }`}
+          >
+            <ArrowBigUp className={`${hasUpvoted ? "fill-white" : ""}`} />
+            {totalUpvotes}
+          </button>
+
+          <button
+            onClick={() => setShareModalVisible(true)}
+            className="flex items-center gap-2 px-4 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-zinc-300"
+          >
+            <Upload size={16} /> Share
+          </button>
+        </motion.div>
+
+        {/* DESCRIPTION */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-zinc-400 leading-relaxed"
+        >
+          {currentProduct.description}
+        </motion.div>
+
+        {/* TAGS */}
+        <div className="flex flex-wrap gap-2">
+          {currentProduct.categories.map((category: any) => (
+            <span
+              key={category}
+              className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm text-zinc-300"
+            >
+              {category}
+            </span>
+          ))}
+        </div>
+
+        {/* CAROUSEL */}
+        <div className="rounded-2xl overflow-hidden border border-white/10">
+          <CarouselComponent productImages={currentProduct.images} />
+        </div>
+
+        {/* COMMENTS */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold">Community Feedback</h2>
+
+          {/* INPUT */}
+          <div className="flex gap-4">
+            <Image
+              src={authenticatedUser.user.image}
+              alt="profile"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <textarea
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="Share your thoughts..."
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+
+          <div className="flex justify-end">
+            <StatefulButton
+              onClickAsync={async () => {
+                await commentOnProduct(currentProduct.id, commentText);
+                setComments([
+                  ...comments,
+                  {
+                    user: authenticatedUser.user.name,
+                    body: commentText,
+                    profile: authenticatedUser.user.image,
+                    userId: authenticatedUser.user.id,
+                    timestamp: new Date().toISOString(),
+                  },
+                ]);
+                setCommentText("");
+              }}
+              className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-black font-semibold"
+            >
+              Comment
+            </StatefulButton>
+          </div>
+
+          {/* LIST */}
+          <div className="space-y-6">
+            {comments.map((comment: any) => (
+              <div key={comment.id} className="flex gap-3">
                 <Image
-                    src={currentProduct.logo}
-                    alt="logo"
-                    width={200}
-                    height={200}
-                    className="h-20 w-20 border rounded-md bg-white shadow-md"
+                  src={comment.profile}
+                  alt="profile"
+                  width={36}
+                  height={36}
+                  className="rounded-full"
                 />
 
-                <div className="py-4 space-y-2">
-                    <h1 className="text-2xl font-semibold">{currentProduct.name}</h1>
-                    <div className="md:flex md:justify-between items-center">
-                        <p className="text-zinc-300 text-xl font-light md:w-3/5">
-                            {currentProduct.headline}
-                        </p>
-
-                        <div className="flex items-center gap-2 pt-4">
-                            <button
-                                onClick={() => window.open(currentProduct.website, "_blank")}
-                                className="border rounded-md flex justify-center
-                        items-center p-5 cursor-pointer bg-teal-500 text-black"
-                            >
-                                Visit
-                            </button>
-
-                            <button
-                                className={`rounded-md border-teal-600 flex justify-center items-center p-5
-                gap-x-3 cursor-pointer bg-gradient-to-r w-full xl:w-56 ${hasUpvoted
-                                        ? "from-[#ff6154] to-[#ff4582] border-[#ff6154] text-white"
-                                        : "text-emerald-50 border"
-                                    }`}
-                                onClick={handleUpvoteClick}
-
-
-
-                            >
-                                <ArrowBigUp
-                                    className={`text-2xl ${hasUpvoted ? "text-white fill-current" : "text-emerald-100"
-                                        }`}
-                                    size={28}
-                                />
-                                {totalUpvotes}
-                            </button>
-                        </div>
-                    </div>
-                    <h2 className="text-gray-400 py-6">{currentProduct.description}</h2>
-
-                    <div className="md:flex justify-between items-center">
-                        <div className="flex gap-x-2">
-                            {currentProduct.categories.map((category: any) => (
-                                <Link
-                                    href={`/launchpad/category/${category.toLowerCase()}`}
-                                    key={category}
-                                    className="bg-teal-400 text-black px-4 py-2 rounded-xl cursor-pointer"
-                                >
-                                    {category}
-                                </Link>
-                            ))}
-                        </div>
-
-                        <div className="flex items-center gap-x-4 py-4">
-                            <div
-                                className="text-md text-gray-400
-              flex items-center gap-x-1 cursor-pointer"
-                            >
-                                <MessageCircle />
-                                <p>Discuss</p>
-                            </div>
-
-                            <div
-                                onClick={handleShareClick}
-                                className="text-md text-gray-400
-              flex items-center gap-x-1 cursor-pointer"
-                            >
-                                <Upload />
-                                <p>Share</p>
-                            </div>
-                        </div>
+                <div className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-white">{comment.user}</span>
+                      <span className="text-xs text-zinc-500">
+                        {new Date(comment.timestamp).toLocaleDateString()}
+                      </span>
                     </div>
 
-                    <CarouselComponent productImages={currentProduct.images} />
+                    {(comment.userId === authenticatedUser?.user?.id ||
+                      currentProduct.userId === authenticatedUser?.user?.id) && (
+                      <Trash
+                        size={16}
+                        className="text-red-500 cursor-pointer"
+                        onClick={() => handleDeleteComment(comment.id)}
+                      />
+                    )}
+                  </div>
 
-                    <h1 className="font-semibold pt-10">Community Feedback</h1>
-
-                    <div>
-                        <div className="w-full flex gap-4 mt-4">
-                            <Image
-                                src={authenticatedUser.user.image}
-                                alt="profile"
-                                width={50}
-                                height={50}
-                                className="rounded-full h-12 w-12"
-                            />
-
-                            <textarea
-                                value={commentText}
-                                onChange={handleCommentChange}
-                                placeholder="What do you think about this product?"
-                                className="w-full rounded-md p-4
-                focus:outline-none text-white bg-gray-700 "
-                            />
-                        </div>
-
-                        <div className="flex justify-end mt-4">
-                            <StatefulButton
-                                onClickAsync={handleCommentSubmit}
-                                statusLoading='Commenting..'
-                                className="p-6 text-sm font-medium  text-white transition-colors duration-300 border border-slate-500 bg-[#9945FF] w-fit"
-                            >
-                                Comment
-                            </StatefulButton>
-                        </div>
-                    </div>
-
-                    <div className="py-8 space-y-8">
-                        {comments.map((comment: any) => (
-                            <div key={comment.id} className="flex gap-4">
-                                <Image
-                                    src={comment.profile}
-                                    alt="profile"
-                                    width={50}
-                                    height={50}
-                                    className="w-8 h-8 rounded-full mt-1 cursor-pointer"
-                                />
-
-                                <div className="w-full">
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex gap-x-2 items-center">
-                                            <h1 className="text-teal-500 font-semibold cursor-pointer">
-                                                {comment.user}
-                                            </h1>
-                                            {comment.userId === currentProduct.userId && (
-                                                <Badge className="bg-blue-500 ">Creator</Badge>
-                                            )}
-
-                                            <div className="text-gray-500 text-xs">
-                                                {new Date(comment.timestamp).toDateString()}
-                                            </div>
-                                        </div>
-
-                                        {(comment.userId === authenticatedUser?.user?.id ||
-                                            currentProduct.userId ===
-                                            authenticatedUser?.user?.id) && (
-                                                <Trash
-                                                    onClick={() => handleDeleteComment(comment.id)}
-                                                    className="text-red-500 hover:cursor-pointer"
-                                                    size={20}
-                                                />
-                                            )}
-
-                                    </div>
-
-                                    <div className="text-zinc-300 text-sm
-                    hover:cursor-pointer mt-2">
-                                        {comment.body}
-                                    </div>
-
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                  <p className="text-sm text-zinc-300 mt-2">{comment.body}</p>
                 </div>
-            </div>
-
-            <ShareModal
-                visible={shareModalVisible}
-                setVisible={setShareModalVisible}
-            >
-                <ShareProductModalContent currentProduct={currentProduct} />
-            </ShareModal>
+              </div>
+            ))}
+          </div>
         </div>
+
+        <ShareModal visible={shareModalVisible} setVisible={setShareModalVisible}>
+          <ShareProductModalContent currentProduct={currentProduct} />
+        </ShareModal>
+      </div>
+    </div>
     );
 };
 
