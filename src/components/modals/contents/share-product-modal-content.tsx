@@ -2,7 +2,9 @@ import { Check, Copy, ExternalLink, Share2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence as _AP } from "framer-motion";
+
+const AnimatePresence = _AP as any;
 
 interface ShareProductModalContentProps {
   currentProduct: any;
